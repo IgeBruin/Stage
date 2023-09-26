@@ -1,0 +1,1 @@
+In resources/css/app.css staat een style voor d inputvelden van CKeditor.
