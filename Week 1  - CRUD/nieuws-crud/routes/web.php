@@ -5,6 +5,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TaskStatusController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Post as Post;
 use App\Models\Category as Category;
@@ -100,6 +102,17 @@ Route::middleware('auth')->group(function () {
             Route::put('{role}', [RoleController::class, 'update'])->name('update');
             Route::delete('{role}', [RoleController::class, 'destroy'])->name('destroy');
             Route::get('search', [RoleController::class, 'search'])->name('search');
+        });
+
+        //dus dashboard/roles/ en dan hier de naam van de functie
+        Route::prefix('statuses')->name('statuses.')->group(function () {
+            Route::get('', [StatusController::class, 'index'])->name('index');
+            Route::get('create', [StatusController::class, 'create'])->name('create');
+            Route::post('', [StatusController::class, 'store'])->name('store');
+            Route::get('{status}/edit', [StatusController::class, 'edit'])->name('edit');
+            Route::put('{status}', [StatusController::class, 'update'])->name('update');
+            Route::delete('{status}', [StatusController::class, 'destroy'])->name('destroy');
+            Route::get('search', [StatusController::class, 'search'])->name('search');
         });
     });
     // profile door breeze

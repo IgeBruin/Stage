@@ -13,35 +13,7 @@
 
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-2 mb-md-0 mb-4">
-                <div class="d-flex flex-column justify-content-start align-items-center h-100">
-                    <ul class="list-group text-center">
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.articles.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Artikelen</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.categories.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Categorieën</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.projects.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Projecten</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.roles.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Rollen</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit"
-                                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Uitloggen</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            @include('_menu')
 
             <div class="col-md-10">
                 <div class="d-flex flex-column justifd-content-start">

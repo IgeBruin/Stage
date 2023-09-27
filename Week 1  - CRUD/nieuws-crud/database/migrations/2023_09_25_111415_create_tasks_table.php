@@ -14,10 +14,11 @@ class CreateTasksTable extends Migration
             $table->text('description');
             $table->date('deadline');
             $table->unsignedBigInteger('project_id');
-            $table->enum('status', ['Niet gestart', 'In uitvoering', 'Voltooid'])->default('Niet gestart');
+            $table->unsignedBigInteger('status_id')->default(1);
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('projects')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('status_id')->references('id')->on('statuses')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

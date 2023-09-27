@@ -19,35 +19,7 @@
         @endif
 
         <div class="row">
-            <div class="col-md-2 mb-md-0 mb-4">
-                <div class="d-flex flex-column justify-content-start align-items-center h-100">
-                    <ul class="list-group text-center">
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.articles.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Artikelen</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.categories.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Categorieën</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.projects.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Projecten</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.roles.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Rollen</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit"
-                                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Uitloggen</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            @include('_menu')
 
             <div class="col-md-10 mb-md-0 mb-4">
                 <div class="d-flex flex-column justify-content-start">
@@ -74,7 +46,8 @@
 
                                     <div class="form-group mt-3">
                                         <label for="description" class="form-label">Beschrijving</label>
-                                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" placeholder="Beschrijving">{{ old('description', $task->description) }}</textarea>
+                                        <textarea name="description" id="description" class="form-control  @error('description') is-invalid @enderror"
+                                            placeholder="Beschrijving">{{ old('description', $task->description) }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -93,10 +66,10 @@
                                     <div class="form-group mt-3">
                                         <label for="status" class="form-label">Status</label>
                                         <select name="status" class="form-control">
-                                            @foreach ($statusOptions as $statusOption)
-                                                <option value="{{ $statusOption }}"
-                                                    {{ old('status', $task->status) === $statusOption ? 'selected' : '' }}>
-                                                    {{ $statusOption }}
+                                            @foreach ($statusOptions as $statusOptionId => $statusOptionName)
+                                                <option value="{{ $statusOptionId }}"
+                                                    {{ old('status', $task->status_id) == $statusOptionId ? 'selected' : '' }}>
+                                                    {{ $statusOptionName }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -104,7 +77,7 @@
 
                                     <div class="form-group mt-3">
                                         <label for="user_id" class="form-label">Gebruiker</label>
-                                        <select name="user_id" multiple="multiple"
+                                        <select name="user_id[]" multiple="multiple"
                                             class="form-control select2 @error('user_id') is-invalid @enderror">
                                             @foreach ($project->users as $user)
                                                 <option value="{{ $user->id }}"
@@ -121,7 +94,7 @@
                                     <div class="mb-3 d-flex justify-content-end">
                                         <a href="{{ route('dashboard.projects.edit', $project->id) }}"
                                             class="btn-lg btn btn-link m-2">Terug</a>
-                                        <input type="submit" class="btn-lg btn btn-primary m-2" value="Rol Bijwerken">
+                                        <input type="submit" class="btn-lg btn btn-primary m-2" value="Taak Bijwerken">
                                     </div>
                                 </form>
                             @else

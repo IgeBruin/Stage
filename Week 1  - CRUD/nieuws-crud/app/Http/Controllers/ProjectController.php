@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Status;
 use App\Models\Task;
 use Illuminate\Support\Facades\Storage;
 
@@ -30,13 +31,13 @@ class ProjectController extends Controller
 
     public function store(ProjectStoreValidation $request)
     {
-        $data = $request->validated();
     
         $project = new Project();
-        $project->name = $data['name'];
-        $project->introduction = $data['introduction'];
-        $project->content = $data['content'];
-        $project->start_date = $data['start_date'];
+        $project->name = $request->name;
+        $project->introduction = $request->introduction;
+        $project->content = $request->content;
+        $project->start_date = $request->start_date;
+
 
         $project->save();
 
@@ -54,26 +55,30 @@ class ProjectController extends Controller
     }
 
 
-    public function edit(Project $project)
+    public function edit(Project $project, Status $status)
     {
         $users = User::all();
+        $statusOptions = Status::pluck('name', 'id');
 
         $userNamesForTasks = [];
+
         foreach ($project->tasks as $task) {
-            $users = $task->users;
-            foreach ($users as $user) {
-                $userName = $user->name;
-                if (!in_array($userName, $userNamesForTasks)) {
-                    $userNamesForTasks[] = $userName;
+            $taskUserNames = [];
+
+            foreach ($task->users as $user) {
+                if (!in_array($user->name, $taskUserNames)) {
+                    $taskUserNames[] = $user->name;
                 }
             }
+
+            $userNamesForTasks[$task->id] = $taskUserNames;
         }
+        // 3 is Voltooid status
 
-        $completedTasks = $project->tasks->where('status', 'Voltooid');
-
-        return view("projects.edit", compact('project', 'users', 'userNamesForTasks', 'completedTasks'));
+        $completedTasks = $project->tasks->where('status_id', 3);
+        $openTasks = $project->tasks->whereNotIn('status_id', [3]);
+        return view("projects.edit", compact('project', 'users', 'userNamesForTasks', 'completedTasks', 'statusOptions', 'openTasks'));
     }
-
 
 
     public function update(ProjectUpdateValidation $request, Project $project)
@@ -182,29 +187,33 @@ class ProjectController extends Controller
         $allTasks = Task::all();
 
         $userId = $request->input('user_id');
+        $statusOptions = Status::pluck('name', 'id');
 
-        return view('projects.tasks', compact('project', 'allUsers', 'allTasks'));
+        return view('projects.tasks', compact('project', 'allUsers', 'allTasks', 'userId', 'statusOptions'));
     }
 
-    public function storeTask(ProjectCreateTaskValidation $request, Project $project)
+    public function storeTask(ProjectCreateTaskValidation $request, Project $project, Status $status)
     {
         $task = new Task();
         $task->title = $request->title;
         $task->description = $request->description;
         $task->deadline = $request->deadline;
         $task->project_id = $project->id;
+        $task->status_id = 1 ;
         $task->save();
 
-        $task->users()->attach($request->user_id);
+        $selectedUserIds = $request->input('user_id', []);
+        $task->users()->attach($selectedUserIds);
 
         return redirect()->route('dashboard.projects.edit', ['project' => $project, 'tab' => 'tasks'])
         ->with('success', 'Taak is aangemaakt');
     }
 
+
     public function editTask(Project $project, Task $task)
     {
         $allUsers = User::all();
-        $statusOptions = ['Niet gestart', 'In uitvoering', 'Voltooid'];
+        $statusOptions = Status::pluck('name', 'id');
 
         return view('projects.editTask', compact('project', 'task', 'allUsers', 'statusOptions'));
     }
@@ -214,15 +223,17 @@ class ProjectController extends Controller
         $task->title = $request->title;
         $task->description = $request->description;
         $task->deadline = $request->deadline;
-        $task->status = $request->status;
+        $task->status_id = $request->status;
 
-        $task->users()->sync([$request->user_id]);
+        $selectedUserIds = $request->input('user_id', []);
+        $task->users()->sync($selectedUserIds);
 
         $task->save();
 
         return redirect()->route('dashboard.projects.edit', ['project' => $project, 'tab' => 'tasks'])
         ->with('success', 'Taak is bijgewerkt');
     }
+
 
     public function destroyTask(Project $project, Task $task)
     {
@@ -235,16 +246,17 @@ class ProjectController extends Controller
 
     public function reopenTask(Project $project, Task $task)
     {
-        $task->status = 'In uitvoering';
+        $task->status_id = 2;
         $task->save();
-
+    
         return redirect()->back()->with('success', 'Taak is heropend en staat nu op "In uitvoering"');
     }
+    
     public function finishTask(Project $project, Task $task)
     {
-        $task->status = 'Voltooid';
+        $task->status_id = 3;
         $task->save();
-
+    
         return redirect()->back()->with('success', 'Taak is afgerond en staat nu in "Afgeronde Taken"');
     }
 }

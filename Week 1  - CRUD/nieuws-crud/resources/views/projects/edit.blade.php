@@ -17,35 +17,7 @@
         @endif
 
         <div class="row">
-            <div class="col-md-2 mb-md-0 mb-4">
-                <div class="d-flex flex-column justify-content-start align-items-center h-100">
-                    <ul class="list-group text-center">
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.articles.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Artikelen</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.categories.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Categorieën</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.projects.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Projecten</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.roles.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Rollen</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit"
-                                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Uitloggen</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            @include('_menu')
 
             <div class="col-md-10 mb-md-0 mb-4">
                 <div class="d-flex flex-column justify-content-start">
@@ -109,8 +81,8 @@
                                         <div class="mb-3">
                                             <label for="image" class="form-label">Afbeelding</label>
                                             <input type="file"
-                                                class="form-control @error('image') is-invalid @enderror"
-                                                id="image" name="image">
+                                                class="form-control @error('image') is-invalid @enderror" id="image"
+                                                name="image">
 
                                             @if ($project->image && $project->image != 'images/projects/placeholder.png')
                                                 <p>Huidige afbeelding:</p>
@@ -232,16 +204,18 @@
 
                                 </div>
 
+
                                 <div class="tab-pane fade" id="tasks" role="tabpanel"
                                     aria-labelledby="tasks-tab">
                                     <div class="d-flex justify-content-between align-items-center ">
                                         <h3 class="mt-3">Openstaande Taken</h3>
                                     </div>
-                                    @if ($project->tasks->isEmpty())
+                                    @if ($openTasks->isEmpty())
                                         <table class="table table-striped">
                                             <tbody>
                                                 <tr>
-                                                    <td colspan="2" class="text-center">Geen taken gevonden.</td>
+                                                    <td colspan="2" class="text-center">Geen openstaande taken
+                                                        gevonden.</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -259,38 +233,39 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($project->tasks as $task)
-                                                    @if ($task->status != 'Voltooid')
-                                                        <tr>
-                                                            <td>{{ $task->title }}</td>
-                                                            <td>
-                                                                @foreach ($userNamesForTasks as $userName)
-                                                                    {{ $userName }}                                                            
-                                                            @endforeach
+                                                @foreach ($openTasks as $task)
+                                                    <tr>
+                                                        <td>{{ $task->title }}</td>
+                                                        <td>
+                                                            @if (count($userNamesForTasks[$task->id]) > 1)
+                                                                {{ implode(', ', $userNamesForTasks[$task->id]) }}
+                                                            @else
+                                                                {{ $userNamesForTasks[$task->id][0] }}
+                                                            @endif
                                                         </td>
-                                                        <td>{{ $task->status }}</td>
-                                                        <td>{{ $task->deadline }}</td>
+                                                        <td>{{ $statusOptions[$task->status_id] }}</td>
+                                                        <td>{{ date('d-m-Y', strtotime($task->deadline)) }}</td>
                                                         <td class="text-end">
                                                             <a class="btn"
-                                                                href="{{ route('dashboard.projects.editTask', ['project' => $project, 'task' => $task->id, 'user', $user->id]) }}"><svg
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    width="20" height="20"
-                                                                    fill="currentColor" class="bi bi-pen-fill"
-                                                                    viewBox="0 0 16 16">
+                                                                href="{{ route('dashboard.projects.editTask', ['project' => $project, 'task' => $task->id, 'user', $user->id]) }}">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                    height="20" fill="currentColor"
+                                                                    class="bi bi-pen-fill" viewBox="0 0 16 16">
                                                                     <path
                                                                         d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
-                                                                </svg></a>
+                                                                </svg>
+                                                            </a>
                                                         </td>
                                                         <td class="text-center">
                                                             <a class="btn"
-                                                                href="{{ route('dashboard.projects.finishTask', ['project' => $project, 'task' => $task->id, 'user', $user->id]) }}"><svg
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    width="25" height="25"
-                                                                    fill="currentColor" class="bi bi-check"
-                                                                    viewBox="0 0 16 16">
+                                                                href="{{ route('dashboard.projects.finishTask', ['project' => $project, 'task' => $task->id, 'user', $user->id]) }}">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="25"
+                                                                    height="25" fill="currentColor"
+                                                                    class="bi bi-check" viewBox="0 0 16 16">
                                                                     <path
                                                                         d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                                                                </svg></a>
+                                                                </svg>
+                                                            </a>
                                                         </td>
                                                         <td class="text-start">
                                                             <form
@@ -299,115 +274,113 @@
                                                                 onsubmit="return confirm('Weet je zeker dat je deze taak van het project wilt verwijderen?');">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button class="btn " type="submit"><svg
-                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                <button class="btn " type="submit">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
                                                                         width="20" height="20"
-                                                                        fill="currentColor"
-                                                                        class="bi bi-trash-fill"
+                                                                        fill="currentColor" class="bi bi-trash-fill"
                                                                         viewBox="0 0 16 16">
                                                                         <path
                                                                             d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                                                                    </svg></button>
+                                                                    </svg>
+                                                                </button>
                                                             </form>
                                                         </td>
                                                     </tr>
-                                                @endif
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
 
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h3 class="mt-3">Afgeronde Taken</h3>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3 class="mt-3">Afgeronde Taken</h3>
+                                    </div>
+
+                                    @if ($completedTasks->isEmpty())
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2" class="text-center">Geen afgeronde taken
+                                                        gevonden.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="fs-5">Titel</th>
+                                                    <th class="fs-5">Gekoppeld</th>
+                                                    <th class="fs-5">Status</th>
+                                                    <th class="fs-5">Deadline</th>
+                                                    <th class="fs-5"></th>
+                                                    <th class="fs-5"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($completedTasks as $task)
+                                                    <tr>
+                                                        <td>{{ $task->title }}</td>
+                                                        <td>
+                                                            @if (count($userNamesForTasks[$task->id]) > 1)
+                                                                {{ implode(', ', $userNamesForTasks[$task->id]) }}
+                                                            @else
+                                                                {{ $userNamesForTasks[$task->id][0] }}
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $statusOptions[$task->status_id] }}</td>
+                                                        <td>{{ date('d-m-Y', strtotime($task->deadline)) }}</td>
+                                                        <td class="text-end">
+                                                            <a class="btn"
+                                                                href="{{ route('dashboard.projects.reopenTask', ['project' => $project, 'task' => $task->id]) }}">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                                                    height="18" fill="currentColor"
+                                                                    class="bi bi-arrow-up" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+                                                                </svg>
+                                                            </a>
+                                                        </td>
+
+                                                        <td class="text-start"></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+
+                                    <div class="mb-3 d-flex justify-content-end">
+                                        <a href="{{ route('dashboard.projects.index') }}"
+                                            class="btn-lg btn btn-link">Terug</a>
+                                        <button type="button"
+                                            class="btn btn-primary btn-lg py-0 px-1 d-flex align-items-center justify-content-center"
+                                            onclick="window.location.href='{{ route('dashboard.projects.tasks', ['project' => $project]) }}'">
+                                            Taak Toevoegen
+                                        </button>
+                                    </div>
                                 </div>
 
-                                @if ($completedTasks->isEmpty())
-                                    <table class="table table-striped">
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="2" class="text-center">Geen afgeronde taken
-                                                    gevonden.</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                @else
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th class="fs-5">Titel</th>
-                                                <th class="fs-5">Gekoppeld</th>
-                                                <th class="fs-5">Status</th>
-                                                <th class="fs-5">Deadline</th>
-                                                <th class="fs-5"></th>
-                                                <th class="fs-5"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($completedTasks as $task)
-                                                <tr>
-                                                    <td>{{ $task->title }}</td>
-                                                    <td>
-                                                        @foreach ($userNamesForTasks as $userName)
-                                                            {{ $userName }}
-                                                        
-                                                    @endforeach
-                                                </td>
-                                                <td>{{ $task->status }}</td>
-                                                <td>{{ $task->deadline }}</td>
-                                                <td class="text-end">
-                                                    <a class="btn"
-                                                        href="{{ route('dashboard.projects.reopenTask', ['project' => $project, 'task' => $task->id]) }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18"
-                                                            height="18" fill="currentColor"
-                                                            class="bi bi-arrow-up" viewBox="0 0 16 16">
-                                                            <path fill-rule="evenodd"
-                                                                d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
-                                                        </svg>
-                                                    </a>
-                                                </td>
-
-                                                <td class="text-start"></td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            @endif
-
-
-                            <div class="mb-3 d-flex justify-content-end">
-                                <a href="{{ route('dashboard.projects.index') }}"
-                                    class="btn-lg btn btn-link">Terug</a>
-                                <button type="button"
-                                    class="btn btn-primary btn-lg py-0 px-1 d-flex align-items-center justify-content-center"
-                                    onclick="window.location.href='{{ route('dashboard.projects.tasks', ['project' => $project]) }}'">
-                                    Taak Toevoegen
-                                </button>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    @section('scripts')
-        <script>
-            window.addEventListener('load', () => {
-                for (const name of ['content']) {
-                    ClassicEditor.create(document.getElementById(name))
-                        .catch(error => {
-                            console.error(error);
-                        });
-                }
-            });
-        </script>
-    @endsection
+            @section('scripts')
+                <script>
+                    window.addEventListener('load', () => {
+                        for (const name of ['content']) {
+                            ClassicEditor.create(document.getElementById(name))
+                                .catch(error => {
+                                    console.error(error);
+                                });
+                        }
+                    });
+                </script>
+            @endsection
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
-    </script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+            </script>
 
 </x-app-layout>

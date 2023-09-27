@@ -18,35 +18,7 @@
         @endif
 
         <div class="row">
-            <div class="col-md-2 mb-md-0 mb-4">
-                <div class="d-flex flex-column justify-content-start align-items-center h-100">
-                    <ul class="list-group text-center">
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.articles.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Artikelen</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.categories.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Categorieën</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.projects.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Projecten</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <a href="{{ route('dashboard.roles.index') }}"
-                                class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Rollen</a>
-                        </li>
-                        <li class="list-group-item bg-light">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit"
-                                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Uitloggen</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            @include('_menu')
 
             <div class="col-md-10 mb-md-0 mb-4">
                 <div class="d-flex flex-column justify-content-start">
@@ -72,7 +44,7 @@
 
                                     <div class="form-group mt-3">
                                         <label for="description" class="form-label">Beschrijving</label>
-                                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" placeholder="Beschrijving"></textarea>
+                                        <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" placeholder="Beschrijving"></textarea>
                                         @error('description')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -89,7 +61,7 @@
 
                                     <div class="form-group mt-3">
                                         <label for="user_id" class="form-label">Gebruiker</label>
-                                        <select name="user_id" multiple="multiple"
+                                        <select name="user_id[]" multiple="multiple"
                                             class="form-control select2 @error('user_id') is-invalid @enderror ">
                                             @foreach ($project->users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -114,12 +86,32 @@
         </div>
     </div>
 
+    {{-- @section('scripts')
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            window.addEventListener('load', () => {
+                for (const name of ['description']) {
+                    ClassicEditor.create(document.getElementById(name))
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+            });
+            $(document).ready(function() {
+                $('.select2').select2();
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+        </script>
+    @endsection --}}
     @section('scripts')
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             window.addEventListener('load', () => {
-                for (const name of ['content']) {
+                for (const name of ['description']) {
                     ClassicEditor.create(document.getElementById(name))
                         .catch(error => {
                             console.error(error);
