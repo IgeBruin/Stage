@@ -19,7 +19,7 @@
         @endif
 
         <div class="row">
-            @include('_menu')
+            @include('menus.admin_menu')
 
             <div class="col-md-10 mb-md-0 mb-4">
                 <div class="d-flex flex-column justify-content-start">

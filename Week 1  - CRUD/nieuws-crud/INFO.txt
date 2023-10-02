@@ -1,1 +1,7 @@
 In resources/css/app.css staat een style voor d inputvelden van CKeditor.
+
+
+in AuthServiceProvider.php staat een lijn code over policies voor projecten
+in ProjectPolicy staat een functie manage die kijkt of de gebruiker een role_id 1 heeft wat staat oor admin
+$this->authorize('manage', $project); deze regel code zorgt ervoor of er wordt gekeken of het toegestaan is
+

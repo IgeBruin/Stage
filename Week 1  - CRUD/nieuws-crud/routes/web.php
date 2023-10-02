@@ -6,7 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusController;
-use App\Http\Controllers\TaskStatusController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Post as Post;
 use App\Models\Category as Category;
@@ -42,6 +42,12 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
 
     Route::get("articles", [PostController::class, "index"])->name("articles.index");
+
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('projects', [UserController::class, 'myProjects'])->name('projects');
+        Route::get('projects/search', [UserController::class, 'searchProject'])->name('search');
+        Route::get('projects/{project}/show', [UserController::class, 'show'])->name('show');
+    });
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
 

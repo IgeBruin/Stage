@@ -21,8 +21,8 @@
         @endif
 
         <div class="row">
-            @include('_menu')
-            
+            @include('menus.admin_menu')
+
 
             <div class="col-md-10 mb-md-0 mb-4">
                 <div class="d-flex flex-column justify-content-start">
@@ -75,8 +75,7 @@
 
                                                     </td>
                                                     <td class="text-start">
-                                                        <form
-                                                            action="{{ route('dashboard.roles.destroy', $role->id) }}"
+                                                        <form action="{{ route('dashboard.roles.destroy', $role->id) }}"
                                                             method="post" class="d-inline"
                                                             onsubmit="return confirm('Weet je zeker dat je deze rol wilt verwijderen?');">
                                                             @csrf

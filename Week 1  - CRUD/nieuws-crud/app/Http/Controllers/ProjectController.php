@@ -14,6 +14,9 @@ use App\Models\Role;
 use App\Models\Status;
 use App\Models\Task;
 use Illuminate\Support\Facades\Storage;
+//policy
+use Illuminate\Support\Facades\Gate;
+use App\Policies\ProjectPolicy;
 
 class ProjectController extends Controller
 {
@@ -237,7 +240,7 @@ class ProjectController extends Controller
 
     public function destroyTask(Project $project, Task $task)
     {
-
+        // $this->authorize('manage', $project); deze regel is voor de policy
         $task->delete();
 
         return redirect()->route('dashboard.projects.edit', ['project' => $project, 'tab' => 'tasks'])
@@ -249,7 +252,7 @@ class ProjectController extends Controller
         $task->status_id = 2;
         $task->save();
     
-        return redirect()->back()->with('success', 'Taak is heropend en staat nu op "In uitvoering"');
+        return redirect()->back()->with('success', 'Taak is heropend');
     }
     
     public function finishTask(Project $project, Task $task)

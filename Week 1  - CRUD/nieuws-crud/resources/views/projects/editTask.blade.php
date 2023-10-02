@@ -19,7 +19,7 @@
         @endif
 
         <div class="row">
-            @include('_menu')
+            @include('menus.admin_menu')
 
             <div class="col-md-10 mb-md-0 mb-4">
                 <div class="d-flex flex-column justify-content-start">
@@ -114,7 +114,7 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             window.addEventListener('load', () => {
-                for (const name of ['content']) {
+                for (const name of ['description']) {
                     ClassicEditor.create(document.getElementById(name))
                         .catch(error => {
                             console.error(error);

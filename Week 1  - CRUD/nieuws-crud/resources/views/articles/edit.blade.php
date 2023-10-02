@@ -13,7 +13,7 @@
 
     <div class="container mt-5">
         <div class="row">
-            @include('_menu')
+            @include('menus.admin_menu')
 
             <div class="col-md-10">
                 <div class="d-flex flex-column justifd-content-start">

@@ -28,6 +28,7 @@ class ProjectUpdateTaskValidation extends FormRequest
             "description" => "required|string",
             "deadline" => "required|date",
             "status" => "required|string",
+            "user_id" => "required",
         ];
     }
 
@@ -40,6 +41,7 @@ class ProjectUpdateTaskValidation extends FormRequest
             'deadline.required' => 'Een deadline is verplicht.',
             'deadline.date' => 'De deadline moet een geldige datum zijn.',
             'status.required' => 'Een status is verplicht.',
+            'user_id.required' => 'Een gebruiker is verplicht.',
         ];
     }
 }
