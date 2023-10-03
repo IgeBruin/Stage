@@ -6,6 +6,10 @@
                     class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Artikelen</a>
             </li>
             <li class="list-group-item bg-light">
+                <a href="{{ route('dashboard.products.index') }}"
+                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Producten</a>
+            </li>
+            <li class="list-group-item bg-light">
                 <a href="{{ route('dashboard.categories.index') }}"
                     class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Categorieën</a>
             </li>
@@ -20,6 +24,10 @@
             <li class="list-group-item bg-light">
                 <a href="{{ route('dashboard.statuses.index') }}"
                     class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Status</a>
+            </li>
+            <li class="list-group-item bg-light">
+                <a href="{{ route('dashboard.specifications.index') }}"
+                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Specificaties</a>
             </li>
             <li class="list-group-item bg-light">
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">

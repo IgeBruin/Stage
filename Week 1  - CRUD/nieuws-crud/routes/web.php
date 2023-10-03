@@ -7,6 +7,8 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SpecificationController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Post as Post;
 use App\Models\Category as Category;
@@ -61,6 +63,17 @@ Route::middleware('auth')->group(function () {
             Route::delete('{post}/destroy', [PostController::class, 'destroy'])->name('destroy');
             Route::get('search', [PostController::class, 'search'])->name('search');
         });
+        //dus dashboard/products/ en dan hier de naam van de functie
+        Route::prefix('products')->name('products.')->group(function () {
+            Route::get('', [ProductController::class, 'index'])->name('index');
+            Route::get('create', [ProductController::class, 'create'])->name('create');
+            Route::post('', [ProductController::class, 'store'])->name('store');
+            Route::get('{product}/edit', [ProductController::class, 'edit'])->name('edit');
+            Route::put('{product}', [ProductController::class, 'update'])->name('update');
+            Route::delete('{product}/destroy', [ProductController::class, 'destroy'])->name('destroy');
+            Route::get('search', [ProductController::class, 'search'])->name('search');
+            Route::post('{product}/saveSpecifications', [ProductController::class, 'saveSpecifications'])->name('saveSpecifications');
+        });
 
         //dus dashboard/categories/ en dan hier de naam van de functie
         Route::prefix('categories')->name('categories.')->group(function () {
@@ -110,7 +123,7 @@ Route::middleware('auth')->group(function () {
             Route::get('search', [RoleController::class, 'search'])->name('search');
         });
 
-        //dus dashboard/roles/ en dan hier de naam van de functie
+        //dus dashboard/statuses/ en dan hier de naam van de functie
         Route::prefix('statuses')->name('statuses.')->group(function () {
             Route::get('', [StatusController::class, 'index'])->name('index');
             Route::get('create', [StatusController::class, 'create'])->name('create');
@@ -119,6 +132,17 @@ Route::middleware('auth')->group(function () {
             Route::put('{status}', [StatusController::class, 'update'])->name('update');
             Route::delete('{status}', [StatusController::class, 'destroy'])->name('destroy');
             Route::get('search', [StatusController::class, 'search'])->name('search');
+        });
+
+        //dus dashboard/specifications/ en dan hier de naam van de functie
+        Route::prefix('specifications')->name('specifications.')->group(function () {
+            Route::get('', [SpecificationController::class, 'index'])->name('index');
+            Route::get('create', [SpecificationController::class, 'create'])->name('create');
+            Route::post('', [SpecificationController::class, 'store'])->name('store');
+            Route::get('{specification}/edit', [SpecificationController::class, 'edit'])->name('edit');
+            Route::put('{specification}', [SpecificationController::class, 'update'])->name('update');
+            Route::delete('{specification}', [SpecificationController::class, 'destroy'])->name('destroy');
+            Route::get('search', [SpecificationController::class, 'search'])->name('search');
         });
     });
     // profile door breeze
