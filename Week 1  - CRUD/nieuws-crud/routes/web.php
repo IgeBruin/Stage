@@ -64,6 +64,8 @@ Route::middleware('auth')->group(function () {
 
     //bedankt pagina
     Route::get('/order/shipping', [OrderController::class, 'shipping'])->name('order.shipping');
+    Route::post('/order/process', [OrderController::class, 'process'])->name('order.process');
+
 
 
 

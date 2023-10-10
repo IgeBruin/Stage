@@ -44,10 +44,7 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        // Retrieve cart items from the session
         $cartItems = session('cart', []);
-
-        // Calculate the total cart price and total VAT
         $totalCartPrice = 0;
         $totalVat = 0;
 
@@ -136,7 +133,38 @@ class OrderController extends Controller
             $shippingCity = $shippingInfo['city'];
         }
 
-    
+        return view('orders.shipping', compact('products', 'totalCartPrice', 'totalVat', 'useDifferentBilling', 'cartItems'));
+    }
+
+    public function process(Request $request, Order $order, Address $address)
+    {
+        $cartItems = session('cart', []);
+        $totalCartPrice = 0;
+        $totalVat = 0;
+
+        $products = [];
+
+        foreach ($cartItems as $productId => $item) {
+            $product = Product::find($productId);
+
+            if ($product) {
+                $item['id'] = $product->id;
+                $item['name'] = $product->name;
+                $item['price'] = $product->price;
+                $item['vat'] = $product->vat;
+                $item['image'] = $product->image === 'images/products/placeholder.png' ? "placeholder.png" : $product->id . '/' . $product->image;
+                $item['subtotal'] = $item['price'] * $item['quantity'];
+                $item['vat_amount'] = ($item['subtotal'] * $item['vat']) / 100;
+                $products[] = $item;
+            }
+
+            $totalCartPrice += $item['subtotal'];
+            $totalVat += $item['vat_amount'];
+        }
+
+        $shippingInfo = session('shippingInfo', []);
+        // dd($shippingInfo);
+
         $order = new Order();
         $order->user_id = auth()->user()->id;
         $order->email = $shippingInfo['email'];
@@ -146,6 +174,20 @@ class OrderController extends Controller
         $order->total_incl = $totalCartPrice + $totalVat;
         $order->save();
 
+        $shippingType = 'shipping';
+        $shippingStreet = $shippingInfo['street'];
+        $shippingStreetNumber = $shippingInfo['street_number'];
+        $shippingZipCode = $shippingInfo['zip_code'];
+        $shippingCity = $shippingInfo['city'];
+        $shippingName = $shippingInfo['name'];
+        $shippingSurname = $shippingInfo['surname'];
+
+        if (!$request->has('useDifferentBilling')) {
+            $shippingStreet = $request->input('shipping_street');
+            $shippingStreetNumber = $request->input('shipping_street_number');
+            $shippingZipCode = $request->input('shipping_zip_code');
+            $shippingCity = $request->input('shipping_city');
+        }
 
         $shippingAddress = new Address();
         $shippingAddress->order_id = $order->id;
@@ -154,10 +196,9 @@ class OrderController extends Controller
         $shippingAddress->street_number = $shippingStreetNumber;
         $shippingAddress->zip_code = $shippingZipCode;
         $shippingAddress->city = $shippingCity;
-        $shippingAddress->name = $shippingInfo['name'];
-        $shippingAddress->surname = $shippingInfo['surname'];
+        $shippingAddress->name = $shippingName;
+        $shippingAddress->surname = $shippingSurname;
         $shippingAddress->save();
-
 
         foreach ($cartItems as $productId => $item) {
                 $orderItem = new OrderItem();
@@ -170,6 +211,6 @@ class OrderController extends Controller
                 $orderItem->save();
         }
 
-        return view('orders.shipping', compact('products', 'totalCartPrice', 'totalVat', 'useDifferentBilling', 'cartItems'));
+        return view('orders.shipping', compact('products', 'totalCartPrice', 'totalVat', 'cartItems'));
     }
 }

@@ -28,72 +28,98 @@
             </div>
         @endif
 
-
         <div class="row mt-4">
             <div class="col-md-6">
-                <h4>Huidige bestelling:</h4>
-                <p>Naam: {{ session('shippingInfo.name') }} {{ session('shippingInfo.surname') }}</p>
-                <p>Email: {{ session('shippingInfo.email') }}</p>
-                <p>Straat en huisnummer: {{ session('shippingInfo.street') }}
-                    {{ session('shippingInfo.street_number') }}</p>
-                <p>Postcode: {{ session('shippingInfo.zip_code') }}</p>
-                <p>Stad: {{ session('shippingInfo.city') }}</p>
-                @if (session('shippingInfo.shipping_address'))
-                    <h5>Bezorgadres:</h5>
-                    <p>Naam: {{ session('shippingInfo.shipping_address.name') }}
-                        {{ session('shippingInfo.shipping_address.surname') }}</p>
-                    <p>Straat en huisnummer: {{ session('shippingInfo.shipping_address.street') }}
-                        {{ session('shippingInfo.shipping_address.street_number') }}</p>
-                    <p>Postcode: {{ session('shippingInfo.shipping_address.zip_code') }}</p>
-                    <p>Stad: {{ session('shippingInfo.shipping_address.city') }}</p>
-                @endif
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="useDifferentBilling" name="useDifferentBilling"
-                        {{ old('useDifferentBilling') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="useDifferentBilling">
-                        Verzend naar een ander adres
-                    </label>
-                </div>
+                <form method="POST" action="{{ route('order.process') }}">
+                    @csrf
+                    @method('POST')
+                    <h4>Huidige bestelling:</h4>
+                    <p>Naam: {{ session('shippingInfo.name') }} {{ session('shippingInfo.surname') }}</p>
+                    <p>Email: {{ session('shippingInfo.email') }}</p>
+                    <p>Straat en huisnummer: {{ session('shippingInfo.street') }}
+                        {{ session('shippingInfo.street_number') }}</p>
+                    <p>Postcode: {{ session('shippingInfo.zip_code') }}</p>
+                    <p>Stad: {{ session('shippingInfo.city') }}</p>
 
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow">
-                <div class="card-body">
-                    <div class="info d-flex justify-content-between align-items-center">
-                        <h4 class="card-title">Samenvatting</h4>
-                        <p class="text-sm">Aantal producten: {{ count($cartItems) }}</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="useDifferentBilling"
+                            name="useDifferentBilling" {{ old('useDifferentBilling') ? 'checked' : '' }}>
+                        <label class="form-check-label" for="useDifferentBilling">
+                            Bezorg- en factuuradres zijn hetzelfde
+                        </label>
                     </div>
-                    <hr>
-                    <table class="table table-borderless">
-                        <tbody>
-                            <tr class="text-lg">
-                                <td>Totaal bedrag van de winkelwagen:</td>
-                                <td>€ {{ number_format($totalCartPrice, 2) }}</td>
-                            </tr>
-                            <tr class="text-lg">
-                                <td>Totaal BTW:</td>
-                                <td>€ {{ number_format($totalVat, 2) }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <hr>
-                    <table class="table table-borderless">
-                        <tbody>
-                            <tr class="font-bold text-lg">
-                                <td>Totaal bedrag inclusief BTW:</td>
-                                <td>€ {{ number_format($totalCartPrice + $totalVat, 2) }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div id="differentShippingFields">
+                        <h5>Bezorgadres:</h5>
+                        <div class="mb-3">
+                            <label for="shipping_street" class="form-label">Straat</label>
+                            <input type="text" class="form-control" id="shipping_street" name="shipping_street">
+                        </div>
+                        <div class="mb-3">
+                            <label for="shipping_street_number" class="form-label">Huisnummer</label>
+                            <input type="text" class="form-control" id="shipping_street_number"
+                                name="shipping_street_number">
+                        </div>
+                        <div class="mb-3">
+                            <label for="shipping_zip_code" class="form-label">Postcode</label>
+                            <input type="text" class="form-control" id="shipping_zip_code" name="shipping_zip_code">
+                        </div>
+                        <div class="mb-3">
+                            <label for="shipping_city" class="form-label">Stad</label>
+                            <input type="text" class="form-control" id="shipping_city" name="shipping_city">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Betalen</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="info d-flex justify-content-between align-items-center">
+                            <h4 class="card-title ">Samenvatting</h4>
+                            <p class="text-sm">Aantal producten: {{ count($cartItems) }}</p>
+                        </div>
+                        <hr>
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr class="text-lg">
+                                    <td>Totaal bedrag van de winkelwagen:</td>
+                                    <td>€ {{ number_format($totalCartPrice, 2) }}</td>
+                                </tr>
+                                <tr class="text-lg">
+                                    <td>Totaal BTW:</td>
+                                    <td>€ {{ number_format($totalVat, 2) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr>
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr class="font-bold text-lg">
+                                    <td>Totaal bedrag inclusief BTW:</td>
+                                    <td>€ {{ number_format($totalCartPrice + $totalVat, 2) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    </div>
-
     @section('scripts')
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#useDifferentBilling').change(function() {
+                    if (this.checked) {
+                        $('#differentShippingFields').hide();
+                    } else {
+                        $('#differentShippingFields').show();
+                    }
+                });
+            });
+        </script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
         </script>
