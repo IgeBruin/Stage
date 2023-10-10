@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\ArticleStoreValidation;
 use App\Http\Requests\ArticleUpdateValidation;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Category;
 //opslag
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+//policy
+use App\Policies\AdminPolicy;
 
 class PostController extends Controller
 {
     public function index()
     {
+
         $today = Carbon::today();
         $posts = Post::whereDate('publication_date', '<=', $today)
                  ->orderBy('created_at', 'desc') 
@@ -27,7 +32,7 @@ class PostController extends Controller
 
     public function create()
     {
-        // $categories = Category::orderBy('name', 'asc')->get();
+        $this->authorize('isAdmin', User::class);
         $categories = Category::all();
         return view("articles.create", compact('categories'));
     }

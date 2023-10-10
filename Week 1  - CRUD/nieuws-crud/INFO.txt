@@ -5,3 +5,6 @@ in AuthServiceProvider.php staat een lijn code over policies voor projecten
 in ProjectPolicy staat een functie manage die kijkt of de gebruiker een role_id 1 heeft wat staat oor admin
 $this->authorize('manage', $project); deze regel code zorgt ervoor of er wordt gekeken of het toegestaan is
 
+er staat een manier van CAN in categorie index daarmee kan je dus opvangen of er iets uberhaupt getoont mag worden
+ @can('naam van de functie in de policy', \App\Models\modelnaam::class) @endcan
+

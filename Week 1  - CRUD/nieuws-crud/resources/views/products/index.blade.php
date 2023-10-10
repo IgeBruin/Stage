@@ -28,7 +28,7 @@
                         <div class="card-header fs-3 d-flex justify-content-between">
                             <span>Producten</span>
                             <div class="d-flex align-items-center">
-                                <form action="{{ route('dashboard.projects.search') }}" method="GET">
+                                <form action="{{ route('dashboard.products.search') }}" method="GET">
                                     <div class="input-group">
                                         <input type="text" name="query" class="form-control" placeholder="Zoek...">
                                         <button type="submit" class="btn btn-primary">Zoeken</button>
@@ -55,7 +55,7 @@
                                                     <td class="d-none d-md-table-cell">
                                                         {{ $product->vat }} %</td>
                                                     <td class="d-none d-md-table-cell">
-                                                       € {{ $product->price }}</td>
+                                                        € {{ $product->price }}</td>
                                                     <td class="text-end">
                                                         <a class="btn"
                                                             href="{{ route('dashboard.products.edit', $product->id) }}"><svg

@@ -16,12 +16,14 @@
                 {{ session()->get('success') }}
             </div>
         @endif
+        <div class="d-flex justify-content-end align-items-center">
 
+        </div>
         <div class="row">
             @if (count($posts) > 0)
                 @foreach ($posts as $post)
                     <div class="col-md-4 mb-4">
-                        <div class="card">
+                        <div class="card h-100">
                             @if ($post->image == 'images/articles/placeholder.png')
                                 <img src="{{ asset('images/articles/placeholder.png') }}" alt="Placeholder"
                                     class="card-img-top img-fluid object-cover" style="max-height: 200px;">

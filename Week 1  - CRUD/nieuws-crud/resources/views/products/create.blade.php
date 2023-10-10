@@ -68,7 +68,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="vat" class="form-label">Belastingpercentage</label>
+                                    <label for="vat" class="form-label">BTW (%)</label>
                                     <input type="number" class="form-control @error('vat') is-invalid @enderror"
                                         id="vat" name="vat" value="{{ old('vat') }}">
                                     @error('vat')

@@ -12,7 +12,7 @@ class CreateProductSpecificationsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('specification_id');
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('specification_id')->references('id')->on('specifications')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();

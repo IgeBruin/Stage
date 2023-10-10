@@ -8,8 +8,10 @@
             <h1 class="font-semibold text-heading3 leading-tight text-indigo-500">
                 {{ __('Dashboard') }}
             </h1>
-            <a href="{{ route('dashboard.categories.create') }}" class="btn  btn-lg fs-5 btn-primary">Categorie
-                Aanmaken</a>
+            @can('isAdmin', \App\Models\User::class)
+                <a href="{{ route('dashboard.categories.create') }}" class="btn  btn-lg fs-5 btn-primary">Categorie
+                    Aanmaken</a>
+            @endcan
         </div>
     </x-slot>
 

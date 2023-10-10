@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\models\Product;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Post;
 use App\Models\Task;
 use App\Models\Status;
 
@@ -32,6 +34,7 @@ class UserController extends Controller
 
     public function show(Project $project, Status $status)
     {
+        $this->authorize('view', $project);
         $user = auth()->user();
         $users = $project->users()->get();
         $statusOptions = Status::pluck('name', 'id');
@@ -57,5 +60,24 @@ class UserController extends Controller
         $task->save();
     
         return redirect()->back()->with('success', 'Taak is afgerond en staat nu in "Afgeronde Taken"');
+    }
+
+    public function allProducts(Product $product)
+    {
+        $products = Product::all();
+
+        return view('users.allProducts', compact('products'));
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $query = $request->input('query');
+        $products = Product::where('name', 'like', "%$query%")->paginate(5)->withQueryString();
+        return view("users.allProducts", ["products" => $products]);
+    }
+
+    public function showProduct(Product $product)
+    {
+        return view('users.showProduct', compact('product'));
     }
 }

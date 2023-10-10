@@ -8,7 +8,7 @@
             <h1 class="font-semibold text-heading3 leading-tight text-indigo-500">
                 {{ __('Dashboard') }}
             </h1>
-            <a href="{{ route('dashboard.articles.create') }}" class="btn  btn-lg fs-5 btn-primary">Artikel Aanmaken</a>
+            <a href="{{ route('dashboard.articles.create') }}" class="btn btn-lg fs-5 btn-primary">Artikel Aanmaken</a>
         </div>
     </x-slot>
 

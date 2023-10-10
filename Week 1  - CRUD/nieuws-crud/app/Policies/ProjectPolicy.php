@@ -12,7 +12,7 @@ class ProjectPolicy
 
     public function manage(User $user)
     {
-        return $user->roles->contains('id', 1); // dit is role_id 1 AKA admin
+        return $user->roles->contains('id', 1); // 1 is voor de admin, elk ander heeft geen toegang
     }
 
     /**
@@ -35,7 +35,7 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project)
     {
-        //
+        return  $user->projects->contains($project);
     }
 
     /**

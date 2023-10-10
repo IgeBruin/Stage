@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\SpecificationController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Post as Post;
 use App\Models\Category as Category;
+use App\Models\User;
 use Carbon\Carbon;
 
 /*
@@ -44,11 +47,31 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
 
     Route::get("articles", [PostController::class, "index"])->name("articles.index");
+    Route::get('products/{product}/show', [UserController::class, 'showProduct'])->name('showProduct');
+    Route::get('products', [UserController::class, 'allProducts'])->name('products');
+    Route::get('products/searchProduct', [UserController::class, 'searchProduct'])->name('searchProduct');
+
+    //webshop voor winkelwagen
+    Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/{productId}/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::put('/cart/{productId}/update', [CartController::class, 'update'])->name('cart.update');
+
+
+    // webshop voor bestellingen
+    Route::get('order', [OrderController::class, 'index'])->name('order.index');
+    Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
+
+    //bedankt pagina
+    Route::get('/order/shipping', [OrderController::class, 'shipping'])->name('order.shipping');
+
+
 
     Route::prefix('user')->name('user.')->group(function () {
+        //projects
         Route::get('projects', [UserController::class, 'myProjects'])->name('projects');
         Route::get('projects/search', [UserController::class, 'searchProject'])->name('search');
-        Route::get('projects/{project}/show', [UserController::class, 'show'])->name('show');
+        Route::get('projects/{project}/show', [UserController::class, 'show'])->name('showProject');
     });
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
@@ -73,6 +96,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('{product}/destroy', [ProductController::class, 'destroy'])->name('destroy');
             Route::get('search', [ProductController::class, 'search'])->name('search');
             Route::post('{product}/saveSpecifications', [ProductController::class, 'saveSpecifications'])->name('saveSpecifications');
+            Route::post('{product}/addCategory', [ProductController::class, 'addCategory'])->name('addCategory');
         });
 
         //dus dashboard/categories/ en dan hier de naam van de functie

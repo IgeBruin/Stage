@@ -17,4 +17,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Specification::class, 'product_specifications')->withPivot('value');
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_product')->withTimestamps();
+    }
 }

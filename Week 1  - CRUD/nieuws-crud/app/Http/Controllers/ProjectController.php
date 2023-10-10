@@ -240,7 +240,7 @@ class ProjectController extends Controller
 
     public function destroyTask(Project $project, Task $task)
     {
-        // $this->authorize('manage', $project); deze regel is voor de policy
+        $this->authorize('manage', $project); 
         $task->delete();
 
         return redirect()->route('dashboard.projects.edit', ['project' => $project, 'tab' => 'tasks'])

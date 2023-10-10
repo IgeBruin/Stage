@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductUpdateValidation;
 use App\Http\Requests\ProductStoreValidation;
 use App\Http\Requests\ProductSpecificationsValidation;
+use App\Http\Requests\ProductCategoriesValidation;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Specification;
@@ -115,8 +116,7 @@ class ProductController extends Controller
 
         foreach ($specifications as $specificationId => $value) {
             $existingProductSpecification = ProductSpecification::where('product_id', $product->id)
-            ->where('specification_id', $specificationId)
-            ->first();
+            ->where('specification_id', $specificationId)->first();
 
             if ($existingProductSpecification) {
                 $existingProductSpecification->update(['value' => $value]);
@@ -131,4 +131,17 @@ class ProductController extends Controller
 
         return redirect()->route('dashboard.products.index')->with('success', 'Specificaties opgeslagen');
     }
+
+    public function addCategory(ProductCategoriesValidation $request, Product $product)
+    {
+
+        $newCategoryIds = $request->input('categories', []); 
+        $product->categories()->sync($newCategoryIds);
+
+        return redirect()
+        ->route('dashboard.products.edit', ['product' => $product, 'tab' => 'categories'])
+        ->with('success', 'Categorieën zijn bijgewerkt');
+    }
+
+    
 }

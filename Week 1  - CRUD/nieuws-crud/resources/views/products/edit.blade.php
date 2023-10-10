@@ -25,7 +25,7 @@
                 <div class="d-flex flex-column justify-content-start">
                     <div class="card">
                         <div class="card-header fs-3 d-flex justify-content-between">
-                            <span>Project Aanpassen</span>
+                            <span>Product Aanpassen</span>
                         </div>
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -36,8 +36,13 @@
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="specifications-tab" data-bs-toggle="tab"
-                                        data-bs-target="#specifications" role="tab" aria-controls="users"
+                                        data-bs-target="#specifications" role="tab" aria-controls="specifications"
                                         aria-selected="false">Specificatie</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="specifications-tab" data-bs-toggle="tab"
+                                        data-bs-target="#categories" role="tab" aria-controls="categories"
+                                        aria-selected="false">Categorieën</button>
                                 </li>
                             </ul>
 
@@ -86,7 +91,7 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="vat" class="form-label">Belastingpercentage</label>
+                                            <label for="vat" class="form-label">BTW (%)</label>
                                             <input type="number"
                                                 class="form-control @error('vat') is-invalid @enderror" id="vat"
                                                 name="vat" value="{{ old('vat', $product->vat) }}">
@@ -99,8 +104,8 @@
                                         <div class="mb-3">
                                             <label for="image" class="form-label">Afbeelding</label>
                                             <input type="file"
-                                                class="form-control @error('image') is-invalid @enderror" id="image"
-                                                name="image">
+                                                class="form-control @error('image') is-invalid @enderror"
+                                                id="image" name="image">
 
 
                                             @if ($product->image && $product->image != 'images/products/placeholder.png')
@@ -158,6 +163,28 @@
                                     </form>
                                 </div>
 
+                                <div class="tab-pane fade" id="categories" role="tabpanel"
+                                    aria-labelledby="categories-tab">
+                                    <form action="{{ route('dashboard.products.addCategory', $product->id) }}"
+                                        method="post">
+                                        @csrf
+                                        <div class="form-group">
+                                            <h3 class="mb-3 mt-3">Categorieën</h3>
+                                            @foreach ($categories as $category)
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="categories[]"
+                                                        id="category_{{ $category->id }}"
+                                                        value="{{ $category->id }}" class="form-check-input"
+                                                        {{ in_array($category->id, $product->categories->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                                    <label for="category_{{ $category->id }}"
+                                                        class="form-check-label">{{ $category->name }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-2">Voeg categorieën
+                                            toe</button>
+                                    </form>
+                                </div>
 
                             </div>
                         </div>

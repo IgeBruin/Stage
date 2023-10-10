@@ -13,5 +13,11 @@ class Category extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'category_product');
+    }
+
     protected $fillable = ['name', 'description' ];
 }

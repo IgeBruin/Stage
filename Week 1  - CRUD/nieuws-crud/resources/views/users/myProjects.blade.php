@@ -33,7 +33,7 @@
                         <div class="row">
                             @foreach ($projects as $project)
                                 <div class="col-md-4 mb-4">
-                                    <a href="{{ route('user.show', ['project' => $project->id]) }}"
+                                    <a href="{{ route('user.showProject', ['project' => $project->id]) }}"
                                         class="text-decoration-none">
                                         <div class="card">
                                             @if ($project->image == 'images/projects/placeholder.png')

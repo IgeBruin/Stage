@@ -16,6 +16,7 @@ class UsersSeeder extends Seeder
         'name' => 'Ige Bruin',
         'email' => 'igebruin2004@gmail.com',
         'password' => Hash::make('12345678'),
+        'isAdmin' => '1',
         ]);
         
 
@@ -31,6 +32,5 @@ class UsersSeeder extends Seeder
         'email' => 'Bezoeker@example.com',
         'password' => Hash::make('bezoeker'),
         ]);
-        
     }
 }
