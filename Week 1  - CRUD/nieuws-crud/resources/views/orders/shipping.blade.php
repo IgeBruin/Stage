@@ -48,45 +48,48 @@
                     <p>Stad: {{ session('shippingInfo.shipping_address.city') }}</p>
                 @endif
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="useDifferentBilling" name="useDifferentBilling">
+                    <input class="form-check-input" type="checkbox" id="useDifferentBilling" name="useDifferentBilling"
+                        {{ old('useDifferentBilling') ? 'checked' : '' }}>
                     <label class="form-check-label" for="useDifferentBilling">
                         Verzend naar een ander adres
                     </label>
                 </div>
+
             </div>
-            <div class="col-md-4">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <div class="info d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Samenvatting</h4>
-                            <p class="text-sm">Aantal producten: {{ count($cartItems) }}</p>
-                        </div>
-                        <hr>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr class="text-lg">
-                                    <td>Totaal bedrag van de winkelwagen:</td>
-                                    <td>€ {{ number_format($totalCartPrice, 2) }}</td>
-                                </tr>
-                                <tr class="text-lg">
-                                    <td>Totaal BTW:</td>
-                                    <td>€ {{ number_format($totalVat, 2) }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <hr>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr class="font-bold text-lg">
-                                    <td>Totaal bedrag inclusief BTW:</td>
-                                    <td>€ {{ number_format($totalCartPrice + $totalVat, 2) }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="info d-flex justify-content-between align-items-center">
+                        <h4 class="card-title">Samenvatting</h4>
+                        <p class="text-sm">Aantal producten: {{ count($cartItems) }}</p>
                     </div>
+                    <hr>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="text-lg">
+                                <td>Totaal bedrag van de winkelwagen:</td>
+                                <td>€ {{ number_format($totalCartPrice, 2) }}</td>
+                            </tr>
+                            <tr class="text-lg">
+                                <td>Totaal BTW:</td>
+                                <td>€ {{ number_format($totalVat, 2) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="font-bold text-lg">
+                                <td>Totaal bedrag inclusief BTW:</td>
+                                <td>€ {{ number_format($totalCartPrice + $totalVat, 2) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     @section('scripts')
