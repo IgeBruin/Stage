@@ -151,11 +151,9 @@ class OrderController extends Controller
             $orderItem->save();
         }
 
-        $orders = Order::all();
         $addresses = Address::all();
         $address = $addresses->where('order_id', $order->id)->first();
 
-    
-        return view('orders.success', ['cartData' => $cartData, 'orders' => $orders, 'address' => $address])->with('success', 'Uw bestelling is geplaatst!');
+        return view('orders.success', ['cartData' => $cartData, 'address' => $address])->with('success', 'Uw bestelling is geplaatst!');
     }
 }

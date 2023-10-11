@@ -43,7 +43,7 @@
 
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="useDifferentBilling"
-                            name="useDifferentBilling" {{ old('useDifferentBilling') ? 'checked' : '' }}>
+                            name="useDifferentBilling" checked>
                         <label class="form-check-label" for="useDifferentBilling">
                             Bezorg- en factuuradres zijn hetzelfde
                         </label>
