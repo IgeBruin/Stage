@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CheckoutFormvalidation;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Address;
@@ -99,7 +98,7 @@ class OrderController extends Controller
         return view('orders.shipping', compact('useDifferentBilling', 'shippingType', 'shippingStreet', 'shippingStreetNumber', 'shippingZipCode', 'shippingCity', 'cartData'));
     }
 
-    public function process(Order $order, ShippingValidationRequest $request, Address $address)
+    public function process(ShippingValidationRequest $request, Order $order, Address $address)
     {
 
         dd($request->all());

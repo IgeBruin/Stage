@@ -30,63 +30,70 @@
 
         <div class="row mt-4">
             <div class="col-md-6">
-                <form method="POST" action="{{ route('order.process') }}">
-                    @csrf
-                    @method('POST')
-                    <h4>Huidige bestelling:</h4>
-                    <p>Naam: {{ session('shippingInfo.name') }} {{ session('shippingInfo.surname') }}</p>
-                    <p>Email: {{ session('shippingInfo.email') }}</p>
-                    <p>Straat en huisnummer: {{ session('shippingInfo.street') }}
-                        {{ session('shippingInfo.street_number') }}</p>
-                    <p>Postcode: {{ session('shippingInfo.zip_code') }}</p>
-                    <p>Stad: {{ session('shippingInfo.city') }}</p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="useDifferentBilling"
-                            name="useDifferentBilling" {{ old('useDifferentBilling', true) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="useDifferentBilling">
-                            Bezorg- en factuuradres zijn hetzelfde
-                        </label>
-                    </div>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('order.process') }}">
+                            @csrf
+                            @method('POST')
+                            <h4>Huidige bestelling:</h4>
+                            <p>Naam: {{ session('shippingInfo.name') }} {{ session('shippingInfo.surname') }}</p>
+                            <p>Email: {{ session('shippingInfo.email') }}</p>
+                            <p>Straat en huisnummer: {{ session('shippingInfo.street') }}
+                                {{ session('shippingInfo.street_number') }}</p>
+                            <p>Postcode: {{ session('shippingInfo.zip_code') }}</p>
+                            <p>Stad: {{ session('shippingInfo.city') }}</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="useDifferentBilling"
+                                    name="useDifferentBilling" {{ old('useDifferentBilling', true) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="useDifferentBilling">
+                                    Bezorg- en factuuradres zijn hetzelfde
+                                </label>
+                            </div>
 
-                    <div id="differentShippingFields">
-                        <h5>Bezorgadres:</h5>
-                        <div class="mb-3">
-                            <label for="shipping_street" class="form-label">Straat</label>
-                            <input type="text" class="form-control @error('shipping_street') is-invalid @enderror"
-                                id="shipping_street" name="shipping_street">
-                            @error('shipping_street')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="shipping_street_number" class="form-label">Huisnummer</label>
-                            <input type="text"
-                                class="form-control @error('shipping_street_number') is-invalid @enderror"
-                                id="shipping_street_number" name="shipping_street_number">
-                            @error('shipping_street_number')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="shipping_zip_code" class="form-label">Postcode</label>
-                            <input type="text" class="form-control @error('shipping_zip_code') is-invalid @enderror"
-                                id="shipping_zip_code" name="shipping_zip_code">
-                            @error('shipping_zip_code')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="shipping_city" class="form-label">Stad</label>
-                            <input type="text" class="form-control @error('shipping_city') is-invalid @enderror"
-                                id="shipping_city" name="shipping_city">
-                            @error('shipping_city')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+                            <div id="differentShippingFields">
+                                <h5>Factuuradres:</h5>
+                                <div class="mb-3">
+                                    <label for="shipping_street" class="form-label">Straat</label>
+                                    <input type="text"
+                                        class="form-control @error('shipping_street') is-invalid @enderror"
+                                        id="shipping_street" name="shipping_street">
+                                    @error('shipping_street')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="shipping_street_number" class="form-label">Huisnummer</label>
+                                    <input type="text"
+                                        class="form-control @error('shipping_street_number') is-invalid @enderror"
+                                        id="shipping_street_number" name="shipping_street_number">
+                                    @error('shipping_street_number')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="shipping_zip_code" class="form-label">Postcode</label>
+                                    <input type="text"
+                                        class="form-control @error('shipping_zip_code') is-invalid @enderror"
+                                        id="shipping_zip_code" name="shipping_zip_code">
+                                    @error('shipping_zip_code')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="shipping_city" class="form-label">Stad</label>
+                                    <input type="text"
+                                        class="form-control @error('shipping_city') is-invalid @enderror"
+                                        id="shipping_city" name="shipping_city">
+                                    @error('shipping_city')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-                    <button type="submit" class="btn btn-primary">Betalen</button>
-                </form>
+                            <button type="submit" class="btn btn-primary btn-lg">Doorgaan</button>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="card shadow">
@@ -119,7 +126,6 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
