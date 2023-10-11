@@ -24,14 +24,19 @@
                         <h2>Factuur</h2>
                     </div>
                     <div class="card-body">
-                        <h2>Verzendadres</h2>
-                        <p>Naam: {{ $shippingAddress['name'] }} {{ $shippingAddress['surname'] }}</p>
-                        <p>Straat: {{ $shippingAddress['street'] }} {{ $shippingAddress['street_number'] }}</p>
-                        <p>Postcode: {{ $shippingAddress['zip_code'] }}</p>
-                        <p>Stad: {{ $shippingAddress['city'] }}</p>
+
+                        @if ($address)
+                            <p class="card-text">Naam: {{ $address->name }} {{ $address->surname }}</p>
+                            <p class="card-text">Straat: {{ $address->street }} {{ $address->street_number }}</p>
+                            <p class="card-text">Postcode: {{ $address->zip_code }}</p>
+                            <p class="card-text">Plaats: {{ $address->city }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
+
+
+
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">

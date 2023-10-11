@@ -99,7 +99,7 @@ class OrderController extends Controller
         return view('orders.shipping', compact('useDifferentBilling', 'shippingType', 'shippingStreet', 'shippingStreetNumber', 'shippingZipCode', 'shippingCity', 'cartData'));
     }
 
-    public function process(Order $order, Request $request)
+    public function process(Order $order, Request $request, Address $address)
     {
         $cartData = $this->processCartItems();
         $shippingInfo = session('shippingInfo', []);
@@ -149,17 +149,12 @@ class OrderController extends Controller
             $orderItem->vat = $product['vat'];
             $orderItem->save();
         }
+
+        $orders = Order::all();
+        $addresses = Address::all();
+        $address = $addresses->where('order_id', $order->id)->first();
+
     
-        return view('orders.success', ['cartData' => $cartData, 'shippingAddress' => $shippingAddress])->with('success', 'Uw bestelling is geplaatst!');
-    }
-
-    public function success()
-    {
-        $shippingAddress = session('shippingAddress', []);
-        $cartData = $this->processCartItems();
-
-        // session()->forget('cart');
-
-        return view('orders.success', ['cartData' => $cartData, 'shippingAddress' => $shippingAddress]);
+        return view('orders.success', ['cartData' => $cartData, 'orders' => $orders, 'address' => $address])->with('success', 'Uw bestelling is geplaatst!');
     }
 }
