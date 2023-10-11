@@ -122,6 +122,7 @@ class OrderController extends Controller
         $shippingSurname = $shippingInfo['surname'];
 
         if (!$request->has('useDifferentBilling')) {
+            $shippingType = 'invoice';
             $shippingStreet = $request->input('shipping_street');
             $shippingStreetNumber = $request->input('shipping_street_number');
             $shippingZipCode = $request->input('shipping_zip_code');
