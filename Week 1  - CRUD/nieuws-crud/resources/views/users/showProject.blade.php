@@ -115,9 +115,11 @@
                                             <tr>
                                                 <th>Taak</th>
                                                 <th>Status</th>
-                                                @can('manage', App\models\Project::class)
-                                                    <th>Voltooien</th>
-                                                @endcan
+                                                @if (isset($task))
+                                                    @can('manage', App\models\Project::class)
+                                                        <th>Voltooien</th>
+                                                    @endcan
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -161,7 +163,7 @@
                                             <tr>
                                                 <th>Taak</th>
                                                 <th>Status</th>
-                                                @if ($task->status_id == 3)
+                                                @if (isset($task) && $task->status_id == 3)
                                                     @can('manage', App\models\Project::class)
                                                         <th>Terugzetten</th>
                                                     @endcan
@@ -176,19 +178,21 @@
                                                 <tr>
                                                     <td>{{ $task->title }}</td>
                                                     <td>{{ $statusOptions[$task->status_id] }}</td>
-                                                    @can('manage', App\models\Project::class)
-                                                        <td class="text-start">
-                                                            <a class="btn"
-                                                                href="{{ route('dashboard.projects.reopenTask', ['project' => $project, 'task' => $task->id]) }}">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                    height="16" fill="currentColor"
-                                                                    class="bi bi-arrow-left" viewBox="0 0 16 16">
-                                                                    <path fill-rule="evenodd"
-                                                                        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                                                                </svg>
-                                                            </a>
-                                                        </td>
-                                                    @endcan
+                                                    @if (isset($task) && $task->status_id == 3)
+                                                        @can('manage', App\models\Project::class)
+                                                            <td class="text-start">
+                                                                <a class="btn"
+                                                                    href="{{ route('dashboard.projects.reopenTask', ['project' => $project, 'task' => $task->id]) }}">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                        height="16" fill="currentColor"
+                                                                        class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                                                        <path fill-rule="evenodd"
+                                                                            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                                                                    </svg>
+                                                                </a>
+                                                            </td>
+                                                        @endcan
+                                                    @endif
                                                 </tr>
                                             @empty
                                                 <tr>

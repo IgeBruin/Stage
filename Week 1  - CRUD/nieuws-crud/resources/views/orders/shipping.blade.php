@@ -52,22 +52,39 @@
                         <h5>Bezorgadres:</h5>
                         <div class="mb-3">
                             <label for="shipping_street" class="form-label">Straat</label>
-                            <input type="text" class="form-control" id="shipping_street" name="shipping_street">
+                            <input type="text" class="form-control @error('shipping_street') is-invalid @enderror"
+                                id="shipping_street" name="shipping_street">
+                            @error('shipping_street')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="shipping_street_number" class="form-label">Huisnummer</label>
-                            <input type="text" class="form-control" id="shipping_street_number"
-                                name="shipping_street_number">
+                            <input type="text"
+                                class="form-control @error('shipping_street_number') is-invalid @enderror"
+                                id="shipping_street_number" name="shipping_street_number">
+                            @error('shipping_street_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="shipping_zip_code" class="form-label">Postcode</label>
-                            <input type="text" class="form-control" id="shipping_zip_code" name="shipping_zip_code">
+                            <input type="text" class="form-control @error('shipping_zip_code') is-invalid @enderror"
+                                id="shipping_zip_code" name="shipping_zip_code">
+                            @error('shipping_zip_code')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="shipping_city" class="form-label">Stad</label>
-                            <input type="text" class="form-control" id="shipping_city" name="shipping_city">
+                            <input type="text" class="form-control @error('shipping_city') is-invalid @enderror"
+                                id="shipping_city" name="shipping_city">
+                            @error('shipping_city')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
+
                     <button type="submit" class="btn btn-primary">Betalen</button>
                 </form>
             </div>
@@ -76,18 +93,18 @@
                     <div class="card-body">
                         <div class="info d-flex justify-content-between align-items-center">
                             <h4 class="card-title ">Samenvatting</h4>
-                            <p class="text-sm">Aantal producten: {{ count($cartItems) }}</p>
+                            <p class="text-sm">Aantal producten: {{ $cartData['totalProductCount'] }}</p>
                         </div>
                         <hr>
                         <table class="table table-borderless">
                             <tbody>
                                 <tr class="text-lg">
                                     <td>Totaal bedrag van de winkelwagen:</td>
-                                    <td>€ {{ number_format($totalCartPrice, 2) }}</td>
+                                    <td>€ {{ number_format($cartData['totalCartPrice'], 2) }}</td>
                                 </tr>
                                 <tr class="text-lg">
                                     <td>Totaal BTW:</td>
-                                    <td>€ {{ number_format($totalVat, 2) }}</td>
+                                    <td>€ {{ number_format($cartData['totalVat'], 2) }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -96,7 +113,8 @@
                             <tbody>
                                 <tr class="font-bold text-lg">
                                     <td>Totaal bedrag inclusief BTW:</td>
-                                    <td>€ {{ number_format($totalCartPrice + $totalVat, 2) }}</td>
+                                    <td>€ {{ number_format($cartData['totalCartPrice'] + $cartData['totalVat'], 2) }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -110,6 +128,12 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $(document).ready(function() {
+                if ($('#useDifferentBilling').is(':checked')) {
+                    $('#differentShippingFields').hide();
+                } else {
+                    $('#differentShippingFields').show();
+                }
+
                 $('#useDifferentBilling').change(function() {
                     if (this.checked) {
                         $('#differentShippingFields').hide();
@@ -119,6 +143,8 @@
                 });
             });
         </script>
+
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">

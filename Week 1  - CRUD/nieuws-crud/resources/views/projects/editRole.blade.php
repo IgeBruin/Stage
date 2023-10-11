@@ -29,10 +29,10 @@
                         </div>
 
                         <div class="card-body">
-                            @foreach ($project->users as $user)
-                                @if ($user->id)
-                                    <form method="POST"
-                                        action="{{ route('dashboard.projects.updateRole', ['project' => $project, 'user' => $user]) }}">
+                            @foreach ($project->users as $projectUser)
+                                @if ($projectUser->id == $user->id)
+                                    <form method="POST" data-user-id="{{ $user->id }}"
+                                        action="{{ route('dashboard.projects.updateRole', ['project' => $project, 'user' => $projectUser->id]) }}">
                                         @csrf
                                         @method('PUT')
                                         <div class="form-group mt-3">
@@ -41,8 +41,9 @@
                                                 class="form-control categories @error('role_id') is-invalid @enderror">
                                                 @foreach ($allRoles as $role)
                                                     <option value="{{ $role->id }}"
-                                                        {{ old('role_id', $user->pivot->role_id ?? '') == $role->id ? 'selected' : '' }}>
-                                                        {{ $role->name }}</option>
+                                                        {{ old('role_id', $projectUser->pivot->role_id) == $role->id ? 'selected' : '' }}>
+                                                        {{ $role->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                             @error('role_id')
@@ -57,39 +58,38 @@
                                                 value="Rol Bijwerken">
                                         </div>
                                     </form>
-                                @break
+                                @endif
+                            @endforeach
+                        </div>
 
-                            @else
-                                <p>Gebruiker niet gevonden</p>
-                            @endif
-                        @endforeach
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
-@section('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        window.addEventListener('load', () => {
-            for (const name of ['content']) {
-                ClassicEditor.create(document.getElementById(name))
-                    .catch(error => {
-                        console.error(error);
-                    });
-            }
-        });
-        $(document).ready(function() {
-            $('.categories').select2();
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
-    </script>
-@endsection
+    @section('scripts')
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            window.addEventListener('load', () => {
+                for (const name of ['content']) {
+                    ClassicEditor.create(document.getElementById(name))
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+            });
+            $(document).ready(function() {
+                $('.categories').select2();
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+        </script>
+    @endsection
 
 </x-app-layout>

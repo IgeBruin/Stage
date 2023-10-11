@@ -13,6 +13,7 @@ class CartController extends Controller
         $cartItems = session('cart', []); 
         $totalCartPrice = 0;
         $totalVat = 0;
+        $totalProductCount = 0;
 
         $products = []; 
 
@@ -28,6 +29,8 @@ class CartController extends Controller
                 $item['subtotal'] = $item['price'] * $item['quantity'];
                 $item['vat_amount'] = ($item['subtotal'] * $item['vat']) / 100;
                 $products[] = $item;
+
+                $totalProductCount += $item['quantity'];
             } 
     
             $totalCartPrice += $item['subtotal'];
@@ -36,7 +39,7 @@ class CartController extends Controller
 
         Session::put('cart', $cartItems);
 
-        return view('carts.index', compact('products', 'totalCartPrice', 'totalVat', 'cartItems'));
+        return view('carts.index', compact('products', 'totalCartPrice', 'totalVat', 'cartItems', 'totalProductCount'));
     }
 
 

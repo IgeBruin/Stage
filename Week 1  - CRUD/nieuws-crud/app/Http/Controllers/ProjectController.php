@@ -160,9 +160,8 @@ class ProjectController extends Controller
         return redirect()->back()->with('success', 'Gebruiker is van het project verwijderd');
     }
 
-    public function editRole(Project $project, $userId)
+    public function editRole(Project $project, User $user)
     {
-        $user = User::find($userId);
         $allRoles = Role::all();
 
         return view('projects.editRole', compact('project', 'user', 'allRoles'));

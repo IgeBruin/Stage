@@ -88,7 +88,7 @@
                         <div class="card-body">
                             <div class="info d-flex justify-content-between align-items-center">
                                 <h4 class="card-title ">Samenvatting</h4>
-                                <p class="text-sm">Aantal producten: {{ count($cartItems) }}</p>
+                                <p class="text-sm">Aantal producten: {{ $totalProductCount }}</p>
                             </div>
                             <hr>
                             <table class="table table-borderless">
