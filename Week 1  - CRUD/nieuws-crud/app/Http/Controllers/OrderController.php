@@ -67,6 +67,7 @@ class OrderController extends Controller
             'surname' => $request->input('surname'),
             'email' => $request->input('email'),
             'telephone' => $request->input('telephone'),
+            'type' => 'test staat in shippingInfo',
         ];
 
         session(['shippingInfo' => $shippingInfo]);
@@ -80,28 +81,15 @@ class OrderController extends Controller
         $shippingInfo = session('shippingInfo', []);
     
         $useDifferentBilling = $request->has('useDifferentBilling');
-    
-        if ($useDifferentBilling) {
-            $shippingType = 'shipping';
-            $shippingStreet = $request->input('shipping_street');
-            $shippingStreetNumber = $request->input('shipping_street_number');
-            $shippingZipCode = $request->input('shipping_zip_code');
-            $shippingCity = $request->input('shipping_city');
-        } else {
-            $shippingType = 'invoice';
-            $shippingStreet = $shippingInfo['street']; 
-            $shippingStreetNumber = $shippingInfo['street_number']; 
-            $shippingZipCode = $shippingInfo['zip_code']; 
-            $shippingCity = $shippingInfo['city'];
-        }
-
-        return view('orders.shipping', compact('useDifferentBilling', 'shippingType', 'shippingStreet', 'shippingStreetNumber', 'shippingZipCode', 'shippingCity', 'cartData'));
+        // dd($shippingInfo['type']);
+        return view('orders.shipping', compact('useDifferentBilling', 'cartData'));
+        // return view('orders.shipping', compact('useDifferentBilling', 'shippingType', 'shippingStreet', 'shippingStreetNumber', 'shippingZipCode', 'shippingCity', 'cartData'));
     }
 
     public function process(ShippingValidationRequest $request, Order $order, Address $address)
     {
 
-        dd($request->all());
+        // dd($request->all());
         $cartData = $this->processCartItems();
         $shippingInfo = session('shippingInfo', []);
     
@@ -113,22 +101,30 @@ class OrderController extends Controller
         $order->vat = $cartData['totalVat'];
         $order->total_incl = $cartData['totalCartPrice'] + $cartData['totalVat'];
         $order->save();    
-    
-        $shippingType = 'shipping';
-        $shippingStreet = $shippingInfo['street'];
-        $shippingStreetNumber = $shippingInfo['street_number'];
-        $shippingZipCode = $shippingInfo['zip_code'];
-        $shippingCity = $shippingInfo['city'];
+
+        $useDifferentBilling = $request->has('useDifferentBilling');
+
+        // dd($useDifferentBilling);
+        // dd($request->useDifferentBilling);
+
         $shippingName = $shippingInfo['name'];
         $shippingSurname = $shippingInfo['surname'];
 
-        if (!$request->has('useDifferentBilling')) {
-            $shippingType = 'invoice';
+        if ($request->useDifferentBilling == false) {
+            $shippingType = 'invoice 2';
             $shippingStreet = $request->input('shipping_street');
             $shippingStreetNumber = $request->input('shipping_street_number');
             $shippingZipCode = $request->input('shipping_zip_code');
             $shippingCity = $request->input('shipping_city');
+        } else {
+            $shippingType = 'test 1';
+            $shippingStreet = $shippingInfo['street'];
+            $shippingStreetNumber = $shippingInfo['street_number'];
+            $shippingZipCode = $shippingInfo['zip_code'];
+            $shippingCity = $shippingInfo['city'];
         }
+
+        // dd($shippingType, $useDifferentBilling);
 
         $shippingAddress = new Address();
         $shippingAddress->order_id = $order->id;

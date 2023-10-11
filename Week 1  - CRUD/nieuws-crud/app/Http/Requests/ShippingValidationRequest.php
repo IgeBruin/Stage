@@ -20,15 +20,17 @@ class ShippingValidationRequest extends FormRequest
 
     public function rules()
     {
-        $rules = [
+        return [
         'shipping_street' => 'required_if:useDifferentBilling,false',
         'shipping_street_number' => 'required_if:useDifferentBilling,false',
-        'shipping_zip_code' => 'required_if:useDifferentBilling,false',
+        'shipping_zip_code' => [
+            'required_if:useDifferentBilling,false',
+            // 'regex:/^\d{4}[A-Z]{2}$/i', // Hier wordt de regex toegevoegd
+        ],
         'shipping_city' => 'required_if:useDifferentBilling,false',
         ];
-
-        return $rules;
     }
+
 
 
     public function messages()
