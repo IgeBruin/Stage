@@ -40,14 +40,14 @@
                         {{ session('shippingInfo.street_number') }}</p>
                     <p>Postcode: {{ session('shippingInfo.zip_code') }}</p>
                     <p>Stad: {{ session('shippingInfo.city') }}</p>
-
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="useDifferentBilling"
-                            name="useDifferentBilling" checked>
+                            name="useDifferentBilling" {{ old('useDifferentBilling', true) ? 'checked' : '' }}>
                         <label class="form-check-label" for="useDifferentBilling">
                             Bezorg- en factuuradres zijn hetzelfde
                         </label>
                     </div>
+
                     <div id="differentShippingFields">
                         <h5>Bezorgadres:</h5>
                         <div class="mb-3">
@@ -128,19 +128,24 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $(document).ready(function() {
-                if ($('#useDifferentBilling').is(':checked')) {
-                    $('#differentShippingFields').hide();
-                } else {
+                @if ($errors->any())
+                    $('#useDifferentBilling').prop('checked', false);
                     $('#differentShippingFields').show();
-                }
-
-                $('#useDifferentBilling').change(function() {
-                    if (this.checked) {
+                @else
+                    if ($('#useDifferentBilling').is(':checked')) {
                         $('#differentShippingFields').hide();
                     } else {
                         $('#differentShippingFields').show();
                     }
-                });
+
+                    $('#useDifferentBilling').change(function() {
+                        if (this.checked) {
+                            $('#differentShippingFields').hide();
+                        } else {
+                            $('#differentShippingFields').show();
+                        }
+                    });
+                @endif
             });
         </script>
 

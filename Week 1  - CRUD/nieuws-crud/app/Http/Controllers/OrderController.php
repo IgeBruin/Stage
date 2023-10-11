@@ -99,8 +99,10 @@ class OrderController extends Controller
         return view('orders.shipping', compact('useDifferentBilling', 'shippingType', 'shippingStreet', 'shippingStreetNumber', 'shippingZipCode', 'shippingCity', 'cartData'));
     }
 
-    public function process(Order $order, Request $request, Address $address)
+    public function process(Order $order, ShippingValidationRequest $request, Address $address)
     {
+
+        dd($request->all());
         $cartData = $this->processCartItems();
         $shippingInfo = session('shippingInfo', []);
     
@@ -111,7 +113,7 @@ class OrderController extends Controller
         $order->total_excl = $cartData['totalCartPrice'];
         $order->vat = $cartData['totalVat'];
         $order->total_incl = $cartData['totalCartPrice'] + $cartData['totalVat'];
-        $order->save();
+        $order->save();    
     
         $shippingType = 'shipping';
         $shippingStreet = $shippingInfo['street'];

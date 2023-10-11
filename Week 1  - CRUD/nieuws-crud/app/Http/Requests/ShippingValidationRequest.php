@@ -11,15 +11,24 @@ class ShippingValidationRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'useDifferentBilling' => $this->useDifferentBilling ? true : false
+        ]);
+    }
+
     public function rules()
     {
-        return [
-            'shipping_street' => 'required',
-            'shipping_street_number' => 'required',
-            'shipping_zip_code' => 'required|regex:/\b\d{4}[A-Z]{2}\b/i', // Nederlandse postcode
-            'shipping_city' => 'required',
+        return $rules = [
+            
+        'shipping_street' => 'required_if:useDifferentBilling,false',
+        'shipping_street_number' => 'required_if:useDifferentBilling,false',
+        'shipping_zip_code' => 'required_if:useDifferentBilling,false|regex:/^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i',
+        'shipping_city' => 'required_if:useDifferentBilling,false',
         ];
     }
+
 
     public function messages()
     {
