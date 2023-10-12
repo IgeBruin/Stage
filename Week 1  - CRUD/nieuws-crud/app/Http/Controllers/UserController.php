@@ -84,7 +84,7 @@ class UserController extends Controller
     public function myOrders()
     {
         $user = auth()->user();
-        $orders = $user->orders;
+        $orders = $user->orders()->orderBy('created_at', 'desc')->get();
 
         return view('users.myOrders', compact('orders'));
     }
