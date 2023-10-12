@@ -80,16 +80,11 @@ class OrderController extends Controller
         $cartData = $this->processCartItems();
         $shippingInfo = session('shippingInfo', []);
     
-        $useDifferentBilling = $request->has('useDifferentBilling');
-        // dd($shippingInfo['type']);
-        return view('orders.shipping', compact('useDifferentBilling', 'cartData'));
-        // return view('orders.shipping', compact('useDifferentBilling', 'shippingType', 'shippingStreet', 'shippingStreetNumber', 'shippingZipCode', 'shippingCity', 'cartData'));
+        return view('orders.shipping', compact('cartData'));
     }
 
     public function process(ShippingValidationRequest $request, Order $order, Address $address)
     {
-
-        // dd($request->all());
         $cartData = $this->processCartItems();
         $shippingInfo = session('shippingInfo', []);
     
@@ -102,29 +97,22 @@ class OrderController extends Controller
         $order->total_incl = $cartData['totalCartPrice'] + $cartData['totalVat'];
         $order->save();    
 
-        $useDifferentBilling = $request->has('useDifferentBilling');
-
-        // dd($useDifferentBilling);
-        // dd($request->useDifferentBilling);
-
         $shippingName = $shippingInfo['name'];
         $shippingSurname = $shippingInfo['surname'];
 
         if ($request->useDifferentBilling == false) {
-            $shippingType = 'invoice 2';
+            $shippingType = 'Invoice';
             $shippingStreet = $request->input('shipping_street');
             $shippingStreetNumber = $request->input('shipping_street_number');
             $shippingZipCode = $request->input('shipping_zip_code');
             $shippingCity = $request->input('shipping_city');
         } else {
-            $shippingType = 'test 1';
+            $shippingType = 'Shipping';
             $shippingStreet = $shippingInfo['street'];
             $shippingStreetNumber = $shippingInfo['street_number'];
             $shippingZipCode = $shippingInfo['zip_code'];
             $shippingCity = $shippingInfo['city'];
         }
-
-        // dd($shippingType, $useDifferentBilling);
 
         $shippingAddress = new Address();
         $shippingAddress->order_id = $order->id;
@@ -151,6 +139,18 @@ class OrderController extends Controller
         $addresses = Address::all();
         $address = $addresses->where('order_id', $order->id)->first();
 
-        return view('orders.success', ['cartData' => $cartData, 'address' => $address])->with('success', 'Uw bestelling is geplaatst!');
+        session(['cartData' => $cartData, 'address' => $address]);
+
+        return redirect()->route('order.success')->with('success', 'Uw bestelling is geplaatst!');
     }
+
+    public function success()
+    {
+        $cartData = session('cartData');
+        $address = session('address');
+        $view = view('orders.success', ['cartData' => $cartData, 'address' => $address])->with('success', 'Uw bestelling is geplaatst!');
+        session()->forget('cart');
+        return $view;
+    }
+
 }
