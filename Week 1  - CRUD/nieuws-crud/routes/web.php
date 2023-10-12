@@ -51,15 +51,14 @@ Route::middleware('auth')->group(function () {
     Route::get('products', [UserController::class, 'allProducts'])->name('products');
     Route::get('products/searchProduct', [UserController::class, 'searchProduct'])->name('searchProduct');
 
-    //webshop voor winkelwagen
-    Route::get('cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('cart/add', [CartController::class, 'add'])->name('cart.add');
-    Route::delete('/cart/{productId}/remove', [CartController::class, 'remove'])->name('cart.remove');
-    Route::put('/cart/{productId}/update', [CartController::class, 'update'])->name('cart.update');
+    Route::get('cart', [OrderController::class, 'cartIndex'])->name('cart.index');
+    Route::post('cart/add', [OrderController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/{productId}/remove', [OrderController::class, 'remove'])->name('cart.remove');
+    Route::put('/cart/{productId}/update', [OrderController::class, 'update'])->name('cart.update');
 
 
     // webshop voor bestellingen
-    Route::get('order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('order', [OrderController::class, 'orderIndex'])->name('order.index');
     Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
 
     //bedankt pagina
