@@ -92,7 +92,8 @@ class UserController extends Controller
     public function showOrder(Order $order)
     {
         $user = auth()->user();
-    
+        $this->authorize('view', $order);
+
         if ($order->user_id !== $user->id) {
             return redirect()->route('myOrders')->with('error', 'Je hebt geen toegang tot deze bestelling.');
         }
