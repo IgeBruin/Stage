@@ -17,21 +17,26 @@ class Order extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
-
+    
     public function items()
     {
         return $this->hasMany(OrderItem::class);
     }
 
+    public function address()
+    {
+        return $this->hasOne(Address::class);
+    }
+
     public function billingAddress()
     {
-        return $this->hasOne(Address::class)->where('type', 'billing');
+        return $this->hasOne(Address::class)->where('type', 'Invoice');
     }
 
     public function shippingAddress()
     {
-        return $this->hasOne(Address::class)->where('type', 'shipping');
+        return $this->hasOne(Address::class)->where('type', 'Shipping');
     }
 }

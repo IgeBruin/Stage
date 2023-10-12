@@ -64,6 +64,10 @@
                                 {{ __('Mijn Projecten') }}
                             </x-dropdown-link>
 
+                            <x-dropdown-link :href="route('user.myOrders')" class="hover:text-indigo-700 text-decoration-none">
+                                {{ __('Mijn Bestellingen') }}
+                            </x-dropdown-link>
+
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">

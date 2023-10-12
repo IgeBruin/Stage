@@ -18,48 +18,38 @@
             <div class="col-md-10">
                 <div class="d-flex flex-column justify-content-start">
                     <div class="d-flex justify-content-between">
-                        <h1>Mijn Projecten</h1>
-                        <div class="d-flex align-items-center">
-                            <form action="{{ route('user.search') }}" method="GET">
-                                <div class="input-group">
-                                    <input type="text" name="query" class="form-control" placeholder="Zoek...">
-                                    <button type="submit" class="btn btn-primary">Zoeken</button>
-                                </div>
-                            </form>
-                        </div>
+                        @if (count($orders) == 1)
+                        <h1>Mijn bestelling</h1>      
+                        @elseif (count($orders) > 1)
+                        <h1>Mijn bestellingen</h1>
+                        @else 
+                        <h1>U heeft nog geen bestellingen</h1>
+                        @endif
+                        
                     </div>
 
-                    @if (count($projects) > 0)
+                    @if (count($orders) > 0)
                         <div class="row">
-                            @foreach ($projects as $project)
+                            @foreach ($orders as $order)
                                 <div class="col-md-4 mb-4">
-                                    <a href="{{ route('user.showProject', ['project' => $project->id]) }}"
+                                    <a href="{{ route('user.showOrder', ['order' => $order->id]) }}"
                                         class="text-decoration-none">
                                         <div class="card">
-                                            @if ($project->image == 'images/projects/placeholder.png')
-                                                <img src="{{ asset('images/projects/placeholder.png') }}"
-                                                    alt="Placeholder" class="card-img-top img-fluid object-cover"
-                                                    style="max-height: 200px;">
-                                            @elseif ($project->image)
-                                                <img src="{{ asset("images/projects/{$project->id}/{$project->image}") }}"
-                                                    alt="{{ $project->title }}"
-                                                    class="card-img-top img-fluid object-cover"
-                                                    style=" max-height: 200px;">
-                                            @endif
+
                                             <div class="card-body">
-                                                <h3 class="card-title">{{ $project->name }}</h3>
-                                                <p class="card-text">{!! $project->introduction !!}</p>
+                                                <p class="card-email">{{ $order->email }}</p>
+                                                <p>Datum: {{ $order->created_at->format('Y-m-d') }}</p>
+                                                <p>Totaalprijs: €{{ number_format($order->total_incl, 2) }}</p>
+                                                <p>Aantal producten: {{ $order->items->sum('quantity') }}</p>
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                             @endforeach
                         </div>
-                    @else
-                        <div class="col-md-12">
-                            <h1>Je bent niet aan een project gekoppeld</h1>
-                        </div>
                     @endif
+                        
+
                 </div>
             </div>
         </div>

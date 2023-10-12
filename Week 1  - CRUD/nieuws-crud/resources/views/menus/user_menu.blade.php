@@ -6,6 +6,10 @@
                     class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Projecten</a>
             </li>
             <li class="list-group-item bg-light">
+                <a href="{{ route('user.myOrders') }}"
+                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Bestellingen</a>
+            </li>
+            <li class="list-group-item bg-light">
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit"

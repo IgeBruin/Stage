@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\models\Product;
 use App\Models\Project;
 use App\Models\User;
-use App\Models\Post;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Task;
 use App\Models\Status;
 
@@ -30,7 +31,6 @@ class UserController extends Controller
 
         return view('users.myProjects', compact('projects'));
     }
-
 
     public function show(Project $project, Status $status)
     {
@@ -79,5 +79,25 @@ class UserController extends Controller
     public function showProduct(Product $product)
     {
         return view('users.showProduct', compact('product'));
+    }
+
+    public function myOrders()
+    {
+        $user = auth()->user();
+        $orders = $user->orders;
+
+        return view('users.myOrders', compact('orders'));
+    }
+
+    public function showOrder(Order $order)
+    {
+        $user = auth()->user();
+    
+        if ($order->user_id !== $user->id) {
+            return redirect()->route('myOrders')->with('error', 'Je hebt geen toegang tot deze bestelling.');
+        }
+    
+        $address = $order->address;
+        return view('users.showOrder', compact('order', 'address'));
     }
 }

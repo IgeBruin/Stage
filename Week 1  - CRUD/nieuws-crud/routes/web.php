@@ -56,15 +56,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/{productId}/remove', [OrderController::class, 'remove'])->name('cart.remove');
     Route::put('/cart/{productId}/update', [OrderController::class, 'update'])->name('cart.update');
 
-
-    // webshop voor bestellingen
     Route::get('order', [OrderController::class, 'orderIndex'])->name('order.index');
     Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
-
-    //bedankt pagina
     Route::get('/order/shipping', [OrderController::class, 'shipping'])->name('order.shipping');
     Route::post('/order/process', [OrderController::class, 'process'])->name('order.process');
     Route::get('/order/success', [OrderController::class, 'success'])->name('order.success');
+
+
 
 
 
@@ -74,6 +72,9 @@ Route::middleware('auth')->group(function () {
         Route::get('projects', [UserController::class, 'myProjects'])->name('projects');
         Route::get('projects/search', [UserController::class, 'searchProject'])->name('search');
         Route::get('projects/{project}/show', [UserController::class, 'show'])->name('showProject');
+
+        Route::get('myOrders', [UserController::class, 'myOrders'])->name('myOrders');
+        Route::get('myOrders/{order}/show', [UserController::class, 'showOrder'])->name('showOrder');
     });
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
