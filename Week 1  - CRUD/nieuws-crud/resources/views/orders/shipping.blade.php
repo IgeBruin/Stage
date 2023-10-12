@@ -129,7 +129,10 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <div class="text-end">
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ route('order.index') }}" class="btn btn-secondary btn-lg">
+                            Bezorggegevens Bewerken
+                        </a>  
                         <button type="submit" class="btn btn-primary btn-lg">Doorgaan</button>
                     </div>
                 </div>

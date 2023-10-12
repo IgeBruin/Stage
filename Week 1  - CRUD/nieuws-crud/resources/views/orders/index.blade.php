@@ -128,11 +128,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-lg btn-primary">Volgende</button>
-                            </div>
-                        </form>
-
                     </div>
                 </div>
             </div>
@@ -167,8 +162,13 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
+                <div class="mt-4">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary btn-lg">Doorgaan</button>
+                    </div>
+                </div>
+                </form>
             </div>
         </div>
     </div>
