@@ -18,15 +18,29 @@
             <div class="col-md-10">
                 <div class="d-flex flex-column justify-content-start">
                     <div class="d-flex justify-content-between">
-                        <h1>Mijn Projecten</h1>
-                        <div class="d-flex align-items-center">
-                            <form action="{{ route('user.search') }}" method="GET">
-                                <div class="input-group">
-                                    <input type="text" name="query" class="form-control" placeholder="Zoek...">
-                                    <button type="submit" class="btn btn-primary">Zoeken</button>
-                                </div>
-                            </form>
-                        </div>
+                        @if (count($projects) == 0)
+                            <h1>Je bent niet aan een project gekoppeld</h1>
+                        @elseif (count($projects) == 1)
+                            <h1>Mijn project</h1>
+                            <div class="d-flex align-items-center">
+                                <form action="{{ route('user.search') }}" method="GET">
+                                    <div class="input-group">
+                                        <input type="text" name="query" class="form-control" placeholder="Zoek...">
+                                        <button type="submit" class="btn btn-primary">Zoeken</button>
+                                    </div>
+                                </form>
+                            </div>
+                        @else
+                            <h1>Mijn projecten</h1>
+                            <div class="d-flex align-items-center">
+                                <form action="{{ route('user.search') }}" method="GET">
+                                    <div class="input-group">
+                                        <input type="text" name="query" class="form-control" placeholder="Zoek...">
+                                        <button type="submit" class="btn btn-primary">Zoeken</button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
                     </div>
 
                     @if (count($projects) > 0)
@@ -54,10 +68,6 @@
                                     </a>
                                 </div>
                             @endforeach
-                        </div>
-                    @else
-                        <div class="col-md-12">
-                            <h1>Je bent niet aan een project gekoppeld</h1>
                         </div>
                     @endif
                 </div>
