@@ -85,6 +85,7 @@ class OrderController extends Controller
 
     public function process(ShippingValidationRequest $request, Order $order, Address $address)
     {
+        dd($request->all());
         $cartData = $this->processCartItems();
         $shippingInfo = session('shippingInfo', []);
     
@@ -152,5 +153,4 @@ class OrderController extends Controller
         session()->forget('cart');
         return $view;
     }
-
 }

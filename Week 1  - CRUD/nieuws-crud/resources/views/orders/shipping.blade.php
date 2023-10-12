@@ -58,7 +58,7 @@
                                     <label for="shipping_street" class="form-label">Straat</label>
                                     <input type="text"
                                         class="form-control @error('shipping_street') is-invalid @enderror"
-                                        id="shipping_street" name="shipping_street">
+                                        id="shipping_street" name="shipping_street" value="{{ old('shipping_street') }}">
                                     @error('shipping_street')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -67,7 +67,7 @@
                                     <label for="shipping_street_number" class="form-label">Huisnummer</label>
                                     <input type="text"
                                         class="form-control @error('shipping_street_number') is-invalid @enderror"
-                                        id="shipping_street_number" name="shipping_street_number">
+                                        id="shipping_street_number" name="shipping_street_number" value="{{ old('shipping_street_number') }}">
                                     @error('shipping_street_number')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -76,21 +76,22 @@
                                     <label for="shipping_zip_code" class="form-label">Postcode</label>
                                     <input type="text"
                                         class="form-control @error('shipping_zip_code') is-invalid @enderror"
-                                        id="shipping_zip_code" name="shipping_zip_code">
+                                        id="shipping_zip_code" name="shipping_zip_code" value="{{ old('shipping_zip_code') }}">
                                     @error('shipping_zip_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="shipping_city" class="form-label">Stad</label>
+                                    <label for "shipping_city" class="form-label">Stad</label>
                                     <input type="text"
                                         class="form-control @error('shipping_city') is-invalid @enderror"
-                                        id="shipping_city" name="shipping_city">
+                                        id="shipping_city" name="shipping_city" value="{{ old('shipping_city') }}">
                                     @error('shipping_city')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+                            
 
 
                     </div>

@@ -14,7 +14,8 @@ class ShippingValidationRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'useDifferentBilling' => $this->useDifferentBilling ? true : false
+            'useDifferentBilling' => $this->useDifferentBilling ? true : false,
+            'shipping_zip_code' => strtoupper($this->input('shipping_zip_code')),
         ]);
     }
 
@@ -25,8 +26,7 @@ class ShippingValidationRequest extends FormRequest
         'shipping_street_number' => 'required_if:useDifferentBilling,false',
         'shipping_zip_code' => [
             'required_if:useDifferentBilling,false',
-            // 'regex:/^\d{4}[A-Z]{2}$/i', // Hier wordt de regex toegevoegd
-        ],
+            'regex:/^\d{4}[A-Z]{2}$/',],
         'shipping_city' => 'required_if:useDifferentBilling,false',
         ];
     }

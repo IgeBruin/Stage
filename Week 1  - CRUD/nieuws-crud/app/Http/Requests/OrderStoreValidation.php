@@ -11,6 +11,13 @@ class OrderStoreValidation extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge([
+        'zip_code' => strtoupper($this->input('zip_code')),
+        ]);
+    }
+
     public function rules()
     {
         return [
@@ -18,7 +25,7 @@ class OrderStoreValidation extends FormRequest
         'surname' => 'required|string',
         'street' => 'required|string',
         'street_number' => 'required|string',
-        'zip_code' => ['required', 'regex:/^\d{4}[A-Z]{2}|\d{4} ?[A-Z]{2}$/i'],
+        'zip_code' => ['required', 'regex:/^\d{4}[A-Z]{2}$/'],
         'city' => 'required|string',
         'telephone' => [
             'required',
