@@ -46,17 +46,17 @@
                                 <li class="mt-4">
                                     <p class="card-text">
                                         Naam: {{ $product['name'] }}<br>
-                                        Prijs: {{ $product['price'] }}<br>
+                                        Prijs: € {{ $product['price'] }}<br>
                                         Aantal: {{ $product['quantity'] }}<br>
-                                        Subtotaal: {{ $product['subtotal'] }}
+                                        Subtotaal: € {{ number_format($product['subtotal'],2) }}
                                     </p>
                                 </li>
                             @endforeach
                         </ul>
-                        <p class="card-text">Totaal exclusief BTW: {{ $cartData['totalCartPrice'] }}</p>
-                        <p class="card-text">BTW: {{ $cartData['totalVat'] }}</p>
-                        <p class="card-text">Totaal inclusief BTW:
-                            {{ $cartData['totalCartPrice'] + $cartData['totalVat'] }}</p>
+                        <p class="card-text">Totaal exclusief BTW: € {{ number_format($cartData['totalCartPrice'],2) }}</p>
+                        <p class="card-text">BTW: € {{ number_format($cartData['totalVat'],2) }}</p>
+                        <p class="card-text">Totaal inclusief BTW: €
+                            {{ number_format($cartData['totalCartPrice'] + $cartData['totalVat'],2) }}</p>
                     </div>
                 </div>
             </div>
