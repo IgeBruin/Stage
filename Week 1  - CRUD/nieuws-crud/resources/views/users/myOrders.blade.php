@@ -19,7 +19,8 @@
                 <div class="d-flex flex-column justify-content-start">
                     <div class="d-flex justify-content-between">
                         @if (count($orders) == 1)
-                        <h1>Mijn bestelling</h1>      
+                        <h1>Mijn bestelling</h1>
+      
                         @elseif (count($orders) > 1)
                         <h1>Mijn bestellingen</h1>
                         @else 
@@ -34,13 +35,12 @@
                                 <div class="col-md-4 mb-4">
                                     <a href="{{ route('user.showOrder', ['order' => $order->id]) }}"
                                         class="text-decoration-none">
-                                        <div class="card">
-
+                                        <div class="card text-center shadow">
                                             <div class="card-body">
-                                                <p class="card-email">{{ $order->email }}</p>
-                                                <p>Datum: {{ $order->created_at->format('Y-m-d') }}</p>
-                                                <p>Totaalprijs: €{{ number_format($order->total_incl, 2) }}</p>
-                                                <p>Aantal producten: {{ $order->items->sum('quantity') }}</p>
+                                                <p class="card-email"><strong>{{ $order->email }}</strong></p>
+                                                <p>Datum: <strong>{{ $order->created_at->format('d-m-Y') }}</strong></p>
+                                                <p>Totaalprijs: <strong>€{{ number_format($order->total_incl, 2) }}</strong></p>
+                                                <p>Aantal producten: <strong>{{ $order->items->sum('quantity') }}</strong></p>
                                             </div>
                                         </div>
                                     </a>
