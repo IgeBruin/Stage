@@ -85,7 +85,7 @@ class OrderController extends Controller
 
     public function process(ShippingValidationRequest $request, Order $order, Address $address)
     {
-        dd($request->all());
+        // dd($request->all());
         $cartData = $this->processCartItems();
         $shippingInfo = session('shippingInfo', []);
     
@@ -103,10 +103,10 @@ class OrderController extends Controller
 
         if ($request->useDifferentBilling == false) {
             $shippingType = 'Invoice';
-            $shippingStreet = $request->input('shipping_street');
-            $shippingStreetNumber = $request->input('shipping_street_number');
-            $shippingZipCode = $request->input('shipping_zip_code');
-            $shippingCity = $request->input('shipping_city');
+            $shippingStreet = $request->input('billing_street');
+            $shippingStreetNumber = $request->input('billing_street_number');
+            $shippingZipCode = $request->input('billing_zip_code');
+            $shippingCity = $request->input('billing_city');
         } else {
             $shippingType = 'Shipping';
             $shippingStreet = $shippingInfo['street'];
