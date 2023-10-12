@@ -10,6 +10,8 @@ use App\Models\OrderItem;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\OrderStoreValidation;
 use App\Http\Requests\ShippingValidationRequest;
+//BARRY HUUUH
+use PDF;
 
 class OrderController extends Controller
 {
@@ -246,5 +248,14 @@ class OrderController extends Controller
         $view = view('orders.success', ['cartData' => $cartData, 'address' => $address])->with('success', 'Uw bestelling is geplaatst!');
         session()->forget('cart');
         return $view;
+    }
+
+    public function generatePDF()
+    {
+        $cartData = session('cartData');
+        $address = session('address');
+    
+        $pdf = PDF::loadView('orders.pdf', ['cartData' => $cartData, 'address' => $address])->setPaper('a4', 'landscape');
+        return $pdf->stream('factuur.pdf');
     }
 }

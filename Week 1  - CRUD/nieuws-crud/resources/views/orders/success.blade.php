@@ -61,7 +61,10 @@
                 </div>
             </div>
         </div>
-        <a href="{{ route('products') }}" class="btn btn-lg btn-primary">Verder gaan met winkelen</a>
+        <div class="d-flex justify-content-between mt-2">
+            <a href="{{ route('products') }}" class="btn btn-lg btn-primary">Verder gaan met winkelen</a>
+            <a href="{{ route('order.generatePDF') }}" class="btn btn-lg btn-secondary">Download PDF Factuur</a>
+        </div>
     </div>
 
     @section('scripts')
