@@ -6,7 +6,7 @@
 
     <x-slot name="header">
         <h1 class="font-semibold text-heading3 leading-tight text-md-start text-center text-indigo-500">
-            {{ __('Overzicht') }}
+            {{ __('Mijn Overzicht') }}
         </h1>
     </x-slot>
 
