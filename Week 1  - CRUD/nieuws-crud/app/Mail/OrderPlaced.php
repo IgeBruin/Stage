@@ -24,39 +24,40 @@ class OrderPlaced extends Mailable
      *
      * @return void
      */
-    public function __construct(Order $order)
-    {
-        //
-        $this->order = $order;
-    }
-    
-    public function build()
-    {
-        return $this->subject('Bestelling geplaatst')
-            ->from('igebruib@gmail.com', 'Ige Bruin')
-            ->markdown('emails.orders.placed');
-    }
+public function __construct(Order $order)
+{
+    //
+    $this->order = $order;
+}
+
+public function build()
+{
+    return $this->subject('Bestelling geplaatst')
+        ->from('igebruib@gmail.com', 'Ige Bruin')
+        ->markdown('emails.orders.placed');
+}
     /**
      * Get the message envelope.
      *
      * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
-    {
-        return new Envelope(
-            subject: 'Order Placed',
-        );
-    }
+public function envelope()
+{
+    return new Envelope(
+        subject: 'Order Placed',
+    );
+}
 
     /**
      * Get the message content definition.
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+public function content()
     {
         return new Content(
             view: 'view.name',
+            with: ['order' => $this->order]
         );
     }
 
