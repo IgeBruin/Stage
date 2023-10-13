@@ -133,7 +133,7 @@
                         <a href="{{ route('order.index') }}" class="btn btn-secondary btn-lg">
                             Bezorggegevens Bewerken
                         </a>  
-                        <button type="submit" class="btn btn-primary btn-lg">Doorgaan</button>
+                        <button type="submit" class="btn btn-primary btn-lg">Plaats bestelling</button>
                     </div>
                 </div>
             </div>

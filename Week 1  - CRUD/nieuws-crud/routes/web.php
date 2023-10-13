@@ -61,9 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/order/shipping', [OrderController::class, 'shipping'])->name('order.shipping');
     Route::post('/order/process', [OrderController::class, 'process'])->name('order.process');
     Route::get('/order/success', [OrderController::class, 'success'])->name('order.success');
-
-    //BARRY HHUUUUH
     Route::get('generate-pdf', [OrderController::class, 'generatePDF'])->name('order.generatePDF');
+
 
 
     Route::prefix('user')->name('user.')->group(function () {

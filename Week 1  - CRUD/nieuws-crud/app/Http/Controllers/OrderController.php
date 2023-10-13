@@ -10,8 +10,10 @@ use App\Models\OrderItem;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\OrderStoreValidation;
 use App\Http\Requests\ShippingValidationRequest;
-//BARRY HUUUH
 use PDF;
+//mail
+use App\Mail\OrderPlaced;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -237,6 +239,9 @@ class OrderController extends Controller
         $address = $addresses->where('order_id', $order->id)->first();
 
         session(['cartData' => $cartData, 'address' => $address]);
+
+        $email = $shippingInfo['email'];
+        Mail::to($email)->send(new OrderPlaced($order));
 
         return redirect()->route('order.success')->with('success', 'Uw bestelling is geplaatst!');
     }
