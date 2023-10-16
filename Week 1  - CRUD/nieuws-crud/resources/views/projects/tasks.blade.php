@@ -24,11 +24,11 @@
                 <div class="d-flex flex-column justify-content-start">
                     <div class="card">
                         <div class="card-header fs-3">
-                            Project Aanpassen
+                            Taak toevoegen
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <h3>Taak Toevoegen</h3>
+                            
                                 <form action="{{ route('dashboard.projects.storeTask', ['project' => $project]) }}"
                                     method="post">
                                     @csrf
@@ -63,7 +63,8 @@
 
                                     <div class="form-group mt-3">
                                         <label for="user_id" class="form-label">Gebruiker</label>
-                                        <select name="user_id[]" multiple="multiple"
+                                        <select name="user_id[]" multiple="multiple" placeholder="Selecteer een gebruiker"
+                                        
                                             class="form-control select2 @error('user_id') is-invalid @enderror">
                                             @foreach ($project->users as $user)
                                                 <option value="{{ $user->id }}"

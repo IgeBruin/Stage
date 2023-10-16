@@ -29,7 +29,7 @@
         @endif
 
         <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="card shadow">
                     <div class="card-body">
                         <form method="POST" action="{{ route('order.process') }}">
@@ -96,7 +96,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card shadow">
                     <div class="card-body">
                         <div class="info d-flex justify-content-between align-items-center">
@@ -130,7 +130,7 @@
                 </div>
                 <div class="mt-4">
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('order.index') }}" class="btn btn-secondary btn-lg">
+                        <a href="{{ route('order.index') }}" class="btn btn-link">
                             Bezorggegevens Bewerken
                         </a>  
                         <button type="submit" class="btn btn-primary btn-lg">Plaats bestelling</button>
@@ -139,6 +139,44 @@
             </div>
             </form>
         </div>
+        <div class="row py-6">
+            <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h2>Winkelmand</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Naam</th>
+                                <th>Prijs (Per product)</th>
+                                <th>Aantal</th>
+                                <th>Subtotaal (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($cartData['products'] as $product)
+                                <tr>
+                                        <td class="d-flex">
+                                            <img style="height: 70px; margin-right: 10px;"
+                                                src="{{ asset("images/products/{$product['image']}") }}">
+                                            <div>{{ $product['name'] }}</div>
+                                        </td>
+                                    </div>
+                                    <td>€ {{ number_format($product['price'], 2) }}</td>
+                                    <td>{{ $product['quantity'] }}</td>
+                                    <td>€ {{ number_format($product['subtotal'], 2) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <p class="card-text text-end m-0">Totaal exclusief BTW: € {{ number_format($cartData['totalCartPrice'], 2) }}</p>
+                    <p class="card-text text-end m-0">BTW: € {{ number_format($cartData['totalVat'], 2) }}</p>
+                    <h4 class="card-text text-end mt-1">Totaal inclusief BTW: € {{ number_format($cartData['totalCartPrice'] + $cartData['totalVat'], 2) }}</h4>
+                </div>
+            </div>
+        </div></div>
     </div>
     @section('scripts')
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

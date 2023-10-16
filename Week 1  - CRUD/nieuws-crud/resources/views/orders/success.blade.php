@@ -64,7 +64,11 @@
                             <tbody>
                                 @foreach ($cartData['products'] as $product)
                                     <tr>
-                                        <td>{{ $product['name'] }}</td>
+                                        <td class="d-flex">
+                                            <img style="height: 70px; margin-right: 10px;"
+                                                src="{{ asset("images/products/{$product['image']}") }}">
+                                            <div>{{ $product['name'] }}</div>
+                                        </td>
                                         <td>€ {{ number_format($product['price'], 2) }}</td>
                                         <td>{{ $product['quantity'] }}</td>
                                         <td>€ {{ number_format($product['subtotal'], 2) }}</td>

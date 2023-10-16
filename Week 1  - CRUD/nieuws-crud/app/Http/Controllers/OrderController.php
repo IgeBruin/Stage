@@ -8,6 +8,7 @@ use App\Models\Address;
 use App\Models\Product;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\OrderStoreValidation;
 use App\Http\Requests\ShippingValidationRequest;
 use PDF;
@@ -188,7 +189,11 @@ class OrderController extends Controller
         $shippingInfo = session('shippingInfo', []);
     
         $order = new Order();
-        $order->user_id = auth()->user()->id;
+        if (Auth::check()) {
+            $order->user_id = auth()->user()->id;
+        } else {
+            $order->user_id = null;
+        }
         $order->email = $shippingInfo['email'];
         $order->telephone = $shippingInfo['telephone'];
         $order->total_excl = $cartData['totalCartPrice'];
@@ -243,6 +248,7 @@ class OrderController extends Controller
         $email = $shippingInfo['email'];
         Mail::to($email)->send(new OrderPlaced($order));
 
+
         return redirect()->route('order.success')->with('success', 'Uw bestelling is geplaatst!');
     }
 
@@ -251,7 +257,7 @@ class OrderController extends Controller
         $cartData = session('cartData');
         $address = session('address');
         $view = view('orders.success', ['cartData' => $cartData, 'address' => $address])->with('success', 'Uw bestelling is geplaatst!');
-        session()->forget('cart');
+        // session()->forget('cart');
         return $view;
     }
 

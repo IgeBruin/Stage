@@ -43,27 +43,26 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+//iedereen
+Route::get("articles", [PostController::class, "index"])->name("articles.index");
+Route::get('products/{product}/show', [UserController::class, 'showProduct'])->name('showProduct');
+Route::get('products', [UserController::class, 'allProducts'])->name('products');
+Route::get('products/searchProduct', [UserController::class, 'searchProduct'])->name('searchProduct');
+
+Route::get('cart', [OrderController::class, 'cartIndex'])->name('cart.index');
+Route::post('cart/add', [OrderController::class, 'add'])->name('cart.add');
+Route::delete('/cart/{productId}/remove', [OrderController::class, 'remove'])->name('cart.remove');
+Route::put('/cart/{productId}/update', [OrderController::class, 'update'])->name('cart.update');
+
+Route::get('order', [OrderController::class, 'orderIndex'])->name('order.index');
+Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
+Route::get('/order/shipping', [OrderController::class, 'shipping'])->name('order.shipping');
+Route::post('/order/process', [OrderController::class, 'process'])->name('order.process');
+Route::get('/order/success', [OrderController::class, 'success'])->name('order.success');
+Route::get('generate-pdf', [OrderController::class, 'generatePDF'])->name('order.generatePDF');
+
 // alleen ingelogde gebruikers
 Route::middleware('auth')->group(function () {
-
-    Route::get("articles", [PostController::class, "index"])->name("articles.index");
-    Route::get('products/{product}/show', [UserController::class, 'showProduct'])->name('showProduct');
-    Route::get('products', [UserController::class, 'allProducts'])->name('products');
-    Route::get('products/searchProduct', [UserController::class, 'searchProduct'])->name('searchProduct');
-
-    Route::get('cart', [OrderController::class, 'cartIndex'])->name('cart.index');
-    Route::post('cart/add', [OrderController::class, 'add'])->name('cart.add');
-    Route::delete('/cart/{productId}/remove', [OrderController::class, 'remove'])->name('cart.remove');
-    Route::put('/cart/{productId}/update', [OrderController::class, 'update'])->name('cart.update');
-
-    Route::get('order', [OrderController::class, 'orderIndex'])->name('order.index');
-    Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
-    Route::get('/order/shipping', [OrderController::class, 'shipping'])->name('order.shipping');
-    Route::post('/order/process', [OrderController::class, 'process'])->name('order.process');
-    Route::get('/order/success', [OrderController::class, 'success'])->name('order.success');
-    Route::get('generate-pdf', [OrderController::class, 'generatePDF'])->name('order.generatePDF');
-
-
 
     Route::prefix('user')->name('user.')->group(function () {
         //projects
