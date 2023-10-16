@@ -257,9 +257,13 @@ class OrderController extends Controller
         $address = $addresses->where('order_id', $order->id)->first();
 
         session(['cartData' => $cartData, 'address' => $address]);
+        $billingAddress = Address::where('order_id', $address->order_id)->where('type', 'Invoice')->first() ?? null;
+
+        $pdf = PDF::loadView('orders.pdf', ['cartData' => $cartData, 'address' => $address, 'billingAddress' => $billingAddress])->setPaper('a4', 'landscape');
+        $pdfData = $pdf->output();
 
         $email = $shippingInfo['email'];
-        Mail::to($email)->send(new OrderPlaced($order));
+        Mail::to($email)->send(new OrderPlaced($order, $pdfData));
 
 
         return redirect()->route('order.success')->with('success', 'Uw bestelling is geplaatst!');

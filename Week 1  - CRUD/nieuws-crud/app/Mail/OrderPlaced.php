@@ -2,8 +2,6 @@
 
 namespace App\Mail;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -13,47 +11,50 @@ use App\Models\Order;
 
 class OrderPlaced extends Mailable
 {
-    use Queueable;
     use SerializesModels;
     use InteractsWithQueue;
 
     protected $order;
+    public $pdfData;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-public function __construct(Order $order)
-{
-    //
-    $this->order = $order;
-}
+    public function __construct(Order $order, $pdfData)
+    {
+        //
+        $this->order = $order;
+        $this->pdfData = $pdfData;
+    }
 
-public function build()
-{
-    return $this->subject('Bestelling geplaatst')
+    public function build()
+    {
+        return $this->subject('Bestelling geplaatst')->attachData($this->pdfData, 'factuur.pdf', [
+        'mime' => 'application/pdf',
+        ])
         ->from('igebruib@gmail.com', 'Ige Bruin')
         ->markdown('emails.orders.placed');
-}
+    }
     /**
      * Get the message envelope.
      *
      * @return \Illuminate\Mail\Mailables\Envelope
      */
-public function envelope()
-{
-    return new Envelope(
-        subject: 'Order Placed',
-    );
-}
+    public function envelope()
+    {
+        return new Envelope(
+            subject: 'Order Placed',
+        );
+    }
 
     /**
      * Get the message content definition.
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-public function content()
+    public function content()
     {
         return new Content(
             view: 'view.name',
