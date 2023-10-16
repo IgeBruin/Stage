@@ -32,12 +32,20 @@
 
         .invoice-details {
             display: flex;
+            justify-content: space-between;
         }
+
 
         .address-block {
-            margin-right: 20px;
-        }
+        width: 48%;
+        padding: 10px;
+        display: flex;
+        flex-direction: column; /* Hiermee blijft de tekst onder elkaar staan */
+    }
 
+    .address-block p {
+        margin: 3px;
+    }
         .invoice-details p {
             margin: 3px;
         }
@@ -98,7 +106,6 @@
                     @endif
                 </div>
             </div>
-
 
             <div class="invoice-items">
                 <table>

@@ -236,10 +236,11 @@ class OrderController extends Controller
             $billingAddress->street_number = $request->input('billing_street_number');
             $billingAddress->zip_code = $request->input('billing_zip_code');
             $billingAddress->city = $request->input('billing_city');
-            $billingAddress->name = $shippingName; 
-            $billingAddress->surname = $shippingSurname; 
+            $billingAddress->name = $request->input('billing_name'); 
+            $billingAddress->surname = $request->input('billing_surname');
             $billingAddress->save();
         }
+        
     
         foreach ($cartData['products'] as $product) {
             $orderItem = new OrderItem();

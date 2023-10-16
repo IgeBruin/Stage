@@ -64,6 +64,20 @@
                             <div id="differentShippingFields">
                                 <h5>Factuuradres:</h5>
                                 <div class="mb-3">
+                                    <label for="billing_name" class="form-label">Naam</label>
+                                    <input type="text" class="form-control @error('billing_name') is-invalid @enderror" id="billing_name" name="billing_name" value="{{ old('billing_name') }}">
+                                    @error('billing_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="billing_surname" class="form-label">Achternaam</label>
+                                    <input type="text" class="form-control @error('billing_surname') is-invalid @enderror" id="billing_surname" name="billing_surname" value="{{ old('billing_surname') }}">
+                                    @error('billing_surname')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>                                
+                                <div class="mb-3">
                                     <label for="billing_street" class="form-label">Straat</label>
                                     <input type="text"
                                         class="form-control @error('billing_street') is-invalid @enderror"
