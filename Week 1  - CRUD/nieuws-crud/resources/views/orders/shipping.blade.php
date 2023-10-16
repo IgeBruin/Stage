@@ -100,9 +100,9 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <p class="text-muted">Wanneer u de benodigde gegevens invult zonder enige fouten, worden deze automatisch opgeslagen. U hoeft geen extra handelingen uit te voeren om de wijzigingen op te slaan.</p>
                             </div>
-                        
-
+                    
                     </div>
                 </div>
                 

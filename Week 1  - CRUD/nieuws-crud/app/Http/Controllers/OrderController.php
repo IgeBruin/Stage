@@ -152,12 +152,16 @@ class OrderController extends Controller
 
         Session::put('cart', $cartItems);
 
+        if ($cartData['totalProductCount'] === 0) {
+            return redirect()->route('cart.index')->with('error', 'U kunt geen lege bestelling plaatsen. Voeg producten toe aan uw winkelmandje.');
+        }
+
         return view('orders.index', $cartData , $shippingInfo);
     }
 
     public function store(OrderStoreValidation $request)
     {
-
+        
         $shippingInfo = [
             'street' => $request->input('street'),
             'street_number' => $request->input('street_number'),
@@ -179,6 +183,10 @@ class OrderController extends Controller
     {
         $cartData = $this->processCartItems();
         $shippingInfo = session('shippingInfo', []);
+
+        if ($cartData['totalProductCount'] === 0) {
+            return redirect()->route('cart.index')->with('error', 'U kunt geen lege bestelling plaatsen. Voeg producten toe aan uw winkelmandje.');
+        }
     
         return view('orders.shipping', compact('cartData'));
     }
@@ -188,6 +196,10 @@ class OrderController extends Controller
         // dd($request->all());
         $cartData = $this->processCartItems();
         $shippingInfo = session('shippingInfo', []);
+
+        if ($cartData['totalProductCount'] === 0) {
+            return redirect()->route('cart.index')->with('error', 'U kunt geen lege bestelling plaatsen. Voeg producten toe aan uw winkelmandje.');
+        }
     
         $order = new Order();
         if (Auth::check()) {
