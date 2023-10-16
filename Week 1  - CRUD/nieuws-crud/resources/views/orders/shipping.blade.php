@@ -35,19 +35,29 @@
                         <form method="POST" action="{{ route('order.process') }}">
                             @csrf
                             @method('POST')
-                            <h4>Huidige bestelling:</h4>
-                            <p>Naam: {{ session('shippingInfo.name') }} {{ session('shippingInfo.surname') }}</p>
-                            <p>Email: {{ session('shippingInfo.email') }}</p>
-                            <p>Straat en huisnummer: {{ session('shippingInfo.street') }}
-                                {{ session('shippingInfo.street_number') }}</p>
-                            <p>Postcode: {{ session('shippingInfo.zip_code') }}</p>
-                            <p>Stad: {{ session('shippingInfo.city') }}</p>
-
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Factuuradres:</h4>
+                                    {{ session('shippingInfo.name') }} {{ session('shippingInfo.surname') }}<br>
+                                    {{ session('shippingInfo.email') }}<br>
+                                    {{ session('shippingInfo.street') }} {{ session('shippingInfo.street_number') }}<br>
+                                    {{ session('shippingInfo.zip_code') }} {{ session('shippingInfo.city') }}<br>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Afleveradres:</h4>
+                                    {{ session('shippingInfo.name') }} {{ session('shippingInfo.surname') }}<br>
+                                    {{ session('shippingInfo.email') }}<br>
+                                    {{ session('shippingInfo.street') }} {{ session('shippingInfo.street_number') }}<br>
+                                    {{ session('shippingInfo.zip_code') }} {{ session('shippingInfo.city') }}<br>
+                                </div>
+                            </div>
+                            
+                    
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="useDifferentBilling"
                                     name="useDifferentBilling" {{ old('useDifferentBilling', true) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="useDifferentBilling">
-                                    Bezorg- en factuuradres zijn hetzelfde
+                                    Factuur- en afleveradres zijn hetzelfde
                                 </label>
                             </div>
 
@@ -130,17 +140,16 @@
                 </div>
                 <div class="mt-4">
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('order.index') }}" class="btn btn-link">
+                        <a href="{{ route('order.index', ['shippingInfo' => session('shippingInfo')]) }}" class="btn btn-link">
                             Bezorggegevens Bewerken
-                        </a>  
+                        </a>
+                        
                         <button type="submit" class="btn btn-primary btn-lg">Plaats bestelling</button>
                     </div>
                 </div>
             </div>
             </form>
-        </div>
-        <div class="row py-6">
-            <div class="col-md-8">
+            <div class="col-md-8 mb-6">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h2>Winkelmand</h2>
@@ -176,8 +185,9 @@
                     <h4 class="card-text text-end mt-1">Totaal inclusief BTW: € {{ number_format($cartData['totalCartPrice'] + $cartData['totalVat'], 2) }}</h4>
                 </div>
             </div>
-        </div></div>
+        </div>
     </div>
+
     @section('scripts')
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>

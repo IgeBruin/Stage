@@ -148,10 +148,11 @@ class OrderController extends Controller
     {
         $cartItems = session('cart', []);
         $cartData = $this->processCartItems();
+        $shippingInfo = session('shippingInfo', []);
 
         Session::put('cart', $cartItems);
 
-        return view('orders.index', $cartData);
+        return view('orders.index', $cartData , $shippingInfo);
     }
 
     public function store(OrderStoreValidation $request)
