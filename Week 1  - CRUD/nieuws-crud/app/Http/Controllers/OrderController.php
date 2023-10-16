@@ -205,30 +205,29 @@ class OrderController extends Controller
         $shippingName = $shippingInfo['name'];
         $shippingSurname = $shippingInfo['surname'];
 
-        if ($request->useDifferentBilling == false) {
-            $shippingType = 'Invoice';
-            $shippingStreet = $request->input('billing_street');
-            $shippingStreetNumber = $request->input('billing_street_number');
-            $shippingZipCode = $request->input('billing_zip_code');
-            $shippingCity = $request->input('billing_city');
-        } else {
-            $shippingType = 'Shipping';
-            $shippingStreet = $shippingInfo['street'];
-            $shippingStreetNumber = $shippingInfo['street_number'];
-            $shippingZipCode = $shippingInfo['zip_code'];
-            $shippingCity = $shippingInfo['city'];
-        }
-
         $shippingAddress = new Address();
         $shippingAddress->order_id = $order->id;
-        $shippingAddress->type = $shippingType;
-        $shippingAddress->street = $shippingStreet;
-        $shippingAddress->street_number = $shippingStreetNumber;
-        $shippingAddress->zip_code = $shippingZipCode;
-        $shippingAddress->city = $shippingCity;
+        $shippingAddress->type = 'Shipping';
+        $shippingAddress->street = $shippingInfo['street'];
+        $shippingAddress->street_number = $shippingInfo['street_number'];
+        $shippingAddress->zip_code = $shippingInfo['zip_code'];
+        $shippingAddress->city = $shippingInfo['city'];
         $shippingAddress->name = $shippingName;
         $shippingAddress->surname = $shippingSurname;
         $shippingAddress->save();
+    
+        if ($request->useDifferentBilling == false) {
+            $billingAddress = new Address();
+            $billingAddress->order_id = $order->id;
+            $billingAddress->type = 'Invoice';
+            $billingAddress->street = $request->input('billing_street');
+            $billingAddress->street_number = $request->input('billing_street_number');
+            $billingAddress->zip_code = $request->input('billing_zip_code');
+            $billingAddress->city = $request->input('billing_city');
+            $billingAddress->name = $shippingName; 
+            $billingAddress->surname = $shippingSurname; 
+            $billingAddress->save();
+        }
     
         foreach ($cartData['products'] as $product) {
             $orderItem = new OrderItem();
@@ -258,7 +257,7 @@ class OrderController extends Controller
         $cartData = session('cartData');
         $address = session('address');
         $view = view('orders.success', ['cartData' => $cartData, 'address' => $address])->with('success', 'Uw bestelling is geplaatst!');
-        // session()->forget('cart');
+        session()->forget('cart');
         return $view;
     }
 
