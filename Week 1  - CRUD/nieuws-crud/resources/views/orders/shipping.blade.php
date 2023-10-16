@@ -105,6 +105,7 @@
 
                     </div>
                 </div>
+                
             </div>
             <div class="col-md-4">
                 <div class="card shadow">
@@ -161,6 +162,7 @@
                                 <th>Naam</th>
                                 <th>Prijs (Per product)</th>
                                 <th>Aantal</th>
+                                <th>BTW</th>
                                 <th>Subtotaal (€)</th>
                             </tr>
                         </thead>
@@ -175,6 +177,7 @@
                                     </div>
                                     <td>€ {{ number_format($product['price'], 2) }}</td>
                                     <td>{{ $product['quantity'] }}</td>
+                                    <td>€ {{ number_format($cartData['totalVat'], 2) }}</td>
                                     <td>€ {{ number_format($product['subtotal'], 2) }}</td>
                                 </tr>
                             @endforeach

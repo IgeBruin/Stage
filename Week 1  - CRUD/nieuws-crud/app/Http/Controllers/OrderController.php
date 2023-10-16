@@ -252,21 +252,22 @@ class OrderController extends Controller
         return redirect()->route('order.success')->with('success', 'Uw bestelling is geplaatst!');
     }
 
-    public function success()
+    public function success(Address $address)
     {
         $cartData = session('cartData');
         $address = session('address');
-        $view = view('orders.success', ['cartData' => $cartData, 'address' => $address])->with('success', 'Uw bestelling is geplaatst!');
+        $billingAddress = Address::where('order_id', $address->order_id)->where('type', 'Invoice')->first() ?? null;
+        $view = view('orders.success', ['cartData' => $cartData, 'address' => $address, 'billingAddress' => $billingAddress])->with('success', 'Uw bestelling is geplaatst!');
         session()->forget('cart');
         return $view;
     }
 
-    public function generatePDF()
+    public function generatePDF(Address $address)
     {
         $cartData = session('cartData');
         $address = session('address');
-    
-        $pdf = PDF::loadView('orders.pdf', ['cartData' => $cartData, 'address' => $address])->setPaper('a4', 'landscape');
+        $billingAddress = Address::where('order_id', $address->order_id)->where('type', 'Invoice')->first() ?? null;
+        $pdf = PDF::loadView('orders.pdf', ['cartData' => $cartData, 'address' => $address , 'billingAddress' => $billingAddress])->setPaper('a4', 'landscape');
         return $pdf->stream('factuur.pdf');
     }
 }

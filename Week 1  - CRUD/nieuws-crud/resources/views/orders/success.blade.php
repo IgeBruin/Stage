@@ -21,17 +21,40 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Bezorggegevens</h2>
+                        <h2>Adresgegevens</h2>
                     </div>
                     <div class="card-body">
-
-                        @if ($address)
-                            <p class="card-text">Naam: {{ $address->name }} {{ $address->surname }}</p>
-                            <p class="card-text">Straat: {{ $address->street }} {{ $address->street_number }}</p>
-                            <p class="card-text">Postcode: {{ $address->zip_code }}</p>
-                            <p class="card-text">Plaats: {{ $address->city }}</p>
-                        @endif
+                        <div class="row">
+                            <div class="col-md-6">
+                                @if ($address)
+                                    <h3>Afleveradres</h3>
+                                    <p><strong>Naam:</strong> {{ $address->name }} {{ $address->surname }}</p>
+                                    <p><strong>Straat:</strong> {{ $address->street }} {{ $address->street_number }}</p>
+                                    <p><strong>Postcode:</strong> {{ $address->zip_code }}</p>
+                                    <p><strong>Plaats:</strong> {{ $address->city }}</p>
+                                @endif
+                            </div>
+                    
+                            <div class="col-md-6">
+                                @if ($billingAddress)
+                                    <h3>Factuuradres</h3>
+                                    <p><strong>Naam:</strong> {{ $billingAddress->name }} {{ $billingAddress->surname }}</p>
+                                    <p><strong>Straat:</strong> {{ $billingAddress->street }} {{ $billingAddress->street_number }}</p>
+                                    <p><strong>Postcode:</strong> {{ $billingAddress->zip_code }}</p>
+                                    <p><strong>Plaats:</strong> {{ $billingAddress->city }}</p>
+                                @else
+                                    @if ($address)
+                                        <h3>Factuuradres</h3>
+                                        <p><strong>Naam:</strong> {{ $address->name }} {{ $address->surname }}</p>
+                                        <p><strong>Straat:</strong> {{ $address->street }} {{ $address->street_number }}</p>
+                                        <p><strong>Postcode:</strong> {{ $address->zip_code }}</p>
+                                        <p><strong>Plaats:</strong> {{ $address->city }}</p>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
                     </div>
+                    
                 </div>
                 <div class="d my-2">
                     <a href="{{ route('products') }}" class="btn btn-lg btn-primary">Verder gaan met winkelen</a>
@@ -58,7 +81,8 @@
                                     <th>Naam</th>
                                     <th>Prijs (Per product)</th>
                                     <th>Aantal</th>
-                                    <th>Subtotaal (€)</th>
+                                    <th>BTW</th>
+                                    <th>Subtotaal</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -71,6 +95,7 @@
                                         </td>
                                         <td>€ {{ number_format($product['price'], 2) }}</td>
                                         <td>{{ $product['quantity'] }}</td>
+                                        <td>€ {{ number_format($product['price'] * $product['quantity'], 2) }}</td>
                                         <td>€ {{ number_format($product['subtotal'], 2) }}</td>
                                     </tr>
                                 @endforeach
