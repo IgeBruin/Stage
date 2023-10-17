@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
 use App\Models\User;
-use app\Models\Ingredient;
+use App\Models\Ingredient;
 use App\Http\Requests\RecipeStoreValidation;
 use App\Http\Requests\RecipeUpdateValidation;
 use App\Http\Requests\RecipeIngredientValidation;
@@ -54,22 +54,21 @@ class RecipeController extends Controller
     }
 
 
-    public function edit(Recipe $recipe)
+    public function edit(Recipe $recipe, Ingredient $ingredient)
     {
         $recipe = Recipe::find($recipe->id);
         $recipes = Recipe::all();
-        $ingriedents = Ingredient::all();
-        return view("recipes.edit", compact('recipes', 'recipe', 'ingriedents'));
+        $ingredients = Ingredient::all();
+        return view("recipes.edit", compact('recipes', 'recipe', 'ingredients'));
     }
 
 
     public function update(RecipeUpdateValidation $request, Recipe $recipe)
     {
-        $recipe->name = $request->name;
+        $recipe->title = $request->title;
         $recipe->description = $request->description;
-        $recipe->price = $request->price;
-        $recipe->vat = $request->vat;
-        $recipe->stock = $request->stock;
+        $recipe->instructions = $request->instructions;
+
 
         if ($request->hasFile('image')) {
             if ($recipe->image) {
@@ -110,4 +109,25 @@ class RecipeController extends Controller
         return view("recipes.index", ["recipes" => $recipes]);
     }
 
+    public function saveIngredients(Request $request, Recipe $recipe)
+    {
+        $ingredients = $request->input('ingredients');
+
+        foreach ($ingredients as $ingredientId => $value) {
+            $existingRecipeIngredient = RecipeIngredient::where('recipe_id', $recipe->id)
+            ->where('ingredient_id', $ingredientId)->first();
+
+            if ($existingRecipeIngredient) {
+                $existingRecipeIngredient->update(['value' => $value]);
+            } else {
+                RecipeIngredient::create([
+                'recipe_id' => $recipe->id,
+                'ingredient_id' => $ingredientId,
+                'value' => $value,
+                ]);
+            }
+        }
+
+        return redirect()->route('dashboard.recipes.index')->with('success', 'Ingredienten opgeslagen');
+    }
 }

@@ -12,18 +12,17 @@ class IngredientController extends Controller
     public function index()
     {
 
-        $ingredients = Ingredient::orderby('created_at', 'desc')->paginate(5);
+        $ingredients = Ingredient::orderby('created_at', 'desc')->paginate(8);
         return view("ingredients.index", compact('ingredients'));
     }
 
     public function create()
     {   
-
         $ingredients = Ingredient::get();
         return view("ingredients.create", compact('ingredients'));
     }
 
-    public function store(IngredientStoreValidation $request, Ingredient $ingredient)
+    public function store(Request $request, Ingredient $ingredient)
     {
         $ingredient->name = $request->name;
 
@@ -40,9 +39,8 @@ class IngredientController extends Controller
         return view("ingredients.edit", compact('ingredients', 'ingredient'));
     }
     
-    
 
-    public function update(IngredientUpdateValidation $request, Ingredient $ingredient)
+    public function update(Request $request, Ingredient $ingredient)
     {
 
         $ingredient->name = $request->name;
@@ -56,14 +54,14 @@ class IngredientController extends Controller
 
         $ingredient->delete();
 
-        return redirect()->route("dashboard.ingredient.index")->with('success', 'Ingredient verwijderd'); 
+        return redirect()->route("dashboard.ingredients.index")->with('success', 'Ingredient verwijderd'); 
     }
 
     public function search(Request $request)
     {
 
         $query = $request->input('query');
-        $ingredients = Ingredient::where('name', 'like', "%$query%")->paginate(5)->withQueryString();
+        $ingredients = Ingredient::where('name', 'like', "%$query%")->paginate(8)->withQueryString();
         return view("ingredients.index", ["ingredients" => $ingredients]);
     }
 }

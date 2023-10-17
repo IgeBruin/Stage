@@ -78,7 +78,7 @@ Route::middleware('auth')->group(function () {
         Route::get('myOrders/{order}/show', [UserController::class, 'showOrder'])->name('showOrder');
     });
 //admin only
-    Route::middleware('admin')->group(function () {
+    // Route::middleware('admin')->group(function () {
 
     
         Route::prefix('dashboard')->name('dashboard.')->group(function () {
@@ -115,7 +115,7 @@ Route::middleware('auth')->group(function () {
                 Route::put('{recipe}', [RecipeController::class, 'update'])->name('update');
                 Route::delete('{recipe}/destroy', [RecipeController::class, 'destroy'])->name('destroy');
                 Route::get('search', [RecipeController::class, 'search'])->name('search');
-                Route::post('{recipe}/saveSpecifications', [RecipeController::class, 'saveSpecifications'])->name('saveSpecifications');
+                Route::post('{recipe}/saveIngredients', [RecipeController::class, 'saveIngredients'])->name('saveIngredients');
                 Route::post('{recipe}/addCategory', [RecipeController::class, 'addCategory'])->name('addCategory');
             });
             //dus dashboard/categories/ en dan hier de naam van de functie
@@ -154,7 +154,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('{project}/finishtask/{task}', [ProjectController::class, 'finishTask'])->name('finishTask');
             });
         
-        
             //dus dashboard/roles/ en dan hier de naam van de functie
             Route::prefix('roles')->name('roles.')->group(function () {
                 Route::get('', [RoleController::class, 'index'])->name('index');
@@ -187,7 +186,7 @@ Route::middleware('auth')->group(function () {
                 Route::delete('{specification}', [SpecificationController::class, 'destroy'])->name('destroy');
                 Route::get('search', [SpecificationController::class, 'search'])->name('search');
             });
-            //dus dashboard/ingredients/ en dan hier de naam van de functie
+            //dus dashboard/roles/ en dan hier de naam van de functie
             Route::prefix('ingredients')->name('ingredients.')->group(function () {
                 Route::get('', [IngredientController::class, 'index'])->name('index');
                 Route::get('create', [IngredientController::class, 'create'])->name('create');
@@ -202,8 +201,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    });
 });
+// });
 
 //blijkbaar moet dit onderaan staan
 require __DIR__ . '/auth.php';

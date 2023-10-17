@@ -8,7 +8,7 @@
             <h1 class="font-semibold text-heading3 leading-tight text-indigo-500">
                 {{ __('Dashboard') }}
             </h1>
-            <a href="{{ route('dashboard.products.create') }}" class="btn btn-lg fs-5 btn-primary">Product Aanmaken</a>
+            <a href="{{ route('dashboard.recipes.create') }}" class="btn btn-lg fs-5 btn-primary">Recept Aanmaken</a>
         </div>
     </x-slot>
 
@@ -26,7 +26,7 @@
                 <div class="d-flex flex-column justify-content-start">
                     <div class="card">
                         <div class="card-header fs-3 d-flex justify-content-between">
-                            <span>Producten</span>
+                            <span>Recepten</span>
                             <div class="d-flex align-items-center">
                                 <form action="{{ route('dashboard.products.search') }}" method="GET">
                                     <div class="input-group">
@@ -41,24 +41,24 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="fs-5">Naam</th>
-                                            <th class="d-none d-md-table-cell fs-5">Belasting</th>
-                                            <th class="d-none d-md-table-cell fs-5">Prijs</th>
+                                            <th class="fs-5">titel</th>
+                                            <th class="d-none d-md-table-cell fs-5">Aanmaak datum</th>
+                                            <th class="d-none d-md-table-cell fs-5">Laatst bewerkt</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (count($products) > 0)
-                                            @foreach ($products as $product)
+                                        @if (count($recipes) > 0)
+                                            @foreach ($recipes as $recipe)
                                                 <tr>
-                                                    <td>{{ $product->name }}</td>
+                                                    <td>{{ $recipe->title }}</td>
                                                     <td class="d-none d-md-table-cell">
-                                                        {{ $product->vat }} %</td>
+                                                        {{ date('d-m-Y', strtotime($recipe->created_at)) }}</td>
                                                     <td class="d-none d-md-table-cell">
-                                                        € {{ $product->price }}</td>
+                                                        {{ date('d-m-Y', strtotime($recipe->updated_at)) }}</td>
                                                     <td class="text-end">
                                                         <a class="btn"
-                                                            href="{{ route('dashboard.products.edit', $product->id) }}"><svg
+                                                            href="{{ route('dashboard.recipes.edit', $recipe->id) }}"><svg
                                                                 xmlns="http://www.w3.org/2000/svg" width="20"
                                                                 height="20" fill="currentColor"
                                                                 class="bi bi-pen-fill" viewBox="0 0 16 16">
@@ -68,9 +68,9 @@
                                                     </td>
                                                     <td class="text-start">
                                                         <form
-                                                            action="{{ route('dashboard.products.destroy', $product->id) }}"
+                                                            action="{{ route('dashboard.recipes.destroy', $recipe->id) }}"
                                                             method="post" class="d-inline"
-                                                            onsubmit="return confirm('Weet je zeker dat je dit product wilt verwijderen?');">
+                                                            onsubmit="return confirm('Weet je zeker dat je dit recept wilt verwijderen?');">
                                                             @csrf
                                                             @method('delete')
                                                             <button class="btn " type="submit"><svg
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            {{ $products->links('pagination::bootstrap-5') }}
+                            {{ $recipes->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
                 </div>

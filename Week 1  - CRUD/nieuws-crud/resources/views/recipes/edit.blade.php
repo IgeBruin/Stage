@@ -25,7 +25,7 @@
                 <div class="d-flex flex-column justify-content-start">
                     <div class="card">
                         <div class="card-header fs-3 d-flex justify-content-between">
-                            <span>Product Aanpassen</span>
+                            <span>Recept Aanpassen</span>
                         </div>
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -36,70 +36,49 @@
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="specifications-tab" data-bs-toggle="tab"
-                                        data-bs-target="#specifications" role="tab" aria-controls="specifications"
-                                        aria-selected="false">Specificatie</button>
+                                        data-bs-target="#ingredients" role="tab" aria-controls="ingredients"
+                                        aria-selected="false">Ingredienten</button>
                                 </li>
-                                <li class="nav-item" role="presentation">
+                                {{-- <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="specifications-tab" data-bs-toggle="tab"
                                         data-bs-target="#categories" role="tab" aria-controls="categories"
                                         aria-selected="false">Categorieën</button>
-                                </li>
+                                </li> --}}
                             </ul>
 
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="general" role="tabpanel"
                                     aria-labelledby="general-tab">
-                                    <form action="{{ route('dashboard.products.update', ['product' => $product]) }}"
+                                    <h3 class="mt-3">Algemeen</h3>
+                                    <form action="{{ route('dashboard.recipes.update', ['recipe' => $recipe]) }}"
                                         method="post" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
                                         <div class="mb-3">
-                                            <label for="name" class="form-label">Naam</label>
+                                            <label for="title" class="form-label">Titel</label>
                                             <input type="text"
-                                                class="form-control @error('name') is-invalid @enderror" id="name"
-                                                name="name" value="{{ old('name', $product->name) }}">
-                                            @error('name')
+                                                class="form-control @error('title') is-invalid @enderror" id="title"
+                                                name="title" value="{{ old('title', $recipe->title) }}">
+                                            @error('title')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="mb-3">
                                             <label for="description" class="form-label">Omschrijving</label>
                                             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
-                                                rows="4">{{ old('description', $product->description) }}</textarea>
+                                                rows="4">{{ old('description', $recipe->description) }}</textarea>
                                             @error('description')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-
                                         <div class="mb-3">
-                                            <label for="price" class="form-label">Prijs</label>
-                                            <input type="text"
-                                                class="form-control @error('price') is-invalid @enderror" id="price"
-                                                name="price" value="{{ old('price', $product->price) }}">
-                                            @error('price')
+                                            <label for="instructions" class="form-label">instructies</label>
+                                            <textarea class="form-control @error('instructions') is-invalid @enderror" id="instructions" name="instructions"
+                                                rows="4">{{ old('instructions', $recipe->instructions) }}</textarea>
+                                            @error('instructions')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="stock" class="form-label">Voorraad</label>
-                                            <input type="number"
-                                                class="form-control @error('stock') is-invalid @enderror" id="stock"
-                                                name="stock" value="{{ old('stock', $product->stock) }}">
-                                            @error('stock')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="vat" class="form-label">BTW (%)</label>
-                                            <input type="number"
-                                                class="form-control @error('vat') is-invalid @enderror" id="vat"
-                                                name="vat" value="{{ old('vat', $product->vat) }}">
-                                            @error('vat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
 
                                         <div class="mb-3">
                                             <label for="image" class="form-label">Afbeelding</label>
@@ -108,17 +87,17 @@
                                                 id="image" name="image">
 
 
-                                            @if ($product->image && $product->image != 'images/products/placeholder.png')
+                                            @if ($recipe->image && $recipe->image != 'images/recipes/placeholder.png')
                                                 <p>Huidige afbeelding:</p>
-                                                <img src="{{ asset("images/products/{$product->id}/{$product->image}") }}"
-                                                    alt="{{ $product->title }}" width="100" height="100">
+                                                <img src="{{ asset("images/recipes/{$recipe->id}/{$recipe->image}") }}"
+                                                    alt="{{ $recipe->title }}" width="100" height="100">
                                                 <label for="delete_image" class="form-label">Verwijder
                                                     Afbeelding</label>
                                                 <input type="checkbox" class="form-check-input" id="delete_image"
                                                     name="delete_image">
-                                            @elseif ($product->image == 'images/products/placeholder.png')
+                                            @elseif ($recipe->image == 'images/recipes/placeholder.png')
                                                 <p>Huidige afbeelding:</p>
-                                                <img src="{{ asset('images/products/placeholder.png') }}"
+                                                <img src="{{ asset('images/recipes/placeholder.png') }}"
                                                     alt="Placeholder" width="100" height="100">
                                             @endif
                                             @error('image')
@@ -130,40 +109,38 @@
                                             <a href="{{ route('dashboard.products.index') }}"
                                                 class="btn-lg btn btn-link m-2">Terug</a>
                                             <input type="submit" class="btn-lg btn btn-primary m-2"
-                                                value="Product Aanpassen">
+                                                value="Recept Aanpassen">
                                         </div>
                                     </form>
                                 </div>
 
-                                <div class="tab-pane fade" id="specifications" role="tabpanel"
-                                    aria-labelledby="specifications-tab">
-                                    <form method="POST"
-                                        action="{{ route('dashboard.products.saveSpecifications', $product) }}">
+                                <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
+                                    <h3 class="mt-3">Ingredienten</h3>
+                                    <form method="POST" action="{{ route('dashboard.recipes.saveIngredients', $recipe) }}">
                                         @csrf
                                         @method('post')
-                                        @foreach ($specifications as $specification)
+                                
+                                        @foreach ($ingredients as $ingredient)
                                             <div class="form-group">
-                                                <label
-                                                    for="specifications[{{ $specification->id }}]">{{ $specification->name }}</label>
-                                                <input type="text" name="specifications[{{ $specification->id }}]"
-                                                    class="form-control @error('specifications.' . $specification->id) is-invalid @enderror"
-                                                    value="{{ old('specifications.' . $specification->id, $product->specifications->where('id', $specification->id)->first() ? $product->specifications->where('id', $specification->id)->first()->pivot->value : '') }}">
-                                                @error('specifications.' . $specification->id)
+                                                <label for="ingredients[{{ $ingredient->id }}]">{{ $ingredient->name }}</label>
+                                                <input type="text" name="ingredients[{{ $ingredient->id }}]"
+                                                    class="form-control @error('ingredients.' . $ingredient->id) is-invalid @enderror"
+                                                    value="{{ old('ingredients.' . $ingredient->id, $recipe->ingredients->where('id', $ingredient->id)->first() ? $recipe->ingredients->where('id', $ingredient->id)->first()->pivot->value : '') }}">
+                                                @error('ingredients.' . $ingredient->id)
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         @endforeach
-
+                                
                                         <div class="mb-3 d-flex justify-content-end">
-                                            <a href="{{ route('dashboard.products.index') }}"
-                                                class="btn-lg btn btn-link m-2">Terug</a>
-                                            <input type="submit" class="btn-lg btn btn-primary m-2"
-                                                value="Specificatie(s) doorvoeren">
+                                            <a href="{{ route('dashboard.recipes.index') }}" class="btn-lg btn btn-link m-2">Terug</a>
+                                            <input type="submit" class="btn-lg btn btn-primary m-2" value="Ingrediënten Opslaan">
                                         </div>
                                     </form>
                                 </div>
+                                
 
-                                <div class="tab-pane fade" id="categories" role="tabpanel"
+                                {{-- <div class="tab-pane fade" id="categories" role="tabpanel"
                                     aria-labelledby="categories-tab">
                                     <form action="{{ route('dashboard.products.addCategory', $product->id) }}"
                                         method="post">
@@ -184,7 +161,7 @@
                                         <button type="submit" class="btn btn-primary mt-2">Voeg categorieën
                                             toe</button>
                                     </form>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </div>
@@ -197,7 +174,7 @@
     @section('scripts')
         <script>
             window.addEventListener('load', () => {
-                for (const name of ['description']) {
+                for (const name of ['description', 'instructions']) {
                     ClassicEditor.create(document.getElementById(name))
                         .catch(error => {
                             console.error(error);

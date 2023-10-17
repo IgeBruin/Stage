@@ -2,15 +2,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-    <div class="modal fade" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createIngredientModal" tabindex="-1" aria-labelledby="createIngredientModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createRoleModalLabel">Rol Aanmaken</h5>
+                    <h5 class="modal-title" id="createIngredientModalLabel">Ingredient Aanmaken</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('dashboard.roles.store') }}" method="post">
+                    <form action="{{ route('dashboard.ingredients.store') }}" method="post">
                         @csrf
                         @method('post')
                         <div class="mb-3">

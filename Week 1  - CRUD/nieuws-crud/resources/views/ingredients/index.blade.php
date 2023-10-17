@@ -9,7 +9,7 @@
                 {{ __('Dashboard') }}
             </h1>
             <a href="#" class="btn btn-lg fs-5 btn-primary" data-bs-toggle="modal"
-                data-bs-target="#createRoleModal">Rol Aanmaken</a>
+                data-bs-target="#createIngredientModal">Ingredient Aanmaken</a>
         </div>
     </x-slot>
 
@@ -28,9 +28,9 @@
                 <div class="d-flex flex-column justify-content-start">
                     <div class="card">
                         <div class="card-header fs-3 d-flex justify-content-between">
-                            <span>Rollen</span>
+                            <span>Ingredienten</span>
                             <div class="d-flex align-items-center">
-                                <form action="{{ route('dashboard.roles.search') }}" method="GET">
+                                <form action="{{ route('dashboard.ingredients.search') }}" method="GET">
                                     <div class="input-group">
                                         <input type="text" name="query" class="form-control" placeholder="Zoek...">
                                         <button type="submit" class="btn btn-primary">Zoeken</button>
@@ -50,20 +50,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (count($roles) > 0)
-                                            @foreach ($roles as $role)
+                                        @if (count($ingredients) > 0)
+                                            @foreach ($ingredients as $ingredient)
                                                 <tr>
-                                                    <td>{{ $role->name }}</td>
+                                                    <td>{{ $ingredient->name }}</td>
                                                     <td class="d-none d-md-table-cell">
-                                                        {{ date('d-m-Y', strtotime($role->created_at)) }}</td>
+                                                        {{ date('d-m-Y', strtotime($ingredient->created_at)) }}</td>
                                                     <td class="d-none d-md-table-cell">
-                                                        {{ date('d-m-Y', strtotime($role->updated_at)) }}</td>
+                                                        {{ date('d-m-Y', strtotime($ingredient->updated_at)) }}</td>
                                                     <td class="text-end">
 
                                                         <a class="btn" data-bs-toggle="modal" href="#"
-                                                            data-bs-target="#editRoleModal"
-                                                            data-id="{{ $role->id }}"
-                                                            data-name="{{ $role->name }}">
+                                                            data-bs-target="#editIngredientModal"
+                                                            data-id="{{ $ingredient->id }}"
+                                                            data-name="{{ $ingredient->name }}">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20"
                                                                 height="20" fill="currentColor"
                                                                 class="bi bi-pen-fill" viewBox="0 0 16 16">
@@ -75,7 +75,7 @@
 
                                                     </td>
                                                     <td class="text-start">
-                                                        <form action="{{ route('dashboard.roles.destroy', $role->id) }}"
+                                                        <form action="{{ route('dashboard.ingredients.destroy', $ingredient->id) }}"
                                                             method="post" class="d-inline"
                                                             onsubmit="return confirm('Weet je zeker dat je deze rol wilt verwijderen?');">
                                                             @csrf
@@ -93,7 +93,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="4" class="text-center">Geen rollen gevonden.</td>
+                                                <td colspan="4" class="text-center">Geen ingredienten gevonden.</td>
                                             </tr>
                                         @endif
                                     </tbody>
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            {{ $roles->links('pagination::bootstrap-5') }}
+                            {{ $ingredients->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
     </script>
-    @include('roles.modal.create')
-    @include('roles.modal.edit')
+    @include('ingredients.modal.create')
+    @include('ingredients.modal.edit')
 
 </x-app-layout>

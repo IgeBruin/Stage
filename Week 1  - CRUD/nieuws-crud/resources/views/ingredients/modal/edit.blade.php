@@ -2,15 +2,15 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-<div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editIngredientModal" tabindex="-1" aria-labelledby="editIngredientModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editRoleModalLabel">Rol Aanpassen</h5>
+                <h5 class="modal-title" id="editIngredientModalLabel">Ingredient Aanpassen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('dashboard.roles.update', ['role' => 'role_id']) }}" method="post"
+                <form action="{{ route('dashboard.ingredients.update', ['ingredient' => 'ingredient_id']) }}" method="post"
                     id="editRoleForm">
                     @csrf
                     @method('put')
@@ -28,17 +28,17 @@
 </div>
 
 <script>
-    $('#editRoleModal').on('show.bs.modal', function(event) {
+    $('#editIngredientModal').on('show.bs.modal', function(event) {
         let button = $(event.relatedTarget);
-        let roleId = button.data('id');
-        let roleName = button.data('name');
+        let id = button.data('id');
+        let name = button.data('name');
         let modal = $(this);
 
         let form = modal.find('#editRoleForm');
-        let action = form.attr('action').replace('role_id', roleId);
+        let action = form.attr('action').replace('ingredient_id', id);
         form.attr('action', action);
 
         let nameInput = modal.find('#name');
-        nameInput.val(roleName);
+        nameInput.val(name);
     });
 </script>
