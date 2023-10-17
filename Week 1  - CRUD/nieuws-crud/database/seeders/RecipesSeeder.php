@@ -1,9 +1,14 @@
 <?php
 
+namespace Database\Seeders;
+
+require_once 'vendor/autoload.php';
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 use App\Models\Recipe;
 
-class RecipeSeeder extends Seeder
+class RecipesSeeder extends Seeder
 {
     public function run()
     {
@@ -11,6 +16,7 @@ class RecipeSeeder extends Seeder
             'user_id' => 1,
             'title' => 'Pasta Carbonara',
             'description' => 'A classic Italian pasta dish.',
+            "image" => "images/recipes/placeholder.png",
             'instructions' => '1. Boil pasta until al dente.
 2. In a separate pan, cook pancetta until crispy.
 3. Whisk together eggs, Parmesan, and black pepper.
@@ -23,12 +29,12 @@ class RecipeSeeder extends Seeder
             'user_id' => 1,
             'title' => 'Chicken Alfredo',
             'description' => 'Creamy chicken and pasta dish.',
+            "image" => "images/recipes/placeholder.png",
             'instructions' => '1. Cook chicken in a pan until no longer pink.
 2. Prepare Alfredo sauce with cream, butter, and Parmesan.
 3. Cook pasta until al dente.
 4. Combine cooked chicken, Alfredo sauce, and pasta.
 5. Serve hot.'
         ]);
-
     }
 }

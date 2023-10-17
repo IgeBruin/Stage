@@ -30,6 +30,14 @@
                     class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Specificaties</a>
             </li>
             <li class="list-group-item bg-light">
+                <a href="{{ route('dashboard.recipes.index') }}"
+                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Recepten</a>
+            </li>
+            <li class="list-group-item bg-light">
+                <a href="{{ route('dashboard.ingredients.index') }}"
+                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Ingredienten</a>
+            </li>
+            <li class="list-group-item bg-light">
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit"

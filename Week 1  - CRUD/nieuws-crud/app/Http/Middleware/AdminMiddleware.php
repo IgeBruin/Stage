@@ -18,12 +18,9 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
         if (Auth::check() && Auth::user()->isAdmin == 1) {
-            // Als de gebruiker is ingelogd en isAdmin is 1 (admin), laat de request passeren
             return $next($request);
         }
 
-        // Als de gebruiker geen admin is, kun je hier bepalen wat er moet gebeuren,
-        // bijvoorbeeld doorverwijzen naar een andere pagina of een foutmelding weergeven.
-        return redirect('/'); // Hier wordt de gebruiker teruggestuurd naar de startpagina
+        return redirect('/'); 
     }
 }

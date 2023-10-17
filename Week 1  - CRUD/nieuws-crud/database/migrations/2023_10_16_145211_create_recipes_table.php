@@ -14,6 +14,7 @@ class CreateRecipesTable extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('instructions');
+            $table->string("image")->nullable();
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users');

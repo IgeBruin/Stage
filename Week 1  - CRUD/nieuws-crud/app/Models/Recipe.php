@@ -8,7 +8,7 @@ class Recipe extends Model
 {
     protected $table = 'recipes';
 
-    protected $fillable = ['user_id', 'title', 'description', 'instructions'];
+    protected $fillable = ['user_id', 'title', 'description', 'image' ,'instructions'];
 
     public function user()
     {

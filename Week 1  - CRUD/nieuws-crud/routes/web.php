@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\ProjectController;
@@ -37,12 +38,11 @@ Route::get('/', function () {
 
 // admin
 Route::middleware('admin')->group(function () {
-
-Route::get('/dashboard', function () {
-    $posts = Post::orderBy('created_at', 'desc')->paginate(5);
-    $categories = Category::all(); 
-    return view('articles.dashboard', compact('posts', 'categories')); 
-})->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard', function () {
+        $posts = Post::orderBy('created_at', 'desc')->paginate(5);
+        $categories = Category::all(); 
+        return view('articles.dashboard', compact('posts', 'categories')); 
+    })->middleware(['auth', 'verified'])->name('dashboard');
 });
 
 
@@ -106,6 +106,18 @@ Route::middleware('auth')->group(function () {
                 Route::post('{product}/addCategory', [ProductController::class, 'addCategory'])->name('addCategory');
             });
 
+            //dus dashboard/recipes/ en dan hier de naam van de functie
+            Route::prefix('recipes')->name('recipes.')->group(function () {
+                Route::get('', [RecipeController::class, 'index'])->name('index');
+                Route::get('create', [RecipeController::class, 'create'])->name('create');
+                Route::post('', [RecipeController::class, 'store'])->name('store');
+                Route::get('{recipe}/edit', [RecipeController::class, 'edit'])->name('edit');
+                Route::put('{recipe}', [RecipeController::class, 'update'])->name('update');
+                Route::delete('{recipe}/destroy', [RecipeController::class, 'destroy'])->name('destroy');
+                Route::get('search', [RecipeController::class, 'search'])->name('search');
+                Route::post('{recipe}/saveSpecifications', [RecipeController::class, 'saveSpecifications'])->name('saveSpecifications');
+                Route::post('{recipe}/addCategory', [RecipeController::class, 'addCategory'])->name('addCategory');
+            });
             //dus dashboard/categories/ en dan hier de naam van de functie
             Route::prefix('categories')->name('categories.')->group(function () {
                 Route::get('', [CategoryController::class, 'index'])->name('index');
@@ -174,6 +186,16 @@ Route::middleware('auth')->group(function () {
                 Route::put('{specification}', [SpecificationController::class, 'update'])->name('update');
                 Route::delete('{specification}', [SpecificationController::class, 'destroy'])->name('destroy');
                 Route::get('search', [SpecificationController::class, 'search'])->name('search');
+            });
+            //dus dashboard/ingredients/ en dan hier de naam van de functie
+            Route::prefix('ingredients')->name('ingredients.')->group(function () {
+                Route::get('', [IngredientController::class, 'index'])->name('index');
+                Route::get('create', [IngredientController::class, 'create'])->name('create');
+                Route::post('', [IngredientController::class, 'store'])->name('store');
+                Route::get('{ingredient}/edit', [IngredientController::class, 'edit'])->name('edit');
+                Route::put('{ingredient}', [IngredientController::class, 'update'])->name('update');
+                Route::delete('{ingredient}', [IngredientController::class, 'destroy'])->name('destroy');
+                Route::get('search', [IngredientController::class, 'search'])->name('search');
             });
         });
     // profile door breeze

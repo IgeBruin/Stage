@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use RecipeSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoriesSeeder::class);
         $this->call(PostsSeeder::class);
         $this->call(UsersSeeder::class);
-        $this->call(RecipeSeeder::class);
+        $this->call(RecipesSeeder::class);
     }
 }
