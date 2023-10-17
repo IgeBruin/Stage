@@ -112,22 +112,30 @@ class RecipeController extends Controller
     public function saveIngredients(Request $request, Recipe $recipe)
     {
         $ingredients = $request->input('ingredients');
-
-        foreach ($ingredients as $ingredientId => $value) {
-            $existingRecipeIngredient = RecipeIngredient::where('recipe_id', $recipe->id)
-            ->where('ingredient_id', $ingredientId)->first();
-
-            if ($existingRecipeIngredient) {
-                $existingRecipeIngredient->update(['value' => $value]);
+    
+        // Loop door de ingrediënten en sla alleen de relevante op
+        foreach ($ingredients as $ingredientId => $amount) {
+            // Controleer of de hoeveelheid niet leeg is
+            if (!empty($amount)) {
+                $existingRecipeIngredient = RecipeIngredient::where('recipe_id', $recipe->id)
+                    ->where('ingredient_id', $ingredientId)->first();
+    
+                if ($existingRecipeIngredient) {
+                    $existingRecipeIngredient->update(['amount' => $amount]);
+                } else {
+                    RecipeIngredient::create([
+                        'recipe_id' => $recipe->id,
+                        'ingredient_id' => $ingredientId,
+                        'amount' => $amount,
+                    ]);
+                }
             } else {
-                RecipeIngredient::create([
-                'recipe_id' => $recipe->id,
-                'ingredient_id' => $ingredientId,
-                'value' => $value,
-                ]);
+                // Als de hoeveelheid leeg is, verwijder het record als het al bestaat
+                RecipeIngredient::where('recipe_id', $recipe->id)
+                    ->where('ingredient_id', $ingredientId)->delete();
             }
         }
-
+    
         return redirect()->route('dashboard.recipes.index')->with('success', 'Ingredienten opgeslagen');
     }
 }

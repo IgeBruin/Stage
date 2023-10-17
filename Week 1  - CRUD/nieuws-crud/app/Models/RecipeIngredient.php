@@ -8,7 +8,7 @@ class RecipeIngredient extends Model
 {
     protected $table = 'recipe_ingredients';
 
-    protected $fillable = ['recipe_id', 'ingredient_id', 'quantity', 'unit'];
+    protected $fillable = ['recipe_id', 'ingredient_id', 'amount'];
 
     public function recipe()
     {

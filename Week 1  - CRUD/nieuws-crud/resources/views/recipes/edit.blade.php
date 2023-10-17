@@ -125,7 +125,7 @@
                                                 <label for="ingredients[{{ $ingredient->id }}]">{{ $ingredient->name }}</label>
                                                 <input type="text" name="ingredients[{{ $ingredient->id }}]"
                                                     class="form-control @error('ingredients.' . $ingredient->id) is-invalid @enderror"
-                                                    value="{{ old('ingredients.' . $ingredient->id, $recipe->ingredients->where('id', $ingredient->id)->first() ? $recipe->ingredients->where('id', $ingredient->id)->first()->pivot->value : '') }}">
+                                                    value="{{ old('ingredients.' . $ingredient->id, $recipe->ingredients->where('id', $ingredient->id)->first() ? $recipe->ingredients->where('id', $ingredient->id)->first()->pivot->amount : '') }}">
                                                 @error('ingredients.' . $ingredient->id)
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -138,6 +138,7 @@
                                         </div>
                                     </form>
                                 </div>
+                                
                                 
 
                                 {{-- <div class="tab-pane fade" id="categories" role="tabpanel"

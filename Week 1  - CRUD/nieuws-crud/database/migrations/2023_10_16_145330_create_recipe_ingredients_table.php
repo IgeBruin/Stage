@@ -12,8 +12,7 @@ class CreateRecipeIngredientsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('recipe_id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('ingredient_id')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->decimal('quantity', 10, 2);
-            $table->string('unit', 50);
+            $table->string('amount');
             $table->timestamps();
             
             $table->foreign('recipe_id')->references('id')->on('recipes');
