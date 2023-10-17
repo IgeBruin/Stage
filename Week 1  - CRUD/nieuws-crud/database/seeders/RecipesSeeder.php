@@ -13,7 +13,6 @@ class RecipesSeeder extends Seeder
     public function run()
     {
         Recipe::create([
-            'user_id' => 1,
             'title' => 'Pasta Carbonara',
             'description' => 'A classic Italian pasta dish.',
             "image" => "images/recipes/placeholder.png",
@@ -26,7 +25,6 @@ class RecipesSeeder extends Seeder
         ]);
 
         Recipe::create([
-            'user_id' => 1,
             'title' => 'Chicken Alfredo',
             'description' => 'Creamy chicken and pasta dish.',
             "image" => "images/recipes/placeholder.png",

@@ -25,19 +25,19 @@
                 <div class="d-flex flex-column justify-content-start">
                     <div class="card">
                         <div class="card-header fs-3 d-flex justify-content-between">
-                            <span>Product Aanmaken</span>
+                            <span>Recept Aanmaken</span>
                         </div>
                         <div class="card-body">
 
-                            <form action="{{ route('dashboard.products.store') }}" method="post"
+                            <form action="{{ route('dashboard.recipes.store') }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('post')
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Naam</label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                        id="name" name="name" value="{{ old('name') }}">
-                                    @error('name')
+                                    <label for="title" class="form-label">Titel</label>
+                                    <input type="text" class="form-control @error('title') is-invalid @enderror"
+                                        id="title" name="title" value="{{ old('title') }}">
+                                    @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -49,33 +49,14 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
                                 <div class="mb-3">
-                                    <label for="price" class="form-label">Prijs</label>
-                                    <input type="number" class="form-control @error('price') is-invalid @enderror"
-                                        id="price" name="price" value="{{ old('price') }}">
-                                    @error('price')
+                                    <label for="instructions" class="form-label">Instructies</label>
+                                    <textarea class="form-control @error('instructions') is-invalid @enderror" id="instructions" name="instructions"
+                                        rows="4">{{ old('instructions') }}</textarea>
+                                    @error('instructions')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="mb-3">
-                                    <label for="stock" class="form-label">Voorraad</label>
-                                    <input type="number" class="form-control @error('stock') is-invalid @enderror"
-                                        id="stock" name="stock" value="{{ old('stock') }}">
-                                    @error('stock')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="vat" class="form-label">BTW (%)</label>
-                                    <input type="number" class="form-control @error('vat') is-invalid @enderror"
-                                        id="vat" name="vat" value="{{ old('vat') }}">
-                                    @error('vat')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
 
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Afbeelding</label>
@@ -87,9 +68,9 @@
                                 </div>
 
                                 <div class="mb-3 d-flex justify-content-end">
-                                    <a href="{{ route('dashboard.products.index') }}"
+                                    <a href="{{ route('dashboard.recipes.index') }}"
                                         class="btn-lg btn btn-link m-2">Terug</a>
-                                    <input type="submit" class="btn-lg btn btn-primary m-2" value="Product Toevoegen">
+                                    <input type="submit" class="btn-lg btn btn-primary m-2" value="Recept Toevoegen">
                                 </div>
                             </form>
                         </div>

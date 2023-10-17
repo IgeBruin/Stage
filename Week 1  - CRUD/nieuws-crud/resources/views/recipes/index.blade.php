@@ -86,7 +86,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="4" class="text-center">Geen producten gevonden.</td>
+                                                <td colspan="4" class="text-center">Geen recepten gevonden.</td>
                                             </tr>
                                         @endif
                                     </tbody>

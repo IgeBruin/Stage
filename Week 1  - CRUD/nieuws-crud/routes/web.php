@@ -76,6 +76,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('myOrders', [UserController::class, 'myOrders'])->name('myOrders');
         Route::get('myOrders/{order}/show', [UserController::class, 'showOrder'])->name('showOrder');
+
+        Route::get('myRecipes', [UserController::class, 'myRecipes'])->name('myRecipes');
+        Route::get('myRecipes/{recipe}/show', [UserController::class, 'showRecipe'])->name('showRecipe');
     });
 //admin only
     // Route::middleware('admin')->group(function () {

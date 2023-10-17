@@ -31,12 +31,9 @@ class RecipeController extends Controller
     {
     
         $recipe = new Recipe();
-        $recipe->name = $request->name;
+        $recipe->title = $request->title;
         $recipe->description = $request->description;
-        $recipe->price = $request->price;
-        $recipe->vat = $request->vat;
-        $recipe->stock = $request->stock;
-
+        $recipe->instructions = $request->instructions;
 
         $recipe->save();
 
@@ -49,6 +46,8 @@ class RecipeController extends Controller
         }
 
         $recipe->save();
+
+        auth()->user()->recipes()->attach($recipe);
 
         return redirect()->route("dashboard.recipes.index")->with('success', 'recipe aangemaakt');
     }

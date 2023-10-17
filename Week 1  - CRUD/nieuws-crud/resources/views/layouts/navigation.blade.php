@@ -67,6 +67,9 @@
                             <x-dropdown-link :href="route('user.myOrders')" class="hover:text-indigo-700 text-decoration-none">
                                 {{ __('Mijn Bestellingen') }}
                             </x-dropdown-link>
+                            <x-dropdown-link :href="route('user.myRecipes')" class="hover:text-indigo-700 text-decoration-none">
+                                {{ __('Mijn Recepten') }}
+                            </x-dropdown-link>
 
 
                             <!-- Authentication -->

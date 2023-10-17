@@ -44,9 +44,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function recipes()
+    {
+        return $this->belongsToMany(Recipe::class, 'recipe_user', 'user_id', 'recipe_id');
+    }
+    
     public function projects()
     {
-        return $this->belongsToMany(Project::class,);
+        return $this->belongsToMany(Project::class);
     }
 
     public function orders()

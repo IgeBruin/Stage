@@ -7,7 +7,7 @@ use App\models\Product;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\Recipe;
 use App\Models\Task;
 use App\Models\Status;
 
@@ -85,7 +85,6 @@ class UserController extends Controller
     {
         $user = auth()->user();
         $orders = $user->orders()->orderBy('created_at', 'desc')->get();
-
         return view('users.myOrders', compact('orders'));
     }
 
@@ -94,11 +93,16 @@ class UserController extends Controller
         $user = auth()->user();
         $this->authorize('view', $order);
 
-        if ($order->user_id !== $user->id) {
-            return redirect()->route('myOrders')->with('error', 'Je hebt geen toegang tot deze bestelling.');
-        }
     
         $address = $order->address;
         return view('users.showOrder', compact('order', 'address'));
+    }
+
+    public function myRecipes()
+    {
+        $user = auth()->user();
+        $recipes = $user->recipes()->orderBy('created_at', 'desc')->get();
+
+        return view('users.myRecipes', compact('recipes'));
     }
 }
