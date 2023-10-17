@@ -113,9 +113,7 @@ class RecipeController extends Controller
     {
         $ingredients = $request->input('ingredients');
     
-        // Loop door de ingrediënten en sla alleen de relevante op
         foreach ($ingredients as $ingredientId => $amount) {
-            // Controleer of de hoeveelheid niet leeg is
             if (!empty($amount)) {
                 $existingRecipeIngredient = RecipeIngredient::where('recipe_id', $recipe->id)
                     ->where('ingredient_id', $ingredientId)->first();
@@ -130,7 +128,6 @@ class RecipeController extends Controller
                     ]);
                 }
             } else {
-                // Als de hoeveelheid leeg is, verwijder het record als het al bestaat
                 RecipeIngredient::where('recipe_id', $recipe->id)
                     ->where('ingredient_id', $ingredientId)->delete();
             }

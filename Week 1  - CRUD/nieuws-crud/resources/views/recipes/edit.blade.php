@@ -39,11 +39,7 @@
                                         data-bs-target="#ingredients" role="tab" aria-controls="ingredients"
                                         aria-selected="false">Ingredienten</button>
                                 </li>
-                                {{-- <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="specifications-tab" data-bs-toggle="tab"
-                                        data-bs-target="#categories" role="tab" aria-controls="categories"
-                                        aria-selected="false">Categorieën</button>
-                                </li> --}}
+
                             </ul>
 
                             <div class="tab-content" id="myTabContent">
@@ -83,8 +79,8 @@
                                         <div class="mb-3">
                                             <label for="image" class="form-label">Afbeelding</label>
                                             <input type="file"
-                                                class="form-control @error('image') is-invalid @enderror"
-                                                id="image" name="image">
+                                                class="form-control @error('image') is-invalid @enderror" id="image"
+                                                name="image">
 
 
                                             @if ($recipe->image && $recipe->image != 'images/recipes/placeholder.png')
@@ -114,15 +110,19 @@
                                     </form>
                                 </div>
 
-                                <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
+                                <div class="tab-pane fade" id="ingredients" role="tabpanel"
+                                    aria-labelledby="ingredients-tab">
                                     <h3 class="mt-3">Ingredienten</h3>
-                                    <form method="POST" action="{{ route('dashboard.recipes.saveIngredients', $recipe) }}">
+                                    <form method="POST"
+                                        action="{{ route('dashboard.recipes.saveIngredients', $recipe) }}">
                                         @csrf
                                         @method('post')
-                                
+                                        
+
                                         @foreach ($ingredients as $ingredient)
                                             <div class="form-group">
-                                                <label for="ingredients[{{ $ingredient->id }}]">{{ $ingredient->name }}</label>
+                                                <label
+                                                    for="ingredients[{{ $ingredient->id }}]">{{ $ingredient->name }}</label>
                                                 <input type="text" name="ingredients[{{ $ingredient->id }}]"
                                                     class="form-control @error('ingredients.' . $ingredient->id) is-invalid @enderror"
                                                     value="{{ old('ingredients.' . $ingredient->id, $recipe->ingredients->where('id', $ingredient->id)->first() ? $recipe->ingredients->where('id', $ingredient->id)->first()->pivot->amount : '') }}">
@@ -131,38 +131,15 @@
                                                 @enderror
                                             </div>
                                         @endforeach
-                                
+
                                         <div class="mb-3 d-flex justify-content-end">
-                                            <a href="{{ route('dashboard.recipes.index') }}" class="btn-lg btn btn-link m-2">Terug</a>
-                                            <input type="submit" class="btn-lg btn btn-primary m-2" value="Ingrediënten Opslaan">
+                                            <a href="{{ route('dashboard.recipes.index') }}"
+                                                class="btn-lg btn btn-link m-2">Terug</a>
+                                            <input type="submit" class="btn-lg btn btn-primary m-2"
+                                                value="Ingrediënten Opslaan">
                                         </div>
                                     </form>
                                 </div>
-                                
-                                
-
-                                {{-- <div class="tab-pane fade" id="categories" role="tabpanel"
-                                    aria-labelledby="categories-tab">
-                                    <form action="{{ route('dashboard.products.addCategory', $product->id) }}"
-                                        method="post">
-                                        @csrf
-                                        <div class="form-group">
-                                            <h3 class="mb-3 mt-3">Categorieën</h3>
-                                            @foreach ($categories as $category)
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="categories[]"
-                                                        id="category_{{ $category->id }}"
-                                                        value="{{ $category->id }}" class="form-check-input"
-                                                        {{ in_array($category->id, $product->categories->pluck('id')->toArray()) ? 'checked' : '' }}>
-                                                    <label for="category_{{ $category->id }}"
-                                                        class="form-check-label">{{ $category->name }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <button type="submit" class="btn btn-primary mt-2">Voeg categorieën
-                                            toe</button>
-                                    </form>
-                                </div> --}}
 
                             </div>
                         </div>
