@@ -98,11 +98,31 @@ class UserController extends Controller
         return view('users.showOrder', compact('order', 'address'));
     }
 
+    public function allRecipes()
+    {
+        $recipes = Recipe::all();
+
+        return view('users.allRecipes', compact('recipes'));
+    }
+
     public function myRecipes()
     {
         $user = auth()->user();
         $recipes = $user->recipes()->orderBy('created_at', 'desc')->get();
 
         return view('users.myRecipes', compact('recipes'));
+    }
+
+    public function showRecipe(Recipe $recipe)
+    {
+        $user = auth()->user();
+        return view('users.showRecipe', compact('recipe'));
+    }
+
+    public function searchRecipe(Request $request)
+    {
+        $query = $request->input('query');
+        $recipes = Recipe::where('title', 'like', "%$query%")->paginate(5)->withQueryString();
+        return view("users.allRecipes", ["recipes" => $recipes]);
     }
 }

@@ -63,6 +63,10 @@ Route::post('/order/process', [OrderController::class, 'process'])->name('order.
 Route::get('/order/success', [OrderController::class, 'success'])->name('order.success');
 Route::get('generate-pdf', [OrderController::class, 'generatePDF'])->name('order.generatePDF');
 
+Route::get('recipes', [UserController::class, 'allrecipes'])->name('recipes');
+Route::get('recipes/searchRecipe', [UserController::class, 'searchRecipe'])->name('searchRecipe');
+
+
 
 
 // alleen ingelogde gebruikers
@@ -81,7 +85,7 @@ Route::middleware('auth')->group(function () {
         Route::get('myRecipes/{recipe}/show', [UserController::class, 'showRecipe'])->name('showRecipe');
     });
 //admin only
-    // Route::middleware('admin')->group(function () {
+    Route::middleware('admin')->group(function () {
 
     
         Route::prefix('dashboard')->name('dashboard.')->group(function () {
@@ -204,8 +208,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 });
-// });
 
 //blijkbaar moet dit onderaan staan
 require __DIR__ . '/auth.php';

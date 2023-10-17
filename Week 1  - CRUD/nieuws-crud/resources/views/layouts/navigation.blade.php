@@ -20,6 +20,10 @@
                         :href="route('products')" :active="request()->routeIs('products')">
                         {{ __('Producten') }}
                     </x-nav-link>
+                    <x-nav-link class="text-decoration-none fs-5  hover:border-indigo-300 focus:border-indigo-500"
+                        :href="route('recipes')" :active="request()->routeIs('recipes')">
+                        {{ __('Recepten') }}
+                    </x-nav-link>
 
                 </div>
 

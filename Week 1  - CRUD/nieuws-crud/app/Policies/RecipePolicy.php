@@ -35,9 +35,4 @@ class RecipePolicy
     {
         return $user->isAdmin == 1; //voor testen 1 is admin en ige bruin heeft waarde 1, werknemer en bezoekr hebben waarde 0
     }
-
-    public function view(User $user, Recipe $recipe)
-    {
-        return $user->id === $recipe->user_id;
-    }
 }
