@@ -172,39 +172,56 @@
     console.log(ingredients); 
 
     $(document).ready(function() {
-        $('#selectedIngredients').select2();
+    $('#selectedIngredients').select2();
 
-        function generateInputFields(selectedIngredients) {
-            var inputFields = '';
-            var recipeId = {{ $recipe->id }}; 
+    // Functie om de invoervelden te genereren en bij te werken
+    function generateInputFields(selectedIngredients) {
+        var inputFields = '';
+        var recipeId = {{ $recipe->id }};
 
-            selectedIngredients.forEach(function(ingredientId) {
-                var ingredient = ingredientsData[ingredientId - 1];
-                var pivotAmount = ingredients[ingredientId];
+        var selectedIngredientsData = {};
 
-                inputFields += `
-                    <div class="form-group">
-                        <label for="ingredients[${ingredientId}]">${ingredient.name}</label>
-                        <input type="text" name="ingredients[${ingredientId}]"
-                            class="form-control"
-                            value="${pivotAmount}">
-                    </div>
-                `;
-            });
-            return inputFields;
-        }
+        selectedIngredients.forEach(function(ingredientId) {
+            var ingredient = ingredientsData[ingredientId - 1];
+            var pivotAmount = ingredients[ingredientId];
 
-        $('#selectedIngredients').on('change', function() {
-            var selectedIngredients = $(this).val();
-            var inputFields = generateInputFields(selectedIngredients);
+            selectedIngredientsData[ingredientId] = pivotAmount;
 
-            $('#ingredientInputs').html(inputFields);
+            inputFields += `
+                <div class="form-group">
+                    <label for="ingredients[${ingredientId}]">${ingredient.name}</label>
+                    <input type="text" name="ingredients[${ingredientId}]"
+                        class="form-control"
+                        value="${pivotAmount}">
+                </div>
+            `;
         });
 
-        var selectedIngredients = $('#selectedIngredients').val() || [];
+        for (var ingredientId in ingredients) {
+            if (!selectedIngredientsData.hasOwnProperty(ingredientId)) {
+                ingredients[ingredientId] = '';
+                inputFields += `
+                    <input type="hidden" name="ingredients[${ingredientId}]" value="">
+                `;
+            }
+        }
+
+        return inputFields;
+    }
+
+    $('#selectedIngredients').on('change', function() {
+        var selectedIngredients = $(this).val();
         var inputFields = generateInputFields(selectedIngredients);
+
         $('#ingredientInputs').html(inputFields);
     });
+
+    var selectedIngredients = $('#selectedIngredients').val() || [];
+    var inputFields = generateInputFields(selectedIngredients);
+    $('#ingredientInputs').html(inputFields);
+});
+
+
 </script>
 
 

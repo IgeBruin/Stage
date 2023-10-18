@@ -71,7 +71,6 @@
                                 </div>
                                 
                                 
-
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Afbeelding</label>
                                     <input type="file" class="form-control @error('image') is-invalid @enderror"

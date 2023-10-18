@@ -257,7 +257,6 @@ class UserController extends Controller
                 ->where('ingredient_id', $ingredientId)->delete();
             }
         }
-    
         return redirect()->route('user.myRecipes')->with('success', 'Ingredienten opgeslagen');
     }
 }
