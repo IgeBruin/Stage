@@ -21,6 +21,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/'); 
+        return redirect('/')->with('error', 'U heeft geen toegang tot deze pagina'); 
     }
 }

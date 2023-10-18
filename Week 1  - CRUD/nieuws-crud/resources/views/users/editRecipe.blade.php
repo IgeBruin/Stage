@@ -112,7 +112,7 @@
 
                                 <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
                                     <h3 class="mt-3">Ingredienten</h3>
-                                    <form method="POST" action="{{ route('dashboard.recipes.saveIngredients', $recipe) }}">
+                                    <form method="POST" action="{{ route('user.recipes.saveIngredients', $recipe) }}">
                                         @csrf
                                         @method('post')
                                 

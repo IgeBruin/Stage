@@ -233,4 +233,31 @@ class UserController extends Controller
     
         return redirect()->route("user.myRecipes")->with('success', 'Recept aangepast');
     }
+
+    public function saveIngredients(Request $request, Recipe $recipe)
+    {
+        $ingredients = $request->input('ingredients');
+    
+        foreach ($ingredients as $ingredientId => $amount) {
+            if (!empty($amount)) {
+                $existingRecipeIngredient = RecipeIngredient::where('recipe_id', $recipe->id)
+                ->where('ingredient_id', $ingredientId)->first();
+    
+                if ($existingRecipeIngredient) {
+                    $existingRecipeIngredient->update(['amount' => $amount]);
+                } else {
+                    RecipeIngredient::create([
+                    'recipe_id' => $recipe->id,
+                    'ingredient_id' => $ingredientId,
+                    'amount' => $amount,
+                    ]);
+                }
+            } else {
+                RecipeIngredient::where('recipe_id', $recipe->id)
+                ->where('ingredient_id', $ingredientId)->delete();
+            }
+        }
+    
+        return redirect()->route('user.myRecipes')->with('success', 'Ingredienten opgeslagen');
+    }
 }

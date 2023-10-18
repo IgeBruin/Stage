@@ -89,6 +89,7 @@ Route::middleware('auth')->group(function () {
             Route::post('', [UserController::class, 'storeRecipe'])->name('storeRecipe');
             Route::get('{recipe}/edit', [UserController::class, 'editRecipe'])->name('editRecipe');
             Route::put('{recipe}', [UserController::class, 'updateRecipe'])->name('updateRecipe');
+            Route::post('{recipe}/saveIngredients', [userController::class, 'saveIngredients'])->name('saveIngredients');
             Route::delete('{recipe}/destroy', [UserController::class, 'destroyRecipe'])->name('destroyRecipe');
         });
     });
