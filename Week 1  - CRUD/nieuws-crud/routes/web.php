@@ -87,7 +87,6 @@ Route::middleware('auth')->group(function () {
 //admin only
     Route::middleware('admin')->group(function () {
 
-    
         Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
             //dus dashboard/articles/ en dan hier de naam van de functie

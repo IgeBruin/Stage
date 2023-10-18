@@ -27,7 +27,7 @@ class RecipeController extends Controller
         return view("recipes.create", compact('recipes'));
     }
 
-    public function store(RecipeStoreValidation $request)
+    public function store(RecipeStoreValidation $request, User $user)
     {
     
         $recipe = new Recipe();
