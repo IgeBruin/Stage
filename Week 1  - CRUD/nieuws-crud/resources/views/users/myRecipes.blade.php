@@ -19,14 +19,13 @@
                 <div class="d-flex flex-column justify-content-start">
                     <div class="d-flex justify-content-between">
                         @if (count($recipes) == 1)
-                        <h1>Mijn recept</h1>
-      
+                            <h1>Mijn recept</h1>
                         @elseif (count($recipes) > 1)
-                        <h1>Mijn recepten</h1>
-                        @else 
-                        <h1>U heeft nog geen recepten</h1>
+                            <h1>Mijn recepten</h1>
+                        @else
+                            <h1>U heeft nog geen recepten</h1>
                         @endif
-                        
+
                     </div>
                     @if (count($recipes) > 0)
                         <div class="row">
@@ -34,9 +33,20 @@
                                 <div class="col-md-4 mb-4">
                                     <a href="{{ route('user.showRecipe', ['recipe' => $recipe->id]) }}"
                                         class="text-decoration-none">
-                                        <div class="card text-center shadow">
+
+                                        <div class="card shadow">
+                                            @if ($recipe->image == 'images/recipes/placeholder.png')
+                                                <img src="{{ asset('images/recipes/placeholder.png') }}"
+                                                    alt="Placeholder" class="card-img-top img-fluid object-cover"
+                                                    style="max-height: 200px;">
+                                            @elseif ($recipe->image)
+                                                <img src="{{ asset("images/recipes/{$recipe->id}/{$recipe->image}") }}"
+                                                    alt="{{ $recipe->title }}"
+                                                    class="card-img-top img-fluid object-cover"
+                                                    style=" max-height: 200px;">
+                                            @endif
                                             <div class="card-body">
-                                                <p class="card-email"><strong>{{ $recipe->title }}</strong></p>
+                                                <h3 class="card-title">{{ $recipe->title }}</h3>
                                             </div>
                                         </div>
                                     </a>
@@ -44,17 +54,15 @@
                             @endforeach
                         </div>
                     @endif
-                        
+
                 </div>
             </div>
         </div>
     </div>
     @section('scripts')
-        
     @endsection
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </x-app-layout>
-

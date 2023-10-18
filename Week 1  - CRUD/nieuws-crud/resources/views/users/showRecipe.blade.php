@@ -21,35 +21,37 @@
     <div class="container-fluid mt-5">
         <div class="row mx-5 d-flex justify-content-around">
             <div class="col-md-6">
-                <div class="card">
+                <div class="card shadow">
                     @if ($recipe->image == 'images/recipes/placeholder.png')
                         <img src="{{ asset('images/recipes/placeholder.png') }}" alt="Placeholder"
                             class="card-img-top img-fluid" style="width: 100%; height: auto;">
                     @elseif ($recipe->image)
                         <img src="{{ asset("images/recipes/{$recipe->id}/{$recipe->image}") }}"
-                            alt="{{ $recipe->title }}" class="card-img-top img-fluid" style="width: 100%; height: auto;">
+                            alt="{{ $recipe->title }}" class="card-img-top img-fluid"
+                            style="width: 100%; height: auto;">
                     @endif
-                    <p>{{$recipe->title}}</p>
-                    <p>{!!$recipe->description!!}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title">Ingrediënten</h3>
-                        @foreach ($recipe->ingredients as $ingredient)
-                            <p>{{ $ingredient->name }}: {{ $ingredient->pivot->amount }}</p>
-                        @endforeach
+                        <h2 class="card-title">{{ $recipe->title }}</h2>
+                        <p class="card-text">{!! $recipe->description !!}</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <h2>{{$recipe->instructions}}</h2>
+            <div class="col-md-6">
+                <div class="col-md-6 card shadow">
+                    <div class="card-body">
+                        <h3 class="card-title">Ingrediënten</h3>
+                        <ul class="list-group list-group-flush">
+                            @foreach ($recipe->ingredients as $ingredient)
+                                <li class="list-group-item">• {{ $ingredient->name }}: {{ $ingredient->pivot->amount }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <div class="card shadow mt-3">
+                    <div class="card-body">
+                        <h3 class="card-title">Bereidingsinstructies</h3>
+                        <p class="card-text">{!! $recipe->instructions !!}</p>
+                    </div>
                 </div>
             </div>
         </div>
