@@ -19,7 +19,7 @@
         @endif
 
         <div class="row">
-            @include('menus.admin_menu')
+            @include('menus.user_menu')
 
             <div class="col-md-10 mb-md-0 mb-4">
                 <div class="d-flex flex-column justify-content-start">
@@ -29,7 +29,7 @@
                         </div>
                         <div class="card-body">
 
-                            <form action="{{ route('dashboard.recipes.store') }}" method="post"
+                            <form action="{{ route('user.recipes.storeRecipe') }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('post')

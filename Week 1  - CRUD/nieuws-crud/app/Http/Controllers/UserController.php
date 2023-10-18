@@ -10,6 +10,12 @@ use App\Models\Order;
 use App\Models\Recipe;
 use App\Models\Task;
 use App\Models\Status;
+use App\Models\Ingredient;
+use App\Models\RecipeIngredient;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\RecipeStoreValidation;
+use App\Http\Requests\RecipeUpdateValidation;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -124,5 +130,107 @@ class UserController extends Controller
         $query = $request->input('query');
         $recipes = Recipe::where('title', 'like', "%$query%")->paginate(5)->withQueryString();
         return view("users.allRecipes", ["recipes" => $recipes]);
+    }
+
+    public function createRecipe()
+    {
+        $ingredients = Ingredient::all();
+        $recipes = Recipe::get();
+        return view("users.createRecipe", compact('recipes', 'ingredients'));
+    }
+
+    public function storeRecipe(RecipeStoreValidation $request, User $user)
+    {
+        $recipe = new Recipe();
+        $recipe->title = $request->title;
+        $recipe->description = $request->description;
+        $recipe->instructions = $request->instructions;
+        $recipe->save();
+
+        $ingredients = $request->input('ingredients');
+
+        foreach ($ingredients as $ingredientId => $amount) {
+            if (!empty($amount)) {
+                $existingRecipeIngredient = RecipeIngredient::where('recipe_id', $recipe->id)
+                ->where('ingredient_id', $ingredientId)->first();
+
+                if ($existingRecipeIngredient) {
+                    $existingRecipeIngredient->update(['amount' => $amount]);
+                } else {
+                    RecipeIngredient::create([
+                    'recipe_id' => $recipe->id,
+                    'ingredient_id' => $ingredientId,
+                    'amount' => $amount,
+                    ]);
+                }
+            } else {
+                RecipeIngredient::where('recipe_id', $recipe->id)
+                ->where('ingredient_id', $ingredientId)->delete();
+            }
+        }
+
+        $recipe->save();
+
+        if ($request->hasFile('image')) {
+            $imageName = $recipe->id . '.' . $request->file('image')->extension();
+            $request->file('image')->storeAs('recipes/' . $recipe->id , $imageName);
+            $recipe->image = $imageName;
+        } else {
+            $recipe->image = 'images/recipes/placeholder.png';
+        }
+
+        $recipe->save();
+
+        auth()->user()->recipes()->attach($recipe);
+
+        return redirect()->route("user.myRecipes")->with('success', 'Recept aangemaakt');
+    }
+
+    public function destroyrecipe(Recipe $recipe)
+    {
+        $this->authorize('delete', $recipe);
+        if ($recipe->image && $recipe->image != 'images/recipes/placeholder.png') {
+            Storage::delete('recipes/' . $recipe->id . '/' . $recipe->image);
+        }
+
+        $recipe->delete();
+
+        return redirect(route("user.myRecipes"))->with('success', 'Recept verwijderd');
+    }
+
+    public function editRecipe(Recipe $recipe, Ingredient $ingredient)
+    {
+        $this->authorize('update', $recipe);
+        $recipe = Recipe::find($recipe->id);
+        $recipes = Recipe::all();
+        $ingredients = Ingredient::all();
+        return view("users.editRecipe", compact('recipes', 'recipe', 'ingredients'));
+    }
+
+
+    public function updateRecipe(RecipeUpdateValidation $request, Recipe $recipe)
+    {
+        $recipe->title = $request->title;
+        $recipe->description = $request->description;
+        $recipe->instructions = $request->instructions;
+
+
+        if ($request->hasFile('image')) {
+            if ($recipe->image) {
+                Storage::delete('recipes/' . $recipe->id . '/' . $recipe->image);
+            }
+            $imageName = $recipe->id . '.' . $request->file('image')->extension();
+            $request->file('image')->storeAs('recipes/' . $recipe->id , $imageName);
+            $recipe->image = $imageName;
+        } elseif ($request->input('delete_image')) {
+            if ($recipe->image) {
+                Storage::delete('recipes/' . $recipe->id . '/' . $recipe->image);
+                $recipe->image = "images/recipes/placeholder.png";
+            }
+        }
+
+        $recipe->save();
+    
+        return redirect()->route("user.myRecipes")->with('success', 'Recept aangepast');
     }
 }

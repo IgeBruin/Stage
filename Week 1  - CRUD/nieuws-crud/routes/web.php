@@ -83,6 +83,14 @@ Route::middleware('auth')->group(function () {
 
         Route::get('myRecipes', [UserController::class, 'myRecipes'])->name('myRecipes');
         Route::get('myRecipes/{recipe}/show', [UserController::class, 'showRecipe'])->name('showRecipe');
+        Route::prefix('recipes')->name('recipes.')->group(function () {
+
+            Route::get('/create', [UserController::class, 'createRecipe'])->name('createRecipe');
+            Route::post('', [UserController::class, 'storeRecipe'])->name('storeRecipe');
+            Route::get('{recipe}/edit', [UserController::class, 'editRecipe'])->name('editRecipe');
+            Route::put('{recipe}', [UserController::class, 'updateRecipe'])->name('updateRecipe');
+            Route::delete('{recipe}/destroy', [UserController::class, 'destroyRecipe'])->name('destroyRecipe');
+        });
     });
 //admin only
     Route::middleware('admin')->group(function () {
@@ -122,7 +130,6 @@ Route::middleware('auth')->group(function () {
                 Route::delete('{recipe}/destroy', [RecipeController::class, 'destroy'])->name('destroy');
                 Route::get('search', [RecipeController::class, 'search'])->name('search');
                 Route::post('{recipe}/saveIngredients', [RecipeController::class, 'saveIngredients'])->name('saveIngredients');
-                Route::post('{recipe}/addCategory', [RecipeController::class, 'addCategory'])->name('addCategory');
             });
             //dus dashboard/categories/ en dan hier de naam van de functie
             Route::prefix('categories')->name('categories.')->group(function () {

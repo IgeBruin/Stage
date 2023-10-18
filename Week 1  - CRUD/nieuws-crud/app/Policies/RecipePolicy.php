@@ -28,7 +28,14 @@ class RecipePolicy
 
     public function update(User $user, Recipe $recipe)
     {
-        return Auth::check() && $user->id === $recipe->user_id;
+        $users = $recipe->users;
+        return $users->contains('id', $user->id);
+    }
+
+    public function delete(User $user, Recipe $recipe)
+    {
+        $users = $recipe->users;
+        return $users->contains('id', $user->id);
     }
 
     public function isAdmin(User $user)

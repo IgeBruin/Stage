@@ -5,9 +5,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
 
     <x-slot name="header">
+        <div class="d-flex justify-content-between align-items-center">
         <h1 class="font-semibold text-heading3 leading-tight text-md-start text-center text-indigo-500">
             {{ __('Recepten') }}
         </h1>
+        @can('create', \App\Models\Recipe::class)
+        <a href="{{ route('user.recipes.createRecipe') }}" class="btn btn-primary btn-lg">Recept aanmaken</a>        
+        @endcan
+    </div>
     </x-slot>
 
     <div class="container mt-5">
