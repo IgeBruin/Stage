@@ -57,6 +57,20 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="mb-3">
+                                    <div class="form-group">
+                                        <label for="selectedIngredients">Selecteer ingrediënten:</label>
+                                        <select id="selectedIngredients" class="form-control" multiple="multiple" style="width: 100%">
+                                            @foreach ($ingredients as $ingredient)
+                                                <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                
+                                    <div id="ingredientInputs"></div>
+                                </div>
+                                
+                                
 
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Afbeelding</label>
@@ -96,6 +110,47 @@
                 $('.select2').select2();
             });
         </script>
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+        $('#selectedIngredients').select2();
+
+        function generateInputFields(selectedIngredients) {
+            var inputFields = '';
+
+            selectedIngredients.forEach(function(ingredientId) {
+                var ingredientName = $('#selectedIngredients option[value="' + ingredientId + '"]').text();
+                var pivotAmount = '';
+                var ingredientInput = $('#ingredientInput_' + ingredientId);
+
+                if (ingredientInput.length) {
+                    pivotAmount = ingredientInput.val();
+                }
+
+                inputFields += `
+                    <div class="form-group">
+                        <label for="ingredients[${ingredientId}]">${ingredientName}</label>
+                        <input type="text" id="ingredientInput_${ingredientId}" name="ingredients[${ingredientId}]"
+                            class="form-control"
+                            value="${pivotAmount}">
+                    </div>
+                `;
+            });
+
+            return inputFields;
+        }
+
+        $('#selectedIngredients').on('change', function() {
+            var selectedIngredients = $(this).val();
+            var inputFields = generateInputFields(selectedIngredients);
+            $('#ingredientInputs').html(inputFields);
+        });
+    });
+</script>
     @endsection
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

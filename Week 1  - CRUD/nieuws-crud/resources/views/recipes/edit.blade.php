@@ -110,66 +110,6 @@
                                     </form>
                                 </div>
 
-                                {{-- <div class="tab-pane fade" id="ingredients" role="tabpanel"
-                                    aria-labelledby="ingredients-tab">
-                                    <h3 class="mt-3">Ingredienten</h3>
-                                    <form method="POST"
-                                        action="{{ route('dashboard.recipes.saveIngredients', $recipe) }}">
-                                        @csrf
-                                        @method('post')
-                                        
-
-                                        @foreach ($ingredients as $ingredient)
-                                            <div class="form-group">
-                                                <label
-                                                    for="ingredients[{{ $ingredient->id }}]">{{ $ingredient->name }}</label>
-                                                <input type="text" name="ingredients[{{ $ingredient->id }}]"
-                                                    class="form-control @error('ingredients.' . $ingredient->id) is-invalid @enderror"
-                                                    value="{{ old('ingredients.' . $ingredient->id, $recipe->ingredients->where('id', $ingredient->id)->first() ? $recipe->ingredients->where('id', $ingredient->id)->first()->pivot->amount : '') }}">
-                                                @error('ingredients.' . $ingredient->id)
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        @endforeach
-
-                                        <div class="mb-3 d-flex justify-content-end">
-                                            <a href="{{ route('dashboard.recipes.index') }}"
-                                                class="btn-lg btn btn-link m-2">Terug</a>
-                                            <input type="submit" class="btn-lg btn btn-primary m-2"
-                                                value="Ingrediënten Opslaan">
-                                        </div>
-                                    </form>
-                                </div> --}}
-
-
-                                {{-- <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
-                                    <h3 class="mt-3">Ingredienten</h3>
-                                    <form method="POST" action="{{ route('dashboard.recipes.saveIngredients', $recipe) }}">
-                                        @csrf
-                                        @method('post')
-                                
-                                        <div class="form-group">
-                                            <label for="selectedIngredients">Selecteer ingrediënten:</label>
-                                            <select id="selectedIngredients" class="form-control" multiple="multiple" style="width: 100%">
-                                                @foreach ($ingredients as $ingredient)
-                                                    @php
-                                                        $selected = in_array($ingredient->id, $recipe->ingredients->pluck('id')->toArray());
-                                                    @endphp
-                                                    <option value="{{ $ingredient->id }}" {{ $selected ? 'selected' : '' }}>{{ $ingredient->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                
-                                        <div id="ingredientInputs"></div>
-                                
-                                        <div class="mb-3 d-flex justify-content-end">
-                                            <a href="{{ route('dashboard.recipes.index') }}" class="btn-lg btn btn-link m-2">Terug</a>
-                                            <input type="submit" class="btn-lg btn btn-primary m-2" value="Ingrediënten Opslaan">
-                                        </div>
-                                    </form>
-                                </div> --}}
-
-
                                 <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
                                     <h3 class="mt-3">Ingredienten</h3>
                                     <form method="POST" action="{{ route('dashboard.recipes.saveIngredients', $recipe) }}">
@@ -216,45 +156,11 @@
                 }
             });
         </script>
-        {{-- <script>
-    let ingredientsData = @json($ingredients);
-    $(document).ready(function() {
-        $('#selectedIngredients').select2();
-
-        function generateInputFields(selectedIngredients) {
-            var inputFields = '';
-            selectedIngredients.forEach(function(ingredientId) {
-                var ingredient = ingredientsData[ingredientId - 1];
-                var oldValue = '{{ old("ingredients.' + $ingredient->id + '", $recipe->ingredients->where("id", ' + $ingredient->id + ')->first() ? $recipe->ingredients->where("id", ' + $ingredient->id + ')->first()->pivot->amount : "") }}';
-                inputFields += `
-                    <div class="form-group">
-                        <label for="ingredients[${ingredient.id}]">${ingredient.name}</label>
-                        <input type="text" name="ingredients[${ingredient.id}]"
-                            class="form-control"
-                            value="${oldValue}">
-                    </div>
-                `;
-            });
-            return inputFields;
-        }
-
-        $('#selectedIngredients').on('change', function() {
-            var selectedIngredients = $(this).val();
-            var inputFields = generateInputFields(selectedIngredients);
-
-            $('#ingredientInputs').html(inputFields);
-        });
-
-        var selectedIngredients = $('#selectedIngredients').val() || [];
-        var inputFields = generateInputFields(selectedIngredients);
-        $('#ingredientInputs').html(inputFields);
-    });
-</script> --}}
 
 <script>
     let ingredientsData = @json($ingredients);
     console.log(ingredientsData);
-    var ingredients = {}; // An object to store ingredient amounts
+    var ingredients = {}; 
 
     @foreach ($ingredients as $ingredient)
         var ingredientId = {{ $ingredient->id }};

@@ -20,39 +20,6 @@ class RecipeController extends Controller
         return view("recipes.index", compact('recipes'));
     }
 
-    public function create()
-    {
-
-        $recipes = Recipe::get();
-        return view("recipes.create", compact('recipes'));
-    }
-
-    public function store(RecipeStoreValidation $request, User $user)
-    {
-    
-        $recipe = new Recipe();
-        $recipe->title = $request->title;
-        $recipe->description = $request->description;
-        $recipe->instructions = $request->instructions;
-
-        $recipe->save();
-
-        if ($request->hasFile('image')) {
-            $imageName = $recipe->id . '.' . $request->file('image')->extension();
-            $request->file('image')->storeAs('recipes/' . $recipe->id , $imageName);
-            $recipe->image = $imageName;
-        } else {
-            $recipe->image = 'images/recipes/placeholder.png';
-        }
-
-        $recipe->save();
-
-        auth()->user()->recipes()->attach($recipe);
-
-        return redirect()->route("dashboard.recipes.index")->with('success', 'recipe aangemaakt');
-    }
-
-
     public function edit(Recipe $recipe, Ingredient $ingredient)
     {
         $recipe = Recipe::find($recipe->id);
@@ -133,5 +100,60 @@ class RecipeController extends Controller
         }
     
         return redirect()->route('dashboard.recipes.index')->with('success', 'Ingredienten opgeslagen');
+    }
+
+    public function create()
+    {
+        $ingredients = Ingredient::all();
+        $recipes = Recipe::get();
+        return view("recipes.create", compact('recipes', 'ingredients'));
+    }
+
+    public function store(RecipeStoreValidation $request, User $user)
+    {
+    
+        $recipe = new Recipe();
+        $recipe->title = $request->title;
+        $recipe->description = $request->description;
+        $recipe->instructions = $request->instructions;
+        $recipe->save();
+
+        $ingredients = $request->input('ingredients');
+    
+        foreach ($ingredients as $ingredientId => $amount) {
+            if (!empty($amount)) {
+                $existingRecipeIngredient = RecipeIngredient::where('recipe_id', $recipe->id)
+                    ->where('ingredient_id', $ingredientId)->first();
+    
+                if ($existingRecipeIngredient) {
+                    $existingRecipeIngredient->update(['amount' => $amount]);
+                } else {
+                    RecipeIngredient::create([
+                        'recipe_id' => $recipe->id,
+                        'ingredient_id' => $ingredientId,
+                        'amount' => $amount,
+                    ]);
+                }
+            } else {
+                RecipeIngredient::where('recipe_id', $recipe->id)
+                    ->where('ingredient_id', $ingredientId)->delete();
+            }
+        }
+
+        $recipe->save();
+
+        if ($request->hasFile('image')) {
+            $imageName = $recipe->id . '.' . $request->file('image')->extension();
+            $request->file('image')->storeAs('recipes/' . $recipe->id , $imageName);
+            $recipe->image = $imageName;
+        } else {
+            $recipe->image = 'images/recipes/placeholder.png';
+        }
+
+        $recipe->save();
+
+        auth()->user()->recipes()->attach($recipe);
+
+        return redirect()->route("dashboard.recipes.index")->with('success', 'recipe aangemaakt');
     }
 }
