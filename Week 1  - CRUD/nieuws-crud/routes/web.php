@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderUpdateController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
@@ -97,6 +98,16 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->group(function () {
 
         Route::prefix('dashboard')->name('dashboard.')->group(function () {
+
+            //dus dashboard/orders/ en dan hier de naam van de functie
+            Route::prefix('orders')->name('orders.')->group(function () {
+                Route::get('', [OrderUpdateController::class, 'dashboard'])->name('dashboard');
+                Route::get('{order}/edit', [OrderUpdateController::class, 'edit'])->name('edit');
+                Route::put('{order}', [OrderUpdateController::class, 'update'])->name('update');
+                Route::delete('{order}/items/{orderItem}', [OrderUpdateController::class, 'deleteOrderItem'])->name('deleteOrderItem');
+                Route::delete('{order}', [OrderUpdateController::class, 'destroy'])->name('destroy');
+                Route::get('search', [OrderUpdateController::class, 'search'])->name('search');
+            });
 
             //dus dashboard/articles/ en dan hier de naam van de functie
             Route::prefix('articles')->name('articles.')->group(function () {

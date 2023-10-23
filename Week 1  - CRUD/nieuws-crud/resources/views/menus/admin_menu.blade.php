@@ -2,6 +2,10 @@
     <div class="d-flex flex-column justify-content-start align-items-center h-100">
         <ul class="list-group text-center">
             <li class="list-group-item bg-light">
+                <a href="{{ route('dashboard.orders.dashboard') }}"
+                    class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Bestellingen</a>
+            </li>
+            <li class="list-group-item bg-light">
                 <a href="{{ route('dashboard.articles.index') }}"
                     class="btn btn-light btn-block text-decoration-none fw-bold fs-5 text-dark menu-item">Artikelen</a>
             </li>
