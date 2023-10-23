@@ -39,4 +39,23 @@ class Order extends Model
     {
         return $this->hasOne(Address::class)->where('type', 'Shipping');
     }
+
+    public function calculateTotals()
+    {
+        $totalExcl = 0;
+        $vat = 0;
+
+        foreach ($this->items as $item) {
+            $totalExcl += $item->price * $item->quantity;
+            $vat += $item->price * $item->quantity * ($item->vat / 100);
+        }
+
+        $totalIncl = $totalExcl + $vat;
+
+        $this->total_excl = $totalExcl;
+        $this->vat = $vat;
+        $this->total_incl = $totalIncl;
+
+        $this->save();
+    }
 }

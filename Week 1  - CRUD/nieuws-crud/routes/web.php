@@ -104,7 +104,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('', [OrderUpdateController::class, 'dashboard'])->name('dashboard');
                 Route::get('{order}/edit', [OrderUpdateController::class, 'edit'])->name('edit');
                 Route::put('{order}', [OrderUpdateController::class, 'update'])->name('update');
-                Route::delete('{order}/items/{orderItem}', [OrderUpdateController::class, 'deleteOrderItem'])->name('deleteOrderItem');
                 Route::delete('{order}', [OrderUpdateController::class, 'destroy'])->name('destroy');
                 Route::get('search', [OrderUpdateController::class, 'search'])->name('search');
             });
