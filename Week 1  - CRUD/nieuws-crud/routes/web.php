@@ -84,8 +84,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('myRecipes', [UserController::class, 'myRecipes'])->name('myRecipes');
         Route::get('myRecipes/{recipe}/show', [UserController::class, 'showRecipe'])->name('showRecipe');
+        
         Route::prefix('recipes')->name('recipes.')->group(function () {
-
             Route::get('/create', [UserController::class, 'createRecipe'])->name('createRecipe');
             Route::post('', [UserController::class, 'storeRecipe'])->name('storeRecipe');
             Route::get('{recipe}/edit', [UserController::class, 'editRecipe'])->name('editRecipe');
@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('', [OrderUpdateController::class, 'dashboard'])->name('dashboard');
                 Route::get('{order}/edit', [OrderUpdateController::class, 'edit'])->name('edit');
                 Route::put('{order}', [OrderUpdateController::class, 'update'])->name('update');
+                Route::put('{order}/items/{orderItem}', [OrderUpdateController::class, 'deleteOrderItem'])->name('deleteOrderItem');
                 Route::delete('{order}', [OrderUpdateController::class, 'destroy'])->name('destroy');
                 Route::get('search', [OrderUpdateController::class, 'search'])->name('search');
             });
