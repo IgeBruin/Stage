@@ -81,13 +81,11 @@
                                                             <h4>Product {{ $orderItem->name }}</h4>
 
                                                             <div class="form-group">
-                                                                <x-form-field type="text"
-                                                                    name="order_items[{{ $orderItem->id }}][quantity]"
-                                                                    label="Aantal" :value="old(
-                                                                        'order_items.' . $orderItem->id . '.quantity',
-                                                                        $orderItem->quantity,
-                                                                    )"
-                                                                    :errors="$errors" />
+                                                                <label for="order_items[{{ $orderItem->id }}][quantity]">Aantal:</label>
+                                                                <input type="text" class="form-control @error('order_items.' . $orderItem->id . '.quantity') is-invalid @enderror" name="order_items[{{ $orderItem->id }}][quantity]" value="{{ old('order_items.' . $orderItem->id . '.quantity', $orderItem->quantity) }}">
+                                                                @error('order_items.' . $orderItem->id . '.quantity')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
                                                             </div>
 
                                                             <div class="form-group">
@@ -107,6 +105,7 @@
                                                     <p class="mt-4 fs-4">Geen producten gevonden</p>
                                                 @endif
                                             </div>
+
                                         </div>
                                         <input type="submit" class="btn-lg btn btn-primary m-2"
                                             value="Bestelling Bewerken">

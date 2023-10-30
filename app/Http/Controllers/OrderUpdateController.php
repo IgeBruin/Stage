@@ -73,7 +73,7 @@ class OrderUpdateController extends Controller
     {
         $billingAddress = $order->billingAddress;
 
-        if($billingAddress){
+        if ($billingAddress) {
             $billingAddress->update([
                 'street' => $request->input('billing_street'),
                 'street_number' => $request->input('billing_street_number'),
