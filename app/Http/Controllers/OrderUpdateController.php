@@ -30,13 +30,15 @@ class OrderUpdateController extends Controller
 
         $product = Product::find($request->input('product'));
 
-        $order->items()->create([
-            'product_id' => $product->id, 
-            'name' => $product->name,
-            'quantity' => $request->input('quantity'),
-            'price' => $product->price,
-            'vat' => $product->vat,
-        ]);
+        if ($request->filled('quantity')) {
+            $order->items()->create([
+                'product_id' => $product->id, 
+                'name' => $product->name,
+                'quantity' => $request->input('quantity') ,
+                'price' => $product->price,
+                'vat' => $product->vat,
+            ]);
+        }
 
         $order->update([
             'email' => $request->input('email'),
