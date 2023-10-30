@@ -41,31 +41,20 @@
                                     <form method="post" action="{{ route('dashboard.orders.update', $order) }}">
                                         @csrf
                                         @method('put')
-        
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <h2>Algemene Informatie</h2>
                                                 <div class="form-group">
-                                                    <label for="email">Email:</label>
-                                                    <input type="text"
-                                                        class="form-control @error('email') is-invalid @enderror" id="email"
-                                                        name="email" value="{{ old('email', $order->email) }}">
-                                                    @error('email')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
+                                                    <x-form-field type="text" name="email" label="Email"
+                                                        :value="$order->email" :errors="$errors" />
                                                 </div>
-        
+
                                                 <div class="form-group">
-                                                    <label for="telephone">Telephone:</label>
-                                                    <input type="text"
-                                                        class="form-control @error('telephone') is-invalid @enderror"
-                                                        id="telephone" name="telephone"
-                                                        value="{{ old('telephone', $order->telephone) }}">
-                                                    @error('telephone')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
+                                                    <x-form-field type="text" name="telephone" label="Telefoon"
+                                                        :value="$order->telephone" :errors="$errors" />
                                                 </div>
-        
+
                                                 <h2 class="mt-4">Product Toevoegen</h2>
                                                 <div class="add-product">
                                                     <div class="form-group">
@@ -78,32 +67,29 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="quantity">Quantity:</label>
-                                                        <input type="text" class="form-control" name="quantity"
-                                                            value="{{ old('quantity') }}">
+                                                        <x-form-field type="text" name="quantity" label="Aantal"
+                                                            :value="old('quantity')" :errors="$errors" />
                                                     </div>
                                                 </div>
                                             </div>
-        
+
                                             <div class="col-md-6">
                                                 <h2>Producten</h2>
                                                 @if ($order->items->count() > 0)
                                                     @foreach ($order->items as $orderItem)
                                                         <div class="order-item">
                                                             <h4>Product {{ $orderItem->name }}</h4>
-        
+
                                                             <div class="form-group">
-                                                                <label
-                                                                    for="order_items[{{ $orderItem->id }}][quantity]">Aantal:</label>
-                                                                <input type="text"
-                                                                    class="form-control @error('order_items.' . $orderItem->id . '.quantity') is-invalid @enderror"
+                                                                <x-form-field type="text"
                                                                     name="order_items[{{ $orderItem->id }}][quantity]"
-                                                                    value="{{ old('order_items.' . $orderItem->id . '.quantity', $orderItem->quantity) }}">
-                                                                @error('order_items.' . $orderItem->id . '.quantity')
-                                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                                @enderror
+                                                                    label="Aantal" :value="old(
+                                                                        'order_items.' . $orderItem->id . '.quantity',
+                                                                        $orderItem->quantity,
+                                                                    )"
+                                                                    :errors="$errors" />
                                                             </div>
-        
+
                                                             <div class="form-group">
                                                                 <label
                                                                     for="order_items[{{ $orderItem->id }}][_remove]">Verwijder
@@ -122,54 +108,65 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <input type="submit" class="btn-lg btn btn-primary m-2" value="Bestelling Bewerken">
+                                        <input type="submit" class="btn-lg btn btn-primary m-2"
+                                            value="Bestelling Bewerken">
                                     </form>
                                 </div>
 
-                                <div class="tab-pane fade" id="address" role="tabpanel"
-                                    aria-labelledby="address-tab">
+                                <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                                     <form method="POST" action="{{ route('dashboard.orders.updateAdress', $order) }}">
                                         @csrf
-                                        @method('PATCH') 
-                            
-                                        <h2 class="mt-2">Factuuradres</h2>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                            <x-form-field name="billing_street" label="Straat" :value="$order->billingAddress->street" :errors="$errors" />
-                                            </div>
-                                            <div class="col-md-6">
-                                            <x-form-field name="billing_street_number" label="Huisnummer" :value="$order->billingAddress->street_number" :errors="$errors" />
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <x-form-field name="billing_zip_code" label="Postcode" :value="$order->billingAddress->zip_code" :errors="$errors" />
+                                        @method('PATCH')
+
+                                        @if ($order->billingAddress)
+                                            <h2 class="mt-2">Factuuradres</h2>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <x-form-field type="text" name="billing_street" label="Straat"
+                                                        :value="$order->billingAddress->street" :errors="$errors" />
                                                 </div>
                                                 <div class="col-md-6">
-                                                <x-form-field name="billing_city" label="Stad" :value="$order->billingAddress->city" :errors="$errors" />
+                                                    <x-form-field type="text" name="billing_street_number"
+                                                        label="Huisnummer" :value="$order->billingAddress->street_number" :errors="$errors" />
                                                 </div>
-                                        </div>
-                                        
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <x-form-field type="text" name="billing_zip_code"
+                                                        label="Postcode" :value="$order->billingAddress->zip_code" :errors="$errors" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <x-form-field type="text" name="billing_city" label="Stad"
+                                                        :value="$order->billingAddress->city" :errors="$errors" />
+                                                </div>
+                                            </div>
+                                        @endif
+
                                         <h2 class="mt-4">Verzendadres</h2>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <x-form-field name="shipping_street" label="Straat" :value="$order->shippingAddress->street" :errors="$errors" />
+                                                <x-form-field type="text" name="shipping_street" label="Straat"
+                                                    :value="$order->shippingAddress->street" :errors="$errors" />
                                             </div>
                                             <div class="col-md-6">
-                                                <x-form-field name="shipping_street_number" label="Huisnummer" :value="$order->shippingAddress->street_number" :errors="$errors" />
+                                                <x-form-field type="text" name="shipping_street_number"
+                                                    label="Huisnummer" :value="$order->shippingAddress->street_number" :errors="$errors" />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <x-form-field name="shipping_zip_code" label="Postcode" :value="$order->shippingAddress->zip_code" :errors="$errors" />
+                                                <x-form-field type="text" name="shipping_zip_code"
+                                                    label="Postcode" :value="$order->shippingAddress->zip_code" :errors="$errors" />
                                             </div>
                                             <div class="col-md-6">
-                                                <x-form-field name="shipping_city" label="Plaats" :value="$order->shippingAddress->city" :errors="$errors" />
+                                                <x-form-field type="text" name="shipping_city" label="Plaats"
+                                                    :value="$order->shippingAddress->city" :errors="$errors" />
 
                                             </div>
                                         </div>
-                                        
-                                        <input type="submit" class="btn-lg btn btn-primary m-2" value="Adres Bewerken">
+
+                                        <input type="submit" class="btn-lg btn btn-primary m-2"
+                                            value="Adres Bewerken">
                                     </form>
                                 </div>
                             </div>

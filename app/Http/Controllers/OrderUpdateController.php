@@ -72,12 +72,15 @@ class OrderUpdateController extends Controller
     public function updateAdress(UpdateOrderAddressRequest $request, Order $order)
     {
         $billingAddress = $order->billingAddress;
-        $billingAddress->update([
-            'street' => $request->input('billing_street'),
-            'street_number' => $request->input('billing_street_number'),
-            'zip_code' => $request->input('billing_zip_code'),
-            'city' => $request->input('billing_city'),
-        ]);
+
+        if($billingAddress){
+            $billingAddress->update([
+                'street' => $request->input('billing_street'),
+                'street_number' => $request->input('billing_street_number'),
+                'zip_code' => $request->input('billing_zip_code'),
+                'city' => $request->input('billing_city'),
+            ]);
+        }
     
         $shippingAddress = $order->shippingAddress;
         $shippingAddress->update([

@@ -23,16 +23,24 @@ class UpdateOrderAddressRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'billing_street' => 'required|string',
-            'billing_street_number' => 'required|string',
-            'billing_zip_code' => ['required', 'regex:/^\d{4}[A-Z]{2}$/'],
-            'billing_city' => 'required|string',
-            'shipping_street' => 'required|string',
-            'shipping_street_number' => 'required|string',
-            'shipping_zip_code' => ['required', 'regex:/^\d{4}[A-Z]{2}$/'],
-            'shipping_city' => 'required|string',
-        ];
+        
+            $rules = [];
+
+        if ($this->has('billing_street') && $this->has('billing_street_number')) {
+            $rules['billing_street'] = 'required|string';
+            $rules['billing_street_number'] = 'required|string';
+            $rules['billing_zip_code'] = ['required', 'regex:/^\d{4}[A-Z]{2}$/'];
+            $rules['billing_city'] = 'required|string';
+        }
+
+        if ($this->has('shipping_street') && $this->has('shipping_street_number')) {
+            $rules['shipping_street'] = 'required|string';
+            $rules['shipping_street_number'] = 'required|string';
+            $rules['shipping_zip_code'] = ['required', 'regex:/^\d{4}[A-Z]{2}$/'];
+            $rules['shipping_city'] = 'required|string';
+        }
+
+            return $rules;
     }
 
     public function messages()
