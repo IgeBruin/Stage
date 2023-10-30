@@ -12,11 +12,6 @@
     </x-slot>
 
     <div class="container-fluid max-w-7xl mt-5">
-        @if (session()->has('success'))
-            <div class="alert alert-success ms-2">
-                {{ session()->get('success') }}
-            </div>
-        @endif
 
         <div class="row">
             @include('menus.admin_menu')

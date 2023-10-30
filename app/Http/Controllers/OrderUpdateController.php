@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Address;
+use App\Models\Product;
 use App\Http\Requests\OrderUpdateValidation;
 
 class OrderUpdateController extends Controller
@@ -19,12 +20,24 @@ class OrderUpdateController extends Controller
     public function edit(Order $order)
     {
         $order = Order::with('items')->find($order->id);
+        $products = Product::all();
     
-        return view('orders.edit', compact('order'));
+        return view('orders.edit', compact('order', 'products'));
     }
     
     public function update(OrderUpdateValidation $request, Order $order)
     {
+
+        $product = Product::find($request->input('product'));
+
+        $order->items()->create([
+            'product_id' => $product->id, 
+            'name' => $product->name,
+            'quantity' => $request->input('quantity'),
+            'price' => $product->price,
+            'vat' => $product->vat,
+        ]);
+
         $order->update([
             'email' => $request->input('email'),
             'telephone' => $request->input('telephone'),

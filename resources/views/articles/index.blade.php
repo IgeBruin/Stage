@@ -16,11 +16,6 @@
                 {{ session()->get('success') }}
             </div>
         @endif
-        @if (session()->has('error'))
-            <div class="alert alert-danger">
-                {{ session()->get('error') }}
-            </div>
-        @endif
         <div class="d-flex justify-content-end align-items-center">
 
         </div>

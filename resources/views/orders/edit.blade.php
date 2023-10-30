@@ -23,11 +23,10 @@
                             Bestelling Aanpassen
                         </div>
                         <div class="card-body">
-                            <h2>Bewerk bestelling</h2>
                             <form method="post" action="{{ route('dashboard.orders.update', $order) }}">
                                 @csrf
                                 @method('put')
-
+                        
                                 <div class="form-group">
                                     <label for="email">Email:</label>
                                     <input type="text" class="form-control @error('email') is-invalid @enderror"
@@ -36,7 +35,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
+                        
                                 <div class="form-group">
                                     <label for="telephone">Telephone:</label>
                                     <input type="text" class="form-control @error('telephone') is-invalid @enderror"
@@ -46,14 +45,12 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
+                        
                                 @if ($order->items->count() > 0)
-
-
                                     @foreach ($order->items as $orderItem)
                                         <div class="order-item">
                                             <h4>Product {{ $orderItem->name }}</h4>
-
+                        
                                             <div class="form-group">
                                                 <label for="order_items[{{ $orderItem->id }}][quantity]">Aantal:</label>
                                                 <input type="text"
@@ -64,25 +61,39 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-
+                        
                                             <div class="form-group">
-                                                <label for="order_items[{{ $orderItem->id }}][_remove]">Verwijder
-                                                    Product:</label>
-                                                <input type="hidden" name="order_items[{{ $orderItem->id }}][_remove]"
-                                                    value="0">
-                                                <input type="checkbox"
-                                                    name="order_items[{{ $orderItem->id }}][_remove]" value="1">
+                                                <label for="order_items[{{ $orderItem->id }}][_remove]">Verwijder Product:</label>
+                                                <input type="hidden" name="order_items[{{ $orderItem->id }}][_remove]" value="0">
+                                                <input type="checkbox" name="order_items[{{ $orderItem->id }}][_remove]" value="1">
                                             </div>
-
                                         </div>
                                     @endforeach
                                 @else
                                     <p class="mt-4 fs-4">geen producten gevonden</p>
                                 @endif
+                                <h2 class="mt-4">Product toevoegen</h2>
 
+                                <div class="add-product">
+                                    <div class="form-group">
+                                        <label for="product">Product:</label>
+                                        <select class="form-control" name="product">
+                                            @foreach ($products as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                        
+                                    <div class="form-group">
+                                        <label for="quantity">Quantity:</label>
+                                        <input type="text" class="form-control" name="quantity" value="{{ old('quantity') }}">
+                                    </div>
+                                </div>
+                        
                                 <input type="submit" class="btn-lg btn btn-primary m-2" value="Bestelling Bewerken">
                             </form>
                         </div>
+                        
                     </div>
                 </div>
             </div>
