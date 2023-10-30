@@ -21,13 +21,13 @@ class OrderUpdateController extends Controller
     {
         $order = Order::with('items')->find($order->id);
         $products = Product::all();
-    
-        return view('orders.edit', compact('order', 'products'));
+                
+        return view('orders.edit', compact('order', 'products', ));
     }
+    
     
     public function update(OrderUpdateValidation $request, Order $order)
     {
-
         $product = Product::find($request->input('product'));
 
         if ($request->filled('quantity')) {
@@ -68,11 +68,29 @@ class OrderUpdateController extends Controller
         return redirect()->route('dashboard.orders.dashboard')->with('success', 'Bestelling aangepast');
     }
     
-    
-    
-    public function destroy(Order $order)
+    public function updateAdress(Request $request, Order $order)
     {
+        $billingAddress = $order->billingAddress;
+        $billingAddress->update([
+            'street' => $request->input('billing_street'),
+            'street_number' => $request->input('billing_street_number'),
+            'zip_code' => $request->input('billing_zip_code'),
+            'city' => $request->input('billing_city'),
+        ]);
+    
+        $shippingAddress = $order->shippingAddress;
+        $shippingAddress->update([
+            'street' => $request->input('shipping_street'),
+            'street_number' => $request->input('shipping_street_number'),
+            'zip_code' => $request->input('shipping_zip_code'),
+            'city' => $request->input('shipping_city'),
+        ]);
+    
+        return redirect()->route('dashboard.orders.dashboard')->with('success', 'Adresgegevens aangepast');
+    }
 
+        public function destroy(Order $order)
+    {
         Address::where('order_id', $order->id)->delete();
         Order::find($order->id)->delete();
         return redirect()->route("dashboard.orders.dashboard")->with('success', 'Bestelling verwijderd');
