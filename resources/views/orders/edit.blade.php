@@ -19,14 +19,14 @@
                 <div class="d-flex flex-column justify-content-start">
                     <div class="card">
                         <div class="card-header fs-3 d-flex justify-content-between">
-                            <span>Product Aanpassen</span>
+                            <span>Bestelling Aanpassen</span>
                         </div>
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="general-tab" data-bs-toggle="tab"
-                                        data-bs-target="#general" role="tab" aria-controls="general"
-                                        aria-selected="true">Algemeen</button>
+                                        data-bs-target="#order" role="tab" aria-controls="order"
+                                        aria-selected="true">Bestelling</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="address-tab" data-bs-toggle="tab"
@@ -36,8 +36,8 @@
                             </ul>
 
                             <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="general" role="tabpanel"
-                                    aria-labelledby="general-tab">
+                                <div class="tab-pane fade show active" id="order" role="tabpanel"
+                                    aria-labelledby="order-tab">
                                     <form method="post" action="{{ route('dashboard.orders.update', $order) }}">
                                         @csrf
                                         @method('put')
@@ -135,68 +135,37 @@
                                         <h2 class="mt-2">Factuuradres</h2>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="billing_street">Straat:</label>
-                                                    <input type="text" class="form-control" id="billing_street" name="billing_street"
-                                                        value="{{ old('billing_street', $order->billingAddress->street) }}">
-                                                </div>
+                                            <x-form-field name="billing_street" label="Straat" :value="$order->billingAddress->street" :errors="$errors" />
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="billing_street_number">Huisnummer:</label>
-                                                    <input type="text" class="form-control" id="billing_street_number" name="billing_street_number"
-                                                        value="{{ old('billing_street_number', $order->billingAddress->street_number) }}">
-                                                </div>
+                                            <x-form-field name="billing_street_number" label="Huisnummer" :value="$order->billingAddress->street_number" :errors="$errors" />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="billing_zip_code">Postcode:</label>
-                                                    <input type="text" class="form-control" id="billing_zip_code" name="billing_zip_code"
-                                                        value="{{ old('billing_zip_code', $order->billingAddress->zip_code) }}">
+                                                <x-form-field name="billing_zip_code" label="Postcode" :value="$order->billingAddress->zip_code" :errors="$errors" />
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="billing_city">Plaats:</label>
-                                                    <input type="text" class="form-control" id="billing_city" name="billing_city"
-                                                        value="{{ old('billing_city', $order->billingAddress->city) }}">
+                                                <div class="col-md-6">
+                                                <x-form-field name="billing_city" label="Stad" :value="$order->billingAddress->city" :errors="$errors" />
                                                 </div>
-                                            </div>
                                         </div>
                                         
                                         <h2 class="mt-4">Verzendadres</h2>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="shipping_street">Straat:</label>
-                                                    <input type="text" class="form-control" id="shipping_street" name="shipping_street"
-                                                        value="{{ old('shipping_street', $order->shippingAddress->street) }}">
-                                                </div>
+                                                <x-form-field name="shipping_street" label="Straat" :value="$order->shippingAddress->street" :errors="$errors" />
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="shipping_street_number">Huisnummer:</label>
-                                                    <input type="text" class="form-control" id="shipping_street_number" name="shipping_street_number"
-                                                        value="{{ old('shipping_street_number', $order->shippingAddress->street_number) }}">
-                                                </div>
+                                                <x-form-field name="shipping_street_number" label="Huisnummer" :value="$order->shippingAddress->street_number" :errors="$errors" />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="shipping_zip_code">Postcode:</label>
-                                                    <input type="text" class="form-control" id="shipping_zip_code" name="shipping_zip_code"
-                                                        value="{{ old('shipping_zip_code', $order->shippingAddress->zip_code) }}">
-                                                </div>
+                                                <x-form-field name="shipping_zip_code" label="Postcode" :value="$order->shippingAddress->zip_code" :errors="$errors" />
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="shipping_city">Plaats:</label>
-                                                    <input type="text" class="form-control" id="shipping_city" name="shipping_city"
-                                                        value="{{ old('shipping_city', $order->shippingAddress->city) }}">
-                                                </div>
+                                                <x-form-field name="shipping_city" label="Plaats" :value="$order->shippingAddress->city" :errors="$errors" />
+
                                             </div>
                                         </div>
                                         

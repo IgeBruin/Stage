@@ -8,6 +8,7 @@ use App\Models\OrderItem;
 use App\Models\Address;
 use App\Models\Product;
 use App\Http\Requests\OrderUpdateValidation;
+use App\Http\Requests\UpdateOrderAddressRequest;
 
 class OrderUpdateController extends Controller
 {
@@ -68,7 +69,7 @@ class OrderUpdateController extends Controller
         return redirect()->route('dashboard.orders.dashboard')->with('success', 'Bestelling aangepast');
     }
     
-    public function updateAdress(Request $request, Order $order)
+    public function updateAdress(UpdateOrderAddressRequest $request, Order $order)
     {
         $billingAddress = $order->billingAddress;
         $billingAddress->update([
@@ -89,7 +90,7 @@ class OrderUpdateController extends Controller
         return redirect()->route('dashboard.orders.dashboard')->with('success', 'Adresgegevens aangepast');
     }
 
-        public function destroy(Order $order)
+    public function destroy(Order $order)
     {
         Address::where('order_id', $order->id)->delete();
         Order::find($order->id)->delete();
