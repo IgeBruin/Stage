@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'address',
+        'isAdmin',
     ];
 
     /**
@@ -72,5 +75,10 @@ class User extends Authenticatable
     public function assignedTasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
     }
 }

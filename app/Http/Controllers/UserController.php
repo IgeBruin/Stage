@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarStoreValidation;
+use App\Http\Requests\CarUpdateValidation;
+use App\Http\Requests\CarSpecificationsValidation;
 use Illuminate\Http\Request;
 use App\models\Product;
 use App\Models\Project;
@@ -9,9 +12,16 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Recipe;
 use App\Models\Task;
+use App\Models\Specification;
 use App\Models\Status;
 use App\Models\Ingredient;
 use App\Models\RecipeIngredient;
+use App\Models\Car;
+use App\Models\CarImage;
+use App\Models\CarSpecification;
+use App\Models\Fuel;
+use App\Models\Brand;
+use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\RecipeStoreValidation;
 use App\Http\Requests\RecipeUpdateValidation;
@@ -258,5 +268,209 @@ class UserController extends Controller
             }
         }
         return redirect()->route('user.myRecipes')->with('success', 'Ingredienten opgeslagen');
+    }
+
+    public function showCar(Car $car)
+    {
+        return view('users.showCar', compact('car'));
+    }
+
+    public function myCars()
+    {
+        $user = auth()->user();
+        $cars = $user->cars()->orderBy('created_at', 'desc')->get();
+
+        return view('users.myCars', compact('cars'));
+    }
+
+    public function destroyCar(Car $car)
+    {
+        $this->authorize('delete', $car);
+        Storage::deleteDirectory("cars/{$car->id}");
+        $car->delete();
+
+        return redirect(route("user.myCars"))->with('success', 'Auto verwijderd');
+    }
+
+    public function searchCar(Request $request)
+    {
+        $query = $request->input('query');
+    
+        $cars = Car::where('title', 'like', "%$query%")
+                    ->orWhereHas('brand', function ($brandQuery) use ($query) {
+                        $brandQuery->where('name', 'like', "%$query%");
+                    })
+                    ->orWhereHas('fuel', function ($fuelQuery) use ($query) {
+                        $fuelQuery->where('name', 'like', "%$query%");
+                    })
+                    ->orWhereHas('type', function ($typeQuery) use ($query) {
+                        $typeQuery->where('name', 'like', "%$query%");
+                    })
+                    ->paginate(5)
+                    ->withQueryString();
+    
+        return view("cars.overview", ["cars" => $cars])->with('success', 'hier het aantal auto\'s dat voldoet aan de zoekopdracht');
+    }
+
+    public function createCar()
+    {
+        $cars = Car::get();
+        $brands = Brand::all();
+        $types = Type::all();
+        $fuels = Fuel::all();
+        return view("users.createCar", compact('cars', 'brands', 'types', 'fuels'));
+    }
+
+    public function storeCar(CarStoreValidation $request)
+    {
+        $car = new Car();
+        $car->title = $request->title;
+        $car->description = $request->description;
+        $car->brand_id = $request->brand_id;
+        $car->type_id = $request->type_id;
+        $car->fuel_id = $request->fuel_id;
+        $car->year = $request->year;
+        $car->mileage = $request->mileage;
+        $car->mot = $request->mot;
+        $car->price = $request->price;
+        $car->user_id = auth()->user()->id;    
+        $car->save();
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = $car->id . '_' .  $image->getClientOriginalName();
+                $image->storeAs('cars/' . $car->id, $imageName);
+
+                $car->images()->create([
+                'image' => $imageName,
+                ]);
+            }
+        }
+
+        return redirect()->route("user.cars.showCar", $car)->with('success', 'Auto aangemaakt');
+    }
+
+    public function editCar(Car $car)
+    {
+        $this->authorize('update', $car);
+
+        $car = Car::with('images')->find($car->id);
+        $brands = Brand::all();
+        $types = Type::all();
+        $fuels = Fuel::all();
+        $specifications = Specification::all();
+        return view("users.editCar", compact('car', 'brands', 'types', 'specifications', 'fuels'));
+    }
+    
+    public function updateCar(CarUpdateValidation $request, Car $car)
+    {
+        $this->authorize('update', $car);
+        $car->title = $request->title;
+        $car->description = $request->description;
+        $car->brand_id = $request->brand_id;
+        $car->type_id = $request->type_id;
+        $car->fuel_id = $request->fuel_id;
+        $car->year = $request->year;
+        $car->mileage = $request->mileage;
+        $car->mot = $request->mot;
+        $car->price = $request->price;
+        $car->user_id = auth()->user()->id;
+        $car->save();
+    
+
+        if ($request->has('remove_images')) {
+            $removedImages = $request->remove_images;
+        
+            if (!empty($removedImages)) {
+                foreach ($removedImages as $imageId) {
+                    $carImage = CarImage::find($imageId);
+        
+                    if ($carImage) {
+                        $imagePath = "cars/{$car->id}/" . $carImage->image;
+                        Storage::delete($imagePath);
+        
+                        $carImage->delete();
+                    }
+                }
+            }
+        }
+    
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = $car->id . '_' . $image->getClientOriginalName();
+                $image->storeAs('cars/' . $car->id, $imageName);
+
+                $car->images()->create([
+                'image' => $imageName,
+                ]);
+            }
+        }
+
+        return redirect()->route("user.cars.showCar", $car)->with('success', 'Auto aangepast');
+    }
+    public function saveCarSpecifications(CarSpecificationsValidation $request, Car $car)
+    {
+        $specifications = $request->input('specifications');
+    
+        foreach ($specifications as $specificationId => $value) {
+            if ($value === null || $value === '') {
+                $existingCarSpecification = CarSpecification::where('car_id', $car->id)
+                    ->where('specification_id', $specificationId)->first();
+    
+                if ($existingCarSpecification) {
+                    $existingCarSpecification->delete();
+                }
+                continue;
+            }
+    
+            $existingCarSpecification = CarSpecification::where('car_id', $car->id)
+                ->where('specification_id', $specificationId)->first();
+    
+            if ($existingCarSpecification) {
+                $existingCarSpecification->update(['value' => $value]);
+            } else {
+                CarSpecification::create([
+                    'car_id' => $car->id,
+                    'specification_id' => $specificationId,
+                    'value' => $value,
+                ]);
+            }
+        }
+    
+        return redirect()->route("user.cars.showCar", $car)->with('success', 'Specificaties aangepast');
+    }
+
+    public function carImages(Request $request, Car $car)
+    {
+        if ($request->has('remove_images')) {
+            $removedImages = $request->remove_images;
+        
+            if (!empty($removedImages)) {
+                foreach ($removedImages as $imageId) {
+                    $carImage = CarImage::find($imageId);
+        
+                    if ($carImage) {
+                        $imagePath = "cars/{$car->id}/" . $carImage->image;
+                        Storage::delete($imagePath);
+        
+                        $carImage->delete();
+                    }
+                }
+            }
+        }
+    
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = $car->id . '_' . $image->getClientOriginalName();
+                $image->storeAs('cars/' . $car->id, $imageName);
+
+                $car->images()->create([
+                'image' => $imageName,
+                ]);
+            }
+        }
+        return redirect()->route("user.cars.showCar", $car)->with('success', "Foto's aangepast");
     }
 }

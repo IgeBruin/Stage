@@ -18,8 +18,8 @@
         </a>
     </x-slot>
 
-    <div class="container  mt-5">
-        <div class="row mx-5 d-flex justify-content-around">
+    <div class="container mt-5">
+        <div class="row  d-flex justify-content-around">
             <div class="col-md-6">
                 <div class="card shadow" style="position: relative;">
                     @if ($recipe->image == 'images/recipes/placeholder.png')
@@ -65,7 +65,8 @@
             </div>
             <div class="col-md-6 d-flex">
                 <div class="row">
-                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                    </div>
                     <div class="col-md-6 card shadow justify-content-end">
                         <div class="card-body">
                             <h3 class="card-title">Ingrediënten</h3>

@@ -17,7 +17,6 @@ class CreateProductSpecificationsTable extends Migration
             $table->foreign('specification_id')->references('id')->on('specifications')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
 
-            // dit heb je nodig blijkbaar
             $table->unique(['product_id', 'specification_id']);
         });
     }

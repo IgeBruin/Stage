@@ -12,7 +12,6 @@
 
     <div class="container mt-5">
         <div class="row">
-
             @include('menus.user_menu')
 
             <div class="col-md-10">

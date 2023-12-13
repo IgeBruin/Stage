@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\BillingAddressRequired;
 
 class UpdateOrderAddressRequest extends FormRequest
 {
@@ -26,19 +27,20 @@ class UpdateOrderAddressRequest extends FormRequest
         
             $rules = [];
 
-        if ($this->has('billing_street') && $this->has('billing_street_number')) {
+        if (!$this->input('useDifferentBilling')) {
+            $rules['billing_name'] = 'required|string';
+            $rules['billing_surname'] = 'required|string';
             $rules['billing_street'] = 'required|string';
             $rules['billing_street_number'] = 'required|string';
             $rules['billing_zip_code'] = ['required', 'regex:/^\d{4}[A-Z]{2}$/'];
             $rules['billing_city'] = 'required|string';
         }
 
-        if ($this->has('shipping_street') && $this->has('shipping_street_number')) {
             $rules['shipping_street'] = 'required|string';
             $rules['shipping_street_number'] = 'required|string';
             $rules['shipping_zip_code'] = ['required', 'regex:/^\d{4}[A-Z]{2}$/'];
             $rules['shipping_city'] = 'required|string';
-        }
+        
 
             return $rules;
     }

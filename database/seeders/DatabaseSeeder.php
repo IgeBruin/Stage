@@ -21,7 +21,10 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoriesSeeder::class);
         $this->call(PostsSeeder::class);
         $this->call(UsersSeeder::class);
-        // $this->call(RecipesSeeder::class);
         $this->call(IngredientsSeeder::class);
+        $this->call(TypesSeeder::class); 
+        $this->call(BrandSeeder::class);   
+        $this->call(FuelSeeder::class);   
+        $this->call(CarsSeeder::class); 
     }
 }

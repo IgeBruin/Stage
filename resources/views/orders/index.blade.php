@@ -22,11 +22,7 @@
     </x-slot>
 
     <div class="container mt-5">
-        @if (session()->has('success'))
-            <div class="alert alert-success">
-                {{ session()->get('success') }}
-            </div>
-        @endif
+        
         <h2>Bezorgadres</h2>
 
         <div class="row">

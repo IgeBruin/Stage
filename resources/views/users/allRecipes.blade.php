@@ -33,7 +33,7 @@
                     <div class="row">
                         @foreach ($recipes as $recipe)
                             <div class="col-md-4 mb-4">
-                                <a href="{{ route('user.showRecipe', ['recipe' => $recipe->id]) }}"
+                                <a href="{{ route('user.recipes.showRecipe', ['recipe' => $recipe->id]) }}"
                                     class="text-decoration-none">
                                     <div class="card h-100">
                                         @if ($recipe->image == 'images/recipes/placeholder.png')

@@ -29,3 +29,16 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            let modal = $('#createRoleModal');
+            
+            @if ($errors->any())
+                modal.modal('show');
+            @endif
+    
+            modal.on('hidden.bs.modal', function () {
+                $(this).find('form')[0].reset();
+            });
+        });
+    </script>

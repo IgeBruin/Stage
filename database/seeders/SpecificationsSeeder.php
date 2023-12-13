@@ -12,10 +12,8 @@ class SpecificationsSeeder extends Seeder
 {
     public function run()
     {
-        Specification::create(['name' => 'Lengte']);
         Specification::create(['name' => 'Gewicht']);
         Specification::create(['name' => 'Kleur']);
-        Specification::create(['name' => 'Breedte']);
-        Specification::create(['name' => 'Hoogte']);
+        Specification::create(['name' => 'Zitplaatsen']);
     }
 }

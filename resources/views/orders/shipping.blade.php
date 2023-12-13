@@ -22,11 +22,7 @@
     </x-slot>
 
     <div class="container mt-5">
-        @if (session()->has('success'))
-            <div class="alert alert-success">
-                {{ session()->get('success') }}
-            </div>
-        @endif
+       
 
         <div class="row mt-4">
             <div class="col-md-8">

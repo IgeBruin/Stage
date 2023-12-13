@@ -13,44 +13,39 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SpecificationController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\FuelController;
+use App\Http\Controllers\TypeController;
+use App\Http\Controllers\UserCrudController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Post as Post;
-use App\Models\Category as Category;
-use App\Models\User;
-use Carbon\Carbon;
+use App\Models\Car;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 //start
 Route::get('/', function () {
-    $today = Carbon::today();
-    $posts = Post::whereDate('publication_date', '<=', $today)->get();
-    $categories = Category::all();
-    return view("articles.index", ["posts" => $posts, "categories" => $categories]);
+    $cars = Car::all();
+    return view("cars.overview", compact('cars'));
 });
 
 // admin
 Route::middleware('admin')->group(function () {
     Route::get('/dashboard', function () {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(5);
-        $categories = Category::all(); 
-        return view('articles.dashboard', compact('posts', 'categories')); 
+        $cars = Car::orderBy('created_at', 'desc')->paginate(5);
+        return view("cars.index", compact('cars'));
     })->middleware(['auth', 'verified'])->name('dashboard');
 });
 
-
+//iedereen
 Route::get("articles", [PostController::class, "index"])->name("articles.index");
+
 Route::get('products/{product}/show', [UserController::class, 'showProduct'])->name('showProduct');
 Route::get('products', [UserController::class, 'allProducts'])->name('products');
 Route::get('products/searchProduct', [UserController::class, 'searchProduct'])->name('searchProduct');
+
+Route::get('cars/{car}/show', [UserController::class, 'showCar'])->name('showCar');
+Route::get("cars", [CarController::class, "overview"])->name("cars.overview");
+Route::get('cars/searchcar', [UserController::class, 'searchCar'])->name('searchCar');
+Route::post('cars/contact', [CarController::class, 'contactStore'])->name('contact.store');
 
 Route::get('cart', [OrderController::class, 'cartIndex'])->name('cart.index');
 Route::post('cart/add', [OrderController::class, 'add'])->name('cart.add');
@@ -74,6 +69,19 @@ Route::get('recipes/searchRecipe', [UserController::class, 'searchRecipe'])->nam
 Route::middleware('auth')->group(function () {
 
     Route::prefix('user')->name('user.')->group(function () {
+
+        Route::get('myCars', [UserController::class, 'myCars'])->name('myCars');
+        
+        Route::prefix('cars')->name('cars.')->group(function () {
+            Route::get('{car}/show', [UserController::class, 'showCar'])->name('showCar');
+            Route::get('/create', [UserController::class, 'createCar'])->name('createCar');
+            Route::post('', [UserController::class, 'storeCar'])->name('storeCar');
+            Route::get('{car}/edit', [UserController::class, 'editCar'])->name('editCar');
+            Route::put('{car}', [UserController::class, 'updateCar'])->name('updateCar');
+            Route::delete('{car}/destroy', [UserController::class, 'destroyCar'])->name('destroyCar');
+            Route::post('{car}/saveCarSpecifications', [UserController::class, 'saveCarSpecifications'])->name('saveCarSpecifications');
+            Route::put('{car}/carImages', [UserController::class, 'carImages'])->name('carImages');
+        });
         //projects
         Route::get('projects', [UserController::class, 'myProjects'])->name('projects');
         Route::get('projects/search', [UserController::class, 'searchProject'])->name('search');
@@ -83,9 +91,9 @@ Route::middleware('auth')->group(function () {
         Route::get('myOrders/{order}/show', [UserController::class, 'showOrder'])->name('showOrder');
 
         Route::get('myRecipes', [UserController::class, 'myRecipes'])->name('myRecipes');
-        Route::get('myRecipes/{recipe}/show', [UserController::class, 'showRecipe'])->name('showRecipe');
         
         Route::prefix('recipes')->name('recipes.')->group(function () {
+            Route::get('{recipe}/show', [UserController::class, 'showRecipe'])->name('showRecipe');
             Route::get('/create', [UserController::class, 'createRecipe'])->name('createRecipe');
             Route::post('', [UserController::class, 'storeRecipe'])->name('storeRecipe');
             Route::get('{recipe}/edit', [UserController::class, 'editRecipe'])->name('editRecipe');
@@ -222,6 +230,61 @@ Route::middleware('auth')->group(function () {
                 Route::put('{ingredient}', [IngredientController::class, 'update'])->name('update');
                 Route::delete('{ingredient}', [IngredientController::class, 'destroy'])->name('destroy');
                 Route::get('search', [IngredientController::class, 'search'])->name('search');
+            });
+
+            Route::prefix('brands')->name('brands.')->group(function () {
+                Route::get('', [BrandController::class, 'index'])->name('index');
+                Route::get('create', [BrandController::class, 'create'])->name('create');
+                Route::post('', [BrandController::class, 'store'])->name('store');
+                Route::get('{brand}/edit', [BrandController::class, 'edit'])->name('edit');
+                Route::put('{brand}', [BrandController::class, 'update'])->name('update');
+                Route::delete('{brand}', [BrandController::class, 'destroy'])->name('destroy');
+                Route::get('search', [BrandController::class, 'search'])->name('search');
+            });
+
+            Route::prefix('types')->name('types.')->group(function () {
+                Route::get('', [TypeController::class, 'index'])->name('index');
+                Route::get('create', [TypeController::class, 'create'])->name('create');
+                Route::post('', [TypeController::class, 'store'])->name('store');
+                Route::get('{type}/edit', [TypeController::class, 'edit'])->name('edit');
+                Route::put('{type}', [TypeController::class, 'update'])->name('update');
+                Route::delete('{type}', [TypeController::class, 'destroy'])->name('destroy');
+                Route::get('search', [TypeController::class, 'search'])->name('search');
+            });
+            Route::prefix('fuels')->name('fuels.')->group(function () {
+                Route::get('', [FuelController::class, 'index'])->name('index');
+                Route::get('create', [FuelController::class, 'create'])->name('create');
+                Route::post('', [FuelController::class, 'store'])->name('store');
+                Route::get('{fuel}/edit', [FuelController::class, 'edit'])->name('edit');
+                Route::put('{fuel}', [FuelController::class, 'update'])->name('update');
+                Route::delete('{fuel}', [FuelController::class, 'destroy'])->name('destroy');
+                Route::get('search', [FuelController::class, 'search'])->name('search');
+            });
+
+            //dus dashboard/cars/ en dan hier de naam van de functie
+            Route::prefix('cars')->name('cars.')->group(function () {
+                Route::get('overview', [CarController::class, 'overview'])->name('overview');
+                Route::get('', [CarController::class, 'index'])->name('index');
+                Route::get('create', [CarController::class, 'create'])->name('create');
+                Route::post('', [CarController::class, 'store'])->name('store');
+                Route::get('{car}/edit', [CarController::class, 'edit'])->name('edit');
+                Route::put('{car}', [CarController::class, 'update'])->name('update');
+                Route::delete('{car}/destroy', [CarController::class, 'destroy'])->name('destroy');
+                Route::get('search', [CarController::class, 'search'])->name('search');
+                Route::post('{car}/saveSpecifications', [CarController::class, 'saveSpecifications'])->name('saveSpecifications');
+                Route::put('{car}/images', [CarController::class, 'images'])->name('images');
+                Route::get('carsExport', [CarController::class, 'carsExport'])->name('carsExport');
+                Route::post('carsImport', [CarController::class, 'carsImport'])->name('carsImport');
+            });
+            //dus dashboard/users/ en dan hier de naam van de functie
+            Route::prefix('users')->name('users.')->group(function () {
+                Route::get('', [UserCrudController::class, 'index'])->name('index');
+                Route::get('create', [UserCrudController::class, 'create'])->name('create');
+                Route::post('', [UserCrudController::class, 'store'])->name('store');
+                Route::get('{user}/edit', [UserCrudController::class, 'edit'])->name('edit');
+                Route::put('{user}/update', [UserCrudController::class, 'update'])->name('update');
+                Route::delete('{user}/destroy', [UserCrudController::class, 'destroy'])->name('destroy');
+                Route::get('search', [UserCrudController::class, 'search'])->name('search');
             });
         });
     // profile door breeze

@@ -12,7 +12,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link class="text-decoration-none fs-5  hover:border-indigo-300 focus:border-indigo-500"
+                    {{-- <x-nav-link class="text-decoration-none fs-5  hover:border-indigo-300 focus:border-indigo-500"
                         :href="route('articles.index')" :active="request()->routeIs('post.index')">
                         {{ __('Artikelen') }}
                     </x-nav-link>
@@ -23,6 +23,10 @@
                     <x-nav-link class="text-decoration-none fs-5  hover:border-indigo-300 focus:border-indigo-500"
                         :href="route('recipes')" :active="request()->routeIs('recipes')">
                         {{ __('Recepten') }}
+                    </x-nav-link> --}}
+                    <x-nav-link class="text-decoration-none fs-5  hover:border-indigo-300 focus:border-indigo-500"
+                        :href="route('cars.overview')" :active="request()->routeIs('recipes')">
+                        {{ __("Auto's") }}
                     </x-nav-link>
 
                 </div>
@@ -64,7 +68,11 @@
                                 {{ __('Dashboard') }}
                             </x-dropdown-link>
 
-                            <x-dropdown-link :href="route('user.projects')" class="hover:text-indigo-700 text-decoration-none">
+                            <x-dropdown-link :href="route('user.myCars')" class="hover:text-indigo-700 text-decoration-none">
+                                {{ __("Mijn Auto's") }}
+                            </x-dropdown-link>
+
+                            {{-- <x-dropdown-link :href="route('user.projects')" class="hover:text-indigo-700 text-decoration-none">
                                 {{ __('Mijn Projecten') }}
                             </x-dropdown-link>
 
@@ -73,7 +81,7 @@
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('user.myRecipes')" class="hover:text-indigo-700 text-decoration-none">
                                 {{ __('Mijn Recepten') }}
-                            </x-dropdown-link>
+                            </x-dropdown-link> --}}
 
 
                             <!-- Authentication -->

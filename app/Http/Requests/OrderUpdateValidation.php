@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\UniqueProductInOrder;
 
 class OrderUpdateValidation extends FormRequest
 {
@@ -23,7 +24,7 @@ class OrderUpdateValidation extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
         'telephone' => [
             'required',
             'regex:/^06\d{8}$/'
@@ -31,7 +32,19 @@ class OrderUpdateValidation extends FormRequest
         'email' => 'required|email',
         'order_items.*.quantity' => 'required|integer|min:0',
         ];
+
+        if ($this->filled('quantity')) {
+            $rules['product'] = [
+            'sometimes', 
+            'required',
+            'exists:products,id', 
+            new UniqueProductInOrder($this->route('order')), 
+            ];
+        }
+
+        return $rules;
     }
+
 
     public function messages()
     {

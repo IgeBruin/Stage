@@ -97,4 +97,28 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById("eyeToggle").addEventListener("click", function() {
+            // Toggle the visibility of the open and closed eye SVGs
+            var openEye = document.querySelector('#eye');
+            var closedEye = document.querySelector('#eye-slash');
+            var eyeToggle = document.getElementById("eyeToggle");
+            
+            if (openEye.style.display === "none") {
+                openEye.style.display = "block";
+                closedEye.style.display = "none";
+                
+                // Unmask the email
+                document.getElementById("email").textContent = "example@email.com";
+            } else {
+                openEye.style.display = "none";
+                closedEye.style.display = "block";
+                
+                // Mask the email
+                var emailText = document.getElementById("email").textContent;
+                var maskedEmail = emailText.replace(/./g, '*');
+                document.getElementById("email").textContent = maskedEmail;
+            }
+        });
+        </script>
 </x-app-layout>

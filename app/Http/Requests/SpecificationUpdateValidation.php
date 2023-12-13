@@ -31,9 +31,9 @@ class SpecificationUpdateValidation extends FormRequest
     public function messages()
     {
         return [
-        'name.required' => 'Een status naam is verplicht.',
-        'name.unique' => 'Deze status naam naam is al in gebruik.',
-        'name.max' => 'Een naam van een status mag maximaal 64 karakters hebben',
+        'name.required' => 'Een specificatie naam is verplicht.',
+        'name.unique' => 'Deze specificatie naam is al in gebruik.',
+        'name.max' => 'Een naam van een specificatie mag maximaal 64 karakters hebben',
         ];
     }
 }

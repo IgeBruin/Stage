@@ -22,6 +22,6 @@ class UserPolicy
 
     public function isAdmin(User $user)
     {
-        return $user->isAdmin == 1; // 1 is true dus admin
+        return $user->isAdmin == 1;
     }
 }

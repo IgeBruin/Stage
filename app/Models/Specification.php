@@ -17,4 +17,9 @@ class Specification extends Model
     {
         return $this->hasMany(ProductSpecification::class);
     }
+
+    public function carSpecifications()
+    {
+        return $this->belongsToMany(Car::class, 'car_specifications')->withPivot('value');
+    }
 }

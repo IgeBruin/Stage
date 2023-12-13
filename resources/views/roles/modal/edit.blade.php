@@ -14,10 +14,16 @@
                     id="editRoleForm">
                     @csrf
                     @method('put')
+                    <input type="hidden" id="role_id" name="role_id" value="{{ old('role_id', $role->id) }}">
+
                     <div class="mb-3">
                         <label for="name" class="form-label">Naam</label>
                         <input type="text" class="form-control" id="name" name="name">
+                        @if($errors->has('name'))
+                            <div class="text-danger">{{ $errors->first('name') }}</div>
+                        @endif
                     </div>
+                    
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-primary" value="Opslaan">
                     </div>
@@ -28,17 +34,37 @@
 </div>
 
 <script>
-    $('#editRoleModal').on('show.bs.modal', function(event) {
-        let button = $(event.relatedTarget);
-        let roleId = button.data('id');
-        let roleName = button.data('name');
-        let modal = $(this);
+    $(document).ready(function () {
+        let modal = $('#editRoleModal'); 
 
-        let form = modal.find('#editRoleForm');
-        let action = form.attr('action').replace('role_id', roleId);
-        form.attr('action', action);
+        @if ($errors->any())
+            let roleId = '{{ old("role_id") }}'; 
+            if (roleId) {
+                modal.modal('show');
+                modal.data('role-id', roleId);
+            }
+        @endif
 
-        let nameInput = modal.find('#name');
-        nameInput.val(roleName);
+        modal.on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let roleId = button.data('id') || modal.data('role-id');
+            let form = modal.find('#editRoleForm');
+            modal.data('role-id', roleId);
+            let action = '{{ route("dashboard.roles.update", ["role" => "role_id"]) }}';
+            action = action.replace('role_id', roleId);
+            form.attr('action', action);
+            document.getElementById('role_id').value = roleId;
+            let nameInput = modal.find('#name');
+            nameInput.val(button.data('name'));
+        });
+
+        $('#editRoleForm').on('submit', function (e) { 
+            e.preventDefault();
+            let roleId = modal.data('role-id');
+            this.action = '{{ route("dashboard.roles.update", ["role" => "role_id"]) }}';
+            this.action = this.action.replace('role_id', roleId);
+            this.submit();
+        });
     });
 </script>
+

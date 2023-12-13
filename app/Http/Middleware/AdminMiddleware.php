@@ -19,8 +19,10 @@ class AdminMiddleware
     {
         if (Auth::check() && Auth::user()->isAdmin == 1) {
             return $next($request);
+        } else{
+            return redirect('/'); 
         }
 
-        return redirect('/')->with('error', 'U heeft geen toegang tot deze pagina'); 
+        return redirect('/')->with('error', 'U heeft geen toegang tot de pagina die u probeerde te bezoeken'); 
     }
 }
